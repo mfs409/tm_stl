@@ -93,9 +93,17 @@ namespace std _GLIBCXX_VISIBILITY(default)
       void
       _M_reverse() _GLIBCXX_USE_NOEXCEPT;
 
+      #ifndef NO_TM
+      // [TM] for @step 2
+      __attribute__((transaction_safe))
+      #endif
       void
       _M_hook(_List_node_base* const __position) _GLIBCXX_USE_NOEXCEPT;
 
+      #ifndef NO_TM
+      // [TM] for @step 2
+      __attribute__((transaction_safe))
+      #endif
       void
       _M_unhook() _GLIBCXX_USE_NOEXCEPT;
     };
@@ -491,6 +499,10 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  @a __args in it.
        */
 #if __cplusplus < 201103L
+      #ifndef NO_TM
+      // [TM] for @step 2
+      __attribute__((transaction_safe))
+      #endif
       _Node*
       _M_create_node(const value_type& __x)
       {
@@ -509,6 +521,10 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       }
 #else
       template<typename... _Args>
+      #ifndef NO_TM
+      // [TM] for @step 2
+      __attribute__((transaction_safe))
+      #endif
         _Node*
         _M_create_node(_Args&&... __args)
     {
@@ -659,6 +675,10 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  All the elements of @a __x are copied, but unlike the copy
        *  constructor, the allocator object is not copied.
        */
+      #ifndef NO_TM
+      // [TM] for @step 1 (untested)
+      __attribute__((transaction_safe))
+      #endif
       list&
       operator=(const list& __x);
 
@@ -691,6 +711,10 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Replace the contents of the %list with copies of the elements
        *  in the initializer_list @a __l.  This is linear in l.size().
        */
+      #ifndef NO_TM
+      // [TM] for @step 1 (untested)
+      __attribute__((transaction_safe))
+      #endif
       list&
       operator=(initializer_list<value_type> __l)
       {
@@ -1022,11 +1046,19 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  in constant time, and does not invalidate iterators and
        *  references.
        */
+      #ifndef NO_TM
+      // [TM] for @step 2
+      __attribute__((transaction_safe))
+      #endif
       void
       push_back(const value_type& __x)
       { this->_M_insert(end(), __x); }
 
 #if __cplusplus >= 201103L
+      #ifndef NO_TM
+      // [TM] for @step 2
+      __attribute__((transaction_safe))
+      #endif
       void
       push_back(value_type&& __x)
       { this->_M_insert(end(), std::move(__x)); }
@@ -1676,6 +1708,10 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       // Inserts new element at position given and with value given.
 #if __cplusplus < 201103L
+      #ifndef NO_TM
+      // [TM] for @step 2
+      __attribute__((transaction_safe))
+      #endif
       void
       _M_insert(iterator __position, const value_type& __x)
       {
@@ -1684,6 +1720,10 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       }
 #else
      template<typename... _Args>
+      #ifndef NO_TM
+      // [TM] for @step 2
+      __attribute__((transaction_safe))
+      #endif
        void
        _M_insert(iterator __position, _Args&&... __args)
        {

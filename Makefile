@@ -13,7 +13,7 @@ BITS          ?= 32
 #     CXXFLAGS_NOTM replaces transactions with a global mutex
 CXX            = g++
 CXXFLAGS      += -MD -O2 -fgnu-tm -ggdb -m$(BITS) -std=c++11
-CXXFLAGS_TM   += -nostdinc -I/usr/include/ -Iplatform_inc -Istdinc -Ilibinc -Itm_stdinc/
+CXXFLAGS_TM   += -nostdinc -I/usr/include/ -Iplatform_inc -Istdinc -Ilibinc -Itm_stdinc/ -Itm_platform_inc/
 CXXFLAGS_NOTM += -DNO_TM
 LDFLAGS       += -m$(BITS) -lstdc++ -fgnu-tm
 
@@ -26,7 +26,7 @@ OFILES         = $(patsubst %, %_notm.o, $(CXXFILES)) \
                  $(patsubst %, %_tm.o, $(CXXFILES))
 EXEFILES       = $(patsubst %.o, %, $(OFILES))
 
-LIBFILES       = list
+LIBFILES       = list functexcept snprintf_lite
 LIBOFILES      = $(patsubst %, %_tm.o, $(LIBFILES))
 
 DEPS           = $(patsubst %.o, %.d, $(OFILES) $(LIBOFILES))
@@ -58,6 +58,10 @@ list_bench_tm: $(LIBOFILES)
 	@$(CXX) $^ -o $@ $(LDFLAGS)
 
 %_tm.o:tm_libstdc++-v3/c++98/%.cc
+	@echo "[CXX] $< --> $@"
+	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_TM)
+
+%_tm.o:tm_libstdc++-v3/c++11/%.cc
 	@echo "[CXX] $< --> $@"
 	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_TM)
 

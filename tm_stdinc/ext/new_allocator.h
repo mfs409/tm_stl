@@ -48,7 +48,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
    *  @brief  An allocator that uses global new, as per [20.4].
    *  @ingroup allocators
    *
-   *  This is precisely the allocator defined in the C++ Standard. 
+   *  This is precisely the allocator defined in the C++ Standard.
    *    - all allocation calls operator new
    *    - all deallocation calls operator delete
    *
@@ -95,13 +95,17 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
       // NB: __n is permitted to be 0.  The C++ standard says nothing
       // about what the return value is when __n == 0.
+      #ifndef NO_TM
+      // [TM] for @step 2
+      __attribute__((transaction_safe))
+      #endif
       pointer
       allocate(size_type __n, const void* = 0)
-      { 
-	if (__n > this->max_size())
-	  std::__throw_bad_alloc();
+      {
+    if (__n > this->max_size())
+      std::__throw_bad_alloc();
 
-	return static_cast<_Tp*>(::operator new(__n * sizeof(_Tp)));
+    return static_cast<_Tp*>(::operator new(__n * sizeof(_Tp)));
       }
 
       // __p is not permitted to be a null pointer.
@@ -117,19 +121,19 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       template<typename _Up, typename... _Args>
         void
         construct(_Up* __p, _Args&&... __args)
-	{ ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+    { ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
 
       template<typename _Up>
-        void 
+        void
         destroy(_Up* __p) { __p->~_Up(); }
 #else
       // _GLIBCXX_RESOLVE_LIB_DEFECTS
       // 402. wrong new expression in [some_] allocator::construct
-      void 
-      construct(pointer __p, const _Tp& __val) 
+      void
+      construct(pointer __p, const _Tp& __val)
       { ::new((void *)__p) _Tp(__val); }
 
-      void 
+      void
       destroy(pointer __p) { __p->~_Tp(); }
 #endif
     };
@@ -138,7 +142,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     inline bool
     operator==(const new_allocator<_Tp>&, const new_allocator<_Tp>&)
     { return true; }
-  
+
   template<typename _Tp>
     inline bool
     operator!=(const new_allocator<_Tp>&, const new_allocator<_Tp>&)

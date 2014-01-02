@@ -17,3 +17,13 @@ platform_inc:
 stdinc:
    This folder stores unmodified copies of the files in
    <gcc_install>/include/c++/4.9.0/
+
+tm_stdinc:
+   If we require a modification to something in stdinc, we first move it
+   here, then we modify it.  All changes are annotated via comments with
+   [TM] and the @step at which this change was made.
+
+tm_libstdc++-v3:
+   In some cases, the tm_stdinc header file changes require us to recompile
+   parts of libstdc++.  When that happens, we copy the corresponding .cc
+   files here, so that we know exactly what had to be recompiled.
