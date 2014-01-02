@@ -4,52 +4,29 @@
 // interface consists of the following:
 //
 // Member functions
-//  (constructor)
-//  (destructor)
-//  operator=
+//  (constructor), (destructor), and operator=
 //
 // Iterators:
-//  begin
-//  end
-//  rbegin
-//  rend
-//  cbegin
-//  cend
-//  crbegin
-//  crend
+//  begin, end
+//  rbegin, rend
+//  cbegin, cend
+//  crbegin, crend
 //
 // Capacity:
-//  empty
-//  size
-//  max_size
+//  empty, size, max_size
 //
 // Element access:
-//  front
-//  back
+//  front, back
 //
 // Modifiers:
-//  assign
-//  emplace_front
-//  push_front
-//  pop_front
-//  emplace_back
-//  push_back
-//  pop_back
-//  emplace
-//  insert
-//  erase
-//  swap
-//  resize
-//  clear
+//  assign,
+//  emplace, emplace_front, emplace_back,
+//  push_front, pop_front
+//  push_back, pop_back
+//  insert, erase, swap, resize, clear
 //
 // Operations:
-//  splice
-//  remove
-//  remove_if
-//  unique
-//  merge
-//  sort
-//  reverse
+//  splice, remove, remove_if, unique, merge, sort, reverse
 //
 // Observers:
 //  get_allocator
@@ -61,16 +38,36 @@
 #include "list"
 #include "cstdio"
 #include "thread"
+#include "atomic"
+#include "mutex"
 
-std::list<int>* global_list = NULL;
+std::list<int>* global_list_ptr = NULL;
+std::list<int>  global_list;
+
+std::atomic<int> ready(0);
+
+#ifdef NO_TM
+std::mutex global_mutex;
+#define BEGIN_TX {std::lock_guard<std::mutex> _g(global_mutex);
+#define END_TX   }
+#else
+#define BEGIN_TX __transaction_atomic {
+#define END_TX   }
+#endif
 
 void listtest(int id)
 {
+    // notify that we've started, then wait for all threads to be ready
     printf("Hello from thread %d\n", id);
-    __transaction_atomic {
-        std::list<int> l();
-        std::list<int>* l2 = new std::list<int>();
-    }
+    while (!ready);
+
+    // test construction and operator=
+    BEGIN_TX
+        if (global_list_ptr == NULL) {
+            global_list = std::list<int>();
+            global_list_ptr = new std::list<int>();
+        }
+    END_TX
 
 }
 
@@ -80,6 +77,7 @@ int main()
     std::thread threads[4];
     for (int i = 0; i < 4; ++i)
         threads[i] = std::thread(listtest, i);
+    ready = true;
     for (int i = 0; i < 4; ++i)
         threads[i].join();
 }

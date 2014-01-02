@@ -42,7 +42,7 @@ all: list_bench_tm list_bench_notm
 
 %_notm.o: %.cc
 	@echo "[CXX] $< --> $@"
-	@$(CXX) -c $< -o $@ $(CXXFLAGS)
+	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_NOTM)
 
 %_tm:%_tm.o
 	@echo "[LD] $^ --> $@"
