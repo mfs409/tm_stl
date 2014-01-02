@@ -4,7 +4,7 @@ tm_stl
 A scratchpad for working on making some of the C++11 STL code from gcc 4.9 transaction-safe
 
 Folders
-====
+----
 
 libinc:
    This folder stores unmodified copies of the files in
