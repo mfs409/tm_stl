@@ -61,14 +61,18 @@ void listtest(int id)
     printf("Hello from thread %d\n", id);
     while (!ready);
 
-    // test construction and operator=
+    // @step: 1
+    //
+    // Test construction, destruction, and operator=; be sure to test
+    // ctor/dtor for stack and heap allocations
     BEGIN_TX
         if (global_list_ptr == NULL) {
+            std::list<int> my_other_list();
             global_list = std::list<int>();
             global_list_ptr = new std::list<int>();
+            delete(global_list_ptr);
         }
     END_TX
-
 }
 
 

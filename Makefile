@@ -25,7 +25,11 @@ CXXFILES       = list_bench
 OFILES         = $(patsubst %, %_notm.o, $(CXXFILES)) \
                  $(patsubst %, %_tm.o, $(CXXFILES))
 EXEFILES       = $(patsubst %.o, %, $(OFILES))
-DEPS           = $(patsubst %.o, %.d, $(OFILES))
+
+LIBFILES       = list
+LIBOFILES      = $(patsubst %, %_tm.o, $(LIBFILES))
+
+DEPS           = $(patsubst %.o, %.d, $(OFILES) $(LIBOFILES))
 
 #
 # Best to be safe...
@@ -42,18 +46,23 @@ all: list_bench_tm list_bench_notm
 
 %_notm.o: %.cc
 	@echo "[CXX] $< --> $@"
-	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_NOTM)
+	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_NOTM) $(CXXFLAGS_TM)
 
+list_bench_tm: $(LIBOFILES)
 %_tm:%_tm.o
-	@echo "[LD] $^ --> $@"
+	@echo "[LD] $^ $(LIBOFILES) --> $@"
 	@$(CXX) $^ -o $@ $(LDFLAGS)
 
 %_notm:%_notm.o
 	@echo "[LD] $^ --> $@"
 	@$(CXX) $^ -o $@ $(LDFLAGS)
 
+%_tm.o:tm_libstdc++-v3/c++98/%.cc
+	@echo "[CXX] $< --> $@"
+	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_TM)
+
 clean:
 	@echo Cleaning up...
-	@rm -f $(EXEFILES) $(OFILES) $(DEPS)
+	@rm -f $(EXEFILES) $(OFILES) $(DEPS) $(LIBOFILES)
 
 -include $(DEPS)
