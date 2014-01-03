@@ -24,10 +24,10 @@
 |                    | size                                |        1 |         |
 |                    | max_size                            |        1 |         |
 |--------------------+-------------------------------------+----------+---------|
-| Element access     | front                               |          |         |
-|                    | back                                |          |         |
+| Element access     | front                               |        2 |         |
+|                    | back                                |        2 |         |
 |--------------------+-------------------------------------+----------+---------|
-| Modifiers          | assign                              |          |         |
+| Modifiers          | assign                              |        3 |         |
 |                    | emplace                             |          |         |
 |                    | emplace_front                       |          |         |
 |                    | emplace_back                        |          |         |
@@ -181,6 +181,8 @@ void check(std::string s)
 #include "assign.h"
 #include "iter.h"
 #include "cap.h"
+#include "element.h"
+#include "modifier.h"
 
 void sequential_test()
 {
@@ -197,8 +199,11 @@ void sequential_test()
     const_reverse_iterator_test();
     // test capacity
     cap_test();
+    // test element access
+    element_test();
+    // test modifiers
+    modifier_test();
 }
-
 
 int main()
 {
