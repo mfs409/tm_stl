@@ -1,55 +1,68 @@
-// Driver to test the transactional version of the std::list interface
-//
-// according to http://www.cplusplus.com/reference/list/list/, the std::list
-// interface consists of the following:
-
 /*
-| Member functions                           | Status        |
-|--------------------------------------------+---------------|
-| (constructor), (destructor), and operator= | Done (step 1) |
+  Driver to test the transactional version of the std::list interface
 
-| Iterators:     | Status |
-|----------------+--------|
-| begin, end     |        |
-| rbegin, rend   |        |
-| cbegin, cend   |        |
-| crbegin, crend |        |
+  According to http://www.cplusplus.com/reference/list/list/, the std::list
+  interface consists of the following:
 
-| Capacity:             | Status |
-|-----------------------+--------|
-| empty, size, max_size |        |
-
-| Element access: | Status        |
-|-----------------+---------------|
-| front, back     | Done (step 2) |
-
-| Modifiers:                            | Status        |
-|---------------------------------------+---------------|
-| assign,                               |               |
-| emplace, emplace_front, emplace_back, |               |
-| push_front, pop_front                 |               |
-| push_back, pop_back                   | Done (step 2) |
-| insert, erase, swap, resize, clear    |               |
-
-| Operations:                                             | Status |
-|---------------------------------------------------------+--------|
-| splice, remove, remove_if, unique, merge, sort, reverse |        |
-
-| Observers:    | Status |
-|---------------+--------|
-| get_allocator |        |
-
-| Non-member function overloads:      | Status |
-|-------------------------------------+--------|
-| relational operators (forward_list) |        |
-| swap (forward_list)                 |        |
+|--------------------+-------------------------------------+----------+---------|
+| Category           |                                     | #Methods | #Tested |
+|--------------------+-------------------------------------+----------+---------|
+| Member Functions   | (constructor)                       |        6 |         |
+|                    | (destructor)                        |        1 |         |
+|                    | operator=                           |          |         |
+|--------------------+-------------------------------------+----------+---------|
+| Iterators          | begin                               |        2 |         |
+| (note: must be     | end                                 |        2 |         |
+| sure to handle all | rbegin                              |        2 |         |
+| of the methods     | rend                                |        2 |         |
+| that can be called | cbegin                              |        1 |         |
+| on an iterator!)   | cend                                |        1 |         |
+|                    | crbegin                             |        1 |         |
+|                    | crend                               |        1 |         |
+|--------------------+-------------------------------------+----------+---------|
+| Capacity           | empty                               |        1 |         |
+|                    | size                                |        1 |         |
+|                    | max_size                            |        1 |         |
+|--------------------+-------------------------------------+----------+---------|
+| Element access     | front                               |          |         |
+|                    | back                                |          |         |
+|--------------------+-------------------------------------+----------+---------|
+| Modifiers          | assign                              |          |         |
+|                    | emplace                             |          |         |
+|                    | emplace_front                       |          |         |
+|                    | emplace_back                        |          |         |
+|                    | push_front                          |          |         |
+|                    | pop_front                           |          |         |
+|                    | push_back                           |          |         |
+|                    | pop_back                            |          |         |
+|                    | insert                              |          |         |
+|                    | erase                               |          |         |
+|                    | swap                                |          |         |
+|                    | resize                              |          |         |
+|                    | clear                               |          |         |
+|--------------------+-------------------------------------+----------+---------|
+| Operations         | splice                              |          |         |
+|                    | remove                              |          |         |
+|                    | remove_if                           |          |         |
+|                    | unique                              |          |         |
+|                    | merge                               |          |         |
+|                    | sort                                |          |         |
+|                    | reverse                             |          |         |
+|--------------------+-------------------------------------+----------+---------|
+| Observers          | get_allocator                       |          |         |
+|--------------------+-------------------------------------+----------+---------|
+| Non-member         | relational operators (forward_list) |          |         |
+| function overloads | swap (forward_list)                 |          |         |
+|--------------------+-------------------------------------+----------+---------|
 */
+
 #include <list>
 #include <cstdio>
 #include <thread>
 #include <atomic>
 #include <mutex>
 #include <cassert>
+#include <iostream>
 
 #include "barrier.h"
 
@@ -69,8 +82,7 @@ std::mutex global_mutex;
 
 void listtest(int id)
 {
-    // notify that we've started, then wait for all threads to be ready
-    printf("Hello from thread %d\n", id);
+    // wait for all threads to be ready
     global_barrier->arrive(id);
 
     // @step: 1
@@ -99,7 +111,8 @@ void listtest(int id)
     // @step: 2
     //
     // The thread who succeeded in the insertion will push an entry, so that
-    // we know who constructed.  Also push onto the heap list.  Then everyone pushes, pops, and pushes again
+    // we know who constructed.  Also push onto the heap list.  Then everyone
+    // pushes, pops, and pushes again
     BEGIN_TX;
     if (success) {
         global_list.push_back(id);
@@ -124,13 +137,76 @@ void listtest(int id)
     global_list.push_back(id);
     global_list_ptr->push_back(id);
     END_TX;
+    global_barrier->arrive(id);
 
+    // @step: 3
+    //
+    // Now let's clear the list and start trying to do more fun stuff with it
+    if (id == 0) {
+        BEGIN_TX;
+        global_list.clear();
+        global_list_ptr->clear();
+        END_TX;
+        // initialize the list with all ints between 0 and 50, except for
+        // those divisible by 5
+        BEGIN_TX;
+        for (int i = 0; i < 50; ++i) {
+            if (i%5 != 0) {
+                global_list.push_back(i);
+                global_list_ptr->push_back(i);
+            }
+        }
+        END_TX;
+    }
+    global_barrier->arrive(id);
 
+}
+
+std::list<int>* my_list;
+
+void check(std::string s)
+{
+    std::cout << s << std::endl << " List: ";
+    for (auto i : *my_list)
+        std::cout << i << ", ";
+    std::cout << std::endl;
+}
+
+/**
+ *  The current effort is a bit ad-hoc.  Let's create a sequential test for
+ *  *everything*, then transactionalize it piecemeal.
+ */
+
+#include "ctor.h"
+#include "assign.h"
+#include "iter.h"
+#include "cap.h"
+
+void sequential_test()
+{
+    // test constructors and destructor
+    ctor_test();
+    // test assignment operators
+    assign_test();
+    // test iterators
+    iterator_test();
+    reverse_iterator_test();
+    legacy_const_iterator_test();
+    legacy_const_reverse_iterator_test();
+    const_iterator_test();
+    const_reverse_iterator_test();
+    // test capacity
+    cap_test();
 }
 
 
 int main()
 {
+    sequential_test();
+
+    // for now, just do the sequential tests
+    return 0;
+
     // set up a barrier and construct/start the threads
     int num_threads = 4;
     std::thread* threads = new std::thread[num_threads];

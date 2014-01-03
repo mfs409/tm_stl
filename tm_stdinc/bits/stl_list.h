@@ -68,6 +68,15 @@
 #define TM_SAFE(x) __attribute__((transaction_safe))
 #endif
 
+// [TM] This is to get __builtin_abort() to work
+namespace
+{
+  __attribute__((transaction_pure))
+  void wrapped_abort()
+  {
+      __builtin_abort();
+  }
+}
 
 namespace std _GLIBCXX_VISIBILITY(default)
 {
@@ -91,6 +100,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
       static void
       swap(_List_node_base& __x, _List_node_base& __y) _GLIBCXX_USE_NOEXCEPT;
 
+      TM_SAFE(@step1)
       void
       _M_transfer(_List_node_base* const __first,
           _List_node_base* const __last) _GLIBCXX_USE_NOEXCEPT;
@@ -1791,12 +1801,15 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       }
 
       // To implement the splice (and merge) bits of N1599.
+      TM_SAFE(@step3)
       void
       _M_check_equal_allocators(list& __x) _GLIBCXX_NOEXCEPT
       {
     if (std::__alloc_neq<typename _Base::_Node_alloc_type>::
         _S_do_it(_M_get_Node_allocator(), __x._M_get_Node_allocator()))
-      __builtin_abort();
+        // [TM]
+        // __builtin_abort();
+        wrapped_abort();
       }
     };
 
