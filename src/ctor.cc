@@ -1,3 +1,8 @@
+#include <iostream>
+#include <string>
+#include <list>
+#include "tests.h"
+
 /**
  * Here is the sequential ctor test.  It also happens to be the sequential
  * dtor test, since there is only a basic dtor.

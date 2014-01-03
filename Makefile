@@ -1,72 +1,79 @@
 #
+# Set up directories
+#
+ODIR := obj
+IDIR := inc
+LDIR := lib
+SDIR := src
+output_folder := $(shell mkdir -p $(ODIR))
+
+#
 # Let the user choose 32-bit or 64-bit compilation, but default to 32
 #
 BITS          ?= 32
+
+#
+# Set up all filenames
+#
+CXXFILES       = list_bench assign cap ctor element iter modifier
+LIBFILES       = list functexcept snprintf_lite
+IFOLDERS       = platform_inc stdinc libinc tm_stdinc tm_platform_inc
+
+TM_OFILES      = $(patsubst %, $(ODIR)/%_tm.o, $(CXXFILES) $(LIBFILES))
+NOTM_OFILES    = $(patsubst %, $(ODIR)/%_notm.o, $(CXXFILES))
+
+EXEFILES       = $(ODIR)/list_bench_tm $(ODIR)/list_bench_notm
+
+DEPS           = $(patsubst %.o, %.d, $(TM_OFILES) $(NOTM_OFILES))
 
 #
 # Use g++ in C++11 mode, TM enabled.
 #
 # NB: we use -MD instead of -MMD, because we want to see all the system
 # header dependencies.
-#
-# NB: CXXFLAGS_TM gets us to local copies of the system headers;
-#     CXXFLAGS_NOTM replaces transactions with a global mutex
 CXX            = g++
-CXXFLAGS      += -MD -O2 -fgnu-tm -ggdb -m$(BITS) -std=c++11
-CXXFLAGS_TM   += -nostdinc -I/usr/include/ -Iplatform_inc -Istdinc -Ilibinc -Itm_stdinc/ -Itm_platform_inc/
-CXXFLAGS_NOTM += -DNO_TM
+CXXFLAGS      += -MD -O2 -fgnu-tm -ggdb -m$(BITS) -std=c++11 -nostdinc
+CXXFLAGS      += -I/usr/include/ $(patsubst %, -I$(IDIR)/%, $(IFOLDERS))
+CXXFLAGS_NOTM  = -DNO_TM
 LDFLAGS       += -m$(BITS) -lstdc++ -fgnu-tm
-
-#
-# For now we just have one file that builds our tests, but we compile it in
-# two ways
-#
-CXXFILES       = list_bench
-OFILES         = $(patsubst %, %_notm.o, $(CXXFILES)) \
-                 $(patsubst %, %_tm.o, $(CXXFILES))
-EXEFILES       = $(patsubst %.o, %, $(OFILES))
-
-LIBFILES       = list functexcept snprintf_lite
-LIBOFILES      = $(patsubst %, %_tm.o, $(LIBFILES))
-
-DEPS           = $(patsubst %.o, %.d, $(OFILES) $(LIBOFILES))
 
 #
 # Best to be safe...
 #
 .DEFAULT_GOAL  = all
-.PRECIOUS: $(OFILES)
+.PRECIOUS: $(patsubst %, $(ODIR)/%, $(TM_OFILES) $(NOTM_OFILES))
 .PHONY: all clean
 
-all: list_bench_tm list_bench_notm
+all: $(EXEFILES)
 
-%_tm.o: %.cc
+$(ODIR)/%_tm.o: $(SDIR)/%.cc
 	@echo "[CXX] $< --> $@"
-	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_TM)
+	@$(CXX) -c $< -o $@ $(CXXFLAGS)
 
-%_notm.o: %.cc
+$(ODIR)/%_notm.o: $(SDIR)/%.cc
 	@echo "[CXX] $< --> $@"
-	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_NOTM) $(CXXFLAGS_TM)
+	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_NOTM)
 
-list_bench_tm: $(LIBOFILES)
-%_tm:%_tm.o
+$(ODIR)/list_bench_tm:   $(TM_OFILES)
+$(ODIR)/%_tm:$(ODIR)/%_tm.o
 	@echo "[LD] $^ $(LIBOFILES) --> $@"
 	@$(CXX) $^ -o $@ $(LDFLAGS)
 
-%_notm:%_notm.o
+$(ODIR)/list_bench_notm: $(NOTM_OFILES)
+$(ODIR)/%_notm:$(ODIR)/%_notm.o
 	@echo "[LD] $^ --> $@"
 	@$(CXX) $^ -o $@ $(LDFLAGS)
 
-%_tm.o:tm_libstdc++-v3/c++98/%.cc
+$(ODIR)/%_tm.o:$(LDIR)/tm_libstdc++-v3/c++98/%.cc
 	@echo "[CXX] $< --> $@"
 	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_TM)
 
-%_tm.o:tm_libstdc++-v3/c++11/%.cc
+$(ODIR)/%_tm.o:$(LDIR)/tm_libstdc++-v3/c++11/%.cc
 	@echo "[CXX] $< --> $@"
 	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_TM)
 
 clean:
 	@echo Cleaning up...
-	@rm -f $(EXEFILES) $(OFILES) $(DEPS) $(LIBOFILES)
+	@rm -rf $(ODIR)
 
 -include $(DEPS)

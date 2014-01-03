@@ -66,6 +66,20 @@
 
 #include "barrier.h"
 
+
+// TODO: make this less ugly
+std::list<int>* my_list;
+
+void check(std::string s)
+{
+    std::cout << s << std::endl << " List: ";
+    for (auto i : *my_list)
+        std::cout << i << ", ";
+    std::cout << std::endl;
+}
+
+#include "tests.h"
+
 std::list<int>* global_list_ptr = NULL;
 std::list<int>  global_list;
 
@@ -162,27 +176,10 @@ void listtest(int id)
 
 }
 
-std::list<int>* my_list;
-
-void check(std::string s)
-{
-    std::cout << s << std::endl << " List: ";
-    for (auto i : *my_list)
-        std::cout << i << ", ";
-    std::cout << std::endl;
-}
-
 /**
  *  The current effort is a bit ad-hoc.  Let's create a sequential test for
  *  *everything*, then transactionalize it piecemeal.
  */
-
-#include "ctor.h"
-#include "assign.h"
-#include "iter.h"
-#include "cap.h"
-#include "element.h"
-#include "modifier.h"
 
 void sequential_test()
 {

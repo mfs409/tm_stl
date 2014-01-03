@@ -1,3 +1,8 @@
+#include <iostream>
+#include <string>
+#include <list>
+#include "tests.h"
+
 /**
  * Verify that our iterators support the features described in
  * http://www.cplusplus.com/reference/iterator/BidirectionalIterator/

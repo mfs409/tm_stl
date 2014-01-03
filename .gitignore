@@ -14,3 +14,6 @@
 
 # Dependencies
 *.d
+
+# output folders
+obj/

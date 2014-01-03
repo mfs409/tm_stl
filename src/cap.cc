@@ -1,3 +1,8 @@
+#include <iostream>
+#include <string>
+#include <list>
+#include "tests.h"
+
 /**
  * Test std::list capacity methods
  */
