@@ -23,4 +23,5 @@ void element_test()
 
     std::cout << "Expect -10, 17, -10, 17: " << cf << ", " << cb << ", "
               << rf << ", " << rb << std::endl;
+    delete my_list;
 }
