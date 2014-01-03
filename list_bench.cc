@@ -28,18 +28,18 @@
 |                    | back                                |        2 |         |
 |--------------------+-------------------------------------+----------+---------|
 | Modifiers          | assign                              |        3 |         |
-|                    | emplace                             |          |         |
-|                    | emplace_front                       |          |         |
-|                    | emplace_back                        |          |         |
-|                    | push_front                          |          |         |
-|                    | pop_front                           |          |         |
-|                    | push_back                           |          |         |
-|                    | pop_back                            |          |         |
-|                    | insert                              |          |         |
-|                    | erase                               |          |         |
-|                    | swap                                |          |         |
-|                    | resize                              |          |         |
-|                    | clear                               |          |         |
+|                    | emplace                             |        1 |         |
+|                    | emplace_front                       |        1 |         |
+|                    | emplace_back                        |        1 |         |
+|                    | push_front                          |        2 |         |
+|                    | pop_front                           |        1 |         |
+|                    | push_back                           |        2 |         |
+|                    | pop_back                            |        1 |         |
+|                    | insert                              |        5 |         |
+|                    | erase                               |        2 |         |
+|                    | swap                                |        1 |         |
+|                    | resize                              |        2 |         |
+|                    | clear                               |        1 |         |
 |--------------------+-------------------------------------+----------+---------|
 | Operations         | splice                              |          |         |
 |                    | remove                              |          |         |
