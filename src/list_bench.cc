@@ -52,8 +52,6 @@
 |--------------------+---------------------+-----------+----------|
 | Observers          | get_allocator       |         1 |          |
 |--------------------+---------------------+-----------+----------|
-| TODO               |                     |           |          |
-|--------------------+---------------------+-----------+----------|
 | Non-member         | '=='                |         1 |          |
 | function           | '!='                |         1 |          |
 | overloads (NMFOs)  | '<'                 |         1 |          |
@@ -75,18 +73,6 @@
 
 #include "barrier.h"
 
-
-// TODO: make this less ugly
-std::list<int>* my_list;
-
-void check(std::string s)
-{
-    std::cout << s << std::endl << " List: ";
-    for (auto i : *my_list)
-        std::cout << i << ", ";
-    std::cout << std::endl;
-}
-
 #include "tests.h"
 
 std::list<int>* global_list_ptr = NULL;
@@ -103,6 +89,23 @@ std::mutex global_mutex;
 #define END_TX   }
 #endif
 
+/**
+ *  The list that all our sequential tests use
+ */
+std::list<int>* my_list;
+
+/**
+ *  A helper to print our list when visually checking for correctness
+ */
+void check(std::string s)
+{
+    std::cout << s << std::endl << " List: ";
+    for (auto i : *my_list)
+        std::cout << i << ", ";
+    std::cout << std::endl;
+}
+
+#if 0
 void listtest(int id)
 {
     // wait for all threads to be ready
@@ -182,8 +185,8 @@ void listtest(int id)
         END_TX;
     }
     global_barrier->arrive(id);
-
 }
+#endif
 
 /**
  *  The current effort is a bit ad-hoc.  Let's create a sequential test for
@@ -224,7 +227,7 @@ int main()
 
     // for now, just do the sequential tests
     return 0;
-
+#if 0
     // set up a barrier and construct/start the threads
     int num_threads = 4;
     std::thread* threads = new std::thread[num_threads];
@@ -238,4 +241,5 @@ int main()
     // print the list...
     for (auto i : global_list)
         printf("item: %d\n", i);
+#endif
 }

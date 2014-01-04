@@ -47,10 +47,6 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   void
   __throw_bad_exception(void) __attribute__((__noreturn__));
 
-  #ifndef NO_TM
-  // [TM] for @step 2
-  __attribute__((transaction_safe))
-  #endif
   // Helper for exception objects in <new>
   void
   __throw_bad_alloc(void) __attribute__((__noreturn__));

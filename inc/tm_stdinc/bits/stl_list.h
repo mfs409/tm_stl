@@ -61,23 +61,6 @@
 #include <initializer_list>
 #endif
 
-// Set up a clean way to annotate transaction safety of methods
-#ifdef NO_TM
-#define TM_SAFE(x)
-#else
-#define TM_SAFE(x) __attribute__((transaction_safe))
-#endif
-
-// [TM] This is to get __builtin_abort() to work
-namespace
-{
-  __attribute__((transaction_pure))
-  void wrapped_abort()
-  {
-      __builtin_abort();
-  }
-}
-
 namespace std _GLIBCXX_VISIBILITY(default)
 {
   namespace __detail
@@ -90,29 +73,25 @@ namespace std _GLIBCXX_VISIBILITY(default)
     // "needless" static_cast'ing later on, but it's all safe
     // downcasting.
 
-    /// Common part of a node in the %list.
+    /// Common part of a node in the %list. 
     struct _List_node_base
     {
       _List_node_base* _M_next;
       _List_node_base* _M_prev;
 
-      TM_SAFE(@step1)
       static void
       swap(_List_node_base& __x, _List_node_base& __y) _GLIBCXX_USE_NOEXCEPT;
 
-      TM_SAFE(@step1)
       void
       _M_transfer(_List_node_base* const __first,
-          _List_node_base* const __last) _GLIBCXX_USE_NOEXCEPT;
+		  _List_node_base* const __last) _GLIBCXX_USE_NOEXCEPT;
 
       void
       _M_reverse() _GLIBCXX_USE_NOEXCEPT;
 
-      TM_SAFE(@step2)
       void
       _M_hook(_List_node_base* const __position) _GLIBCXX_USE_NOEXCEPT;
 
-      TM_SAFE(@step2)
       void
       _M_unhook() _GLIBCXX_USE_NOEXCEPT;
     };
@@ -132,7 +111,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #if __cplusplus >= 201103L
       template<typename... _Args>
         _List_node(_Args&&... __args)
-    : __detail::_List_node_base(), _M_data(std::forward<_Args>(__args)...)
+	: __detail::_List_node_base(), _M_data(std::forward<_Args>(__args)...) 
         { }
 #endif
     };
@@ -177,31 +156,31 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       _Self&
       operator++() _GLIBCXX_NOEXCEPT
       {
-    _M_node = _M_node->_M_next;
-    return *this;
+	_M_node = _M_node->_M_next;
+	return *this;
       }
 
       _Self
       operator++(int) _GLIBCXX_NOEXCEPT
       {
-    _Self __tmp = *this;
-    _M_node = _M_node->_M_next;
-    return __tmp;
+	_Self __tmp = *this;
+	_M_node = _M_node->_M_next;
+	return __tmp;
       }
 
       _Self&
       operator--() _GLIBCXX_NOEXCEPT
       {
-    _M_node = _M_node->_M_prev;
-    return *this;
+	_M_node = _M_node->_M_prev;
+	return *this;
       }
 
       _Self
       operator--(int) _GLIBCXX_NOEXCEPT
       {
-    _Self __tmp = *this;
-    _M_node = _M_node->_M_prev;
-    return __tmp;
+	_Self __tmp = *this;
+	_M_node = _M_node->_M_prev;
+	return __tmp;
       }
 
       bool
@@ -262,31 +241,31 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       _Self&
       operator++() _GLIBCXX_NOEXCEPT
       {
-    _M_node = _M_node->_M_next;
-    return *this;
+	_M_node = _M_node->_M_next;
+	return *this;
       }
 
       _Self
       operator++(int) _GLIBCXX_NOEXCEPT
       {
-    _Self __tmp = *this;
-    _M_node = _M_node->_M_next;
-    return __tmp;
+	_Self __tmp = *this;
+	_M_node = _M_node->_M_next;
+	return __tmp;
       }
 
       _Self&
       operator--() _GLIBCXX_NOEXCEPT
       {
-    _M_node = _M_node->_M_prev;
-    return *this;
+	_M_node = _M_node->_M_prev;
+	return *this;
       }
 
       _Self
       operator--(int) _GLIBCXX_NOEXCEPT
       {
-    _Self __tmp = *this;
-    _M_node = _M_node->_M_prev;
-    return __tmp;
+	_Self __tmp = *this;
+	_M_node = _M_node->_M_prev;
+	return __tmp;
       }
 
       bool
@@ -304,7 +283,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
   template<typename _Val>
     inline bool
     operator==(const _List_iterator<_Val>& __x,
-           const _List_const_iterator<_Val>& __y) _GLIBCXX_NOEXCEPT
+	       const _List_const_iterator<_Val>& __y) _GLIBCXX_NOEXCEPT
     { return __x._M_node == __y._M_node; }
 
   template<typename _Val>
@@ -340,20 +319,20 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       struct _List_impl
       : public _Node_alloc_type
       {
-    __detail::_List_node_base _M_node;
+	__detail::_List_node_base _M_node;
 
-    _List_impl()
-    : _Node_alloc_type(), _M_node()
-    { }
+	_List_impl()
+	: _Node_alloc_type(), _M_node()
+	{ }
 
-    _List_impl(const _Node_alloc_type& __a) _GLIBCXX_NOEXCEPT
-    : _Node_alloc_type(__a), _M_node()
-    { }
+	_List_impl(const _Node_alloc_type& __a) _GLIBCXX_NOEXCEPT
+	: _Node_alloc_type(__a), _M_node()
+	{ }
 
 #if __cplusplus >= 201103L
-    _List_impl(_Node_alloc_type&& __a) _GLIBCXX_NOEXCEPT
-    : _Node_alloc_type(std::move(__a)), _M_node()
-    { }
+	_List_impl(_Node_alloc_type&& __a) _GLIBCXX_NOEXCEPT
+	: _Node_alloc_type(std::move(__a)), _M_node()
+	{ }
 #endif
       };
 
@@ -398,8 +377,8 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       _List_base(_List_base&& __x) noexcept
       : _M_impl(std::move(__x._M_get_Node_allocator()))
       {
-    _M_init();
-    __detail::_List_node_base::swap(_M_impl._M_node, __x._M_impl._M_node);
+	_M_init();
+	__detail::_List_node_base::swap(_M_impl._M_node, __x._M_impl._M_node);
       }
 #endif
 
@@ -462,7 +441,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
    *  pointing to @e D, not to @e A!  To get to the head of the %list,
    *  we start at the tail and move forward by one.  When this member
    *  iterator's next/previous pointers refer to itself, the %list is
-   *  %empty.
+   *  %empty. 
   */
   template<typename _Tp, typename _Alloc = std::allocator<_Tp> >
     class list : protected _List_base<_Tp, _Alloc>
@@ -473,8 +452,8 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       __glibcxx_class_requires2(_Tp, _Alloc_value_type, _SameTypeConcept)
 
       typedef _List_base<_Tp, _Alloc>                    _Base;
-      typedef typename _Base::_Tp_alloc_type         _Tp_alloc_type;
-      typedef typename _Base::_Node_alloc_type       _Node_alloc_type;
+      typedef typename _Base::_Tp_alloc_type		 _Tp_alloc_type;
+      typedef typename _Base::_Node_alloc_type		 _Node_alloc_type;
 
     public:
       typedef _Tp                                        value_type;
@@ -493,7 +472,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     protected:
       // Note that pointers-to-_Node's can be ctor-converted to
       // iterator types.
-      typedef _List_node<_Tp>                _Node;
+      typedef _List_node<_Tp>				 _Node;
 
       using _Base::_M_impl;
       using _Base::_M_put_node;
@@ -508,42 +487,40 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  @a __args in it.
        */
 #if __cplusplus < 201103L
-      TM_SAFE(@step2)
       _Node*
       _M_create_node(const value_type& __x)
       {
-    _Node* __p = this->_M_get_node();
-    __try
-      {
-        _M_get_Tp_allocator().construct
-          (std::__addressof(__p->_M_data), __x);
-      }
-    __catch(...)
-      {
-        _M_put_node(__p);
-        __throw_exception_again;
-      }
-    return __p;
+	_Node* __p = this->_M_get_node();
+	__try
+	  {
+	    _M_get_Tp_allocator().construct
+	      (std::__addressof(__p->_M_data), __x);
+	  }
+	__catch(...)
+	  {
+	    _M_put_node(__p);
+	    __throw_exception_again;
+	  }
+	return __p;
       }
 #else
       template<typename... _Args>
-      TM_SAFE(@step2)
         _Node*
         _M_create_node(_Args&&... __args)
-    {
-      _Node* __p = this->_M_get_node();
-      __try
-        {
-          _M_get_Node_allocator().construct(__p,
-                        std::forward<_Args>(__args)...);
-        }
-      __catch(...)
-        {
-          _M_put_node(__p);
-          __throw_exception_again;
-        }
-      return __p;
-    }
+	{
+	  _Node* __p = this->_M_get_node();
+	  __try
+	    {
+	      _M_get_Node_allocator().construct(__p,
+						std::forward<_Args>(__args)...);
+	    }
+	  __catch(...)
+	    {
+	      _M_put_node(__p);
+	      __throw_exception_again;
+	    }
+	  return __p;
+	}
 #endif
 
     public:
@@ -553,7 +530,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  @brief  Creates a %list with no elements.
        *  @param  __a  An allocator object.
        */
-      TM_SAFE(@step3)
       explicit
       list(const allocator_type& __a = allocator_type()) _GLIBCXX_NOEXCEPT
       : _Base(_Node_alloc_type(__a)) { }
@@ -566,7 +542,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  This constructor fills the %list with @a __n default
        *  constructed elements.
        */
-      TM_SAFE(@step3)
       explicit
       list(size_type __n)
       : _Base()
@@ -580,9 +555,8 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *
        *  This constructor fills the %list with @a __n copies of @a __value.
        */
-      TM_SAFE(@step3)
       list(size_type __n, const value_type& __value,
-       const allocator_type& __a = allocator_type())
+	   const allocator_type& __a = allocator_type())
       : _Base(_Node_alloc_type(__a))
       { _M_fill_initialize(__n, __value); }
 #else
@@ -594,10 +568,9 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *
        *  This constructor fills the %list with @a __n copies of @a __value.
        */
-      TM_SAFE(@step3)
       explicit
       list(size_type __n, const value_type& __value = value_type(),
-       const allocator_type& __a = allocator_type())
+	   const allocator_type& __a = allocator_type())
       : _Base(_Node_alloc_type(__a))
       { _M_fill_initialize(__n, __value); }
 #endif
@@ -609,7 +582,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  The newly-created %list uses a copy of the allocation object used
        *  by @a __x.
        */
-      TM_SAFE(@step3)
       list(const list& __x)
       : _Base(__x._M_get_Node_allocator())
       { _M_initialize_dispatch(__x.begin(), __x.end(), __false_type()); }
@@ -622,7 +594,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  The newly-created %list contains the exact contents of @a __x.
        *  The contents of @a __x are a valid, but unspecified %list.
        */
-      TM_SAFE(@step3)
       list(list&& __x) noexcept
       : _Base(std::move(__x)) { }
 
@@ -634,7 +605,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Create a %list consisting of copies of the elements in the
        *  initializer_list @a __l.  This is linear in __l.size().
        */
-      TM_SAFE(@step3)
       list(initializer_list<value_type> __l,
            const allocator_type& __a = allocator_type())
       : _Base(_Node_alloc_type(__a))
@@ -653,23 +623,21 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
 #if __cplusplus >= 201103L
       template<typename _InputIterator,
-           typename = std::_RequireInputIter<_InputIterator>>
-      TM_SAFE(@step3)
+	       typename = std::_RequireInputIter<_InputIterator>>
         list(_InputIterator __first, _InputIterator __last,
-         const allocator_type& __a = allocator_type())
-    : _Base(_Node_alloc_type(__a))
+	     const allocator_type& __a = allocator_type())
+	: _Base(_Node_alloc_type(__a))
         { _M_initialize_dispatch(__first, __last, __false_type()); }
 #else
       template<typename _InputIterator>
-      TM_SAFE(@step3)
         list(_InputIterator __first, _InputIterator __last,
-         const allocator_type& __a = allocator_type())
-    : _Base(_Node_alloc_type(__a))
-        {
-      // Check whether it's an integral type.  If so, it's not an iterator.
-      typedef typename std::__is_integer<_InputIterator>::__type _Integral;
-      _M_initialize_dispatch(__first, __last, _Integral());
-    }
+	     const allocator_type& __a = allocator_type())
+	: _Base(_Node_alloc_type(__a))
+        { 
+	  // Check whether it's an integral type.  If so, it's not an iterator.
+	  typedef typename std::__is_integer<_InputIterator>::__type _Integral;
+	  _M_initialize_dispatch(__first, __last, _Integral());
+	}
 #endif
 
       /**
@@ -687,7 +655,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  All the elements of @a __x are copied, but unlike the copy
        *  constructor, the allocator object is not copied.
        */
-      TM_SAFE(@step1)
       list&
       operator=(const list& __x);
 
@@ -699,15 +666,14 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  The contents of @a __x are moved into this %list (without copying).
        *  @a __x is a valid, but unspecified %list
        */
-      TM_SAFE(@step1)
       list&
       operator=(list&& __x)
       {
-    // NB: DR 1204.
-    // NB: DR 675.
-    this->clear();
-    this->swap(__x);
-    return *this;
+	// NB: DR 1204.
+	// NB: DR 675.
+	this->clear();
+	this->swap(__x);
+	return *this;
       }
 
       /**
@@ -717,12 +683,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Replace the contents of the %list with copies of the elements
        *  in the initializer_list @a __l.  This is linear in l.size().
        */
-      TM_SAFE(@step1)
       list&
       operator=(initializer_list<value_type> __l)
       {
-    this->assign(__l.begin(), __l.end());
-    return *this;
+	this->assign(__l.begin(), __l.end());
+	return *this;
       }
 #endif
 
@@ -736,7 +701,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  and that the resulting %list's size is the same as the number
        *  of elements assigned.  Old data may be lost.
        */
-      TM_SAFE(@step3)
       void
       assign(size_type __n, const value_type& __val)
       { _M_fill_assign(__n, __val); }
@@ -755,21 +719,19 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
 #if __cplusplus >= 201103L
       template<typename _InputIterator,
-           typename = std::_RequireInputIter<_InputIterator>>
-      TM_SAFE(@step3)
+	       typename = std::_RequireInputIter<_InputIterator>>
         void
         assign(_InputIterator __first, _InputIterator __last)
         { _M_assign_dispatch(__first, __last, __false_type()); }
 #else
       template<typename _InputIterator>
-      TM_SAFE(@step3)
         void
         assign(_InputIterator __first, _InputIterator __last)
         {
-      // Check whether it's an integral type.  If so, it's not an iterator.
-      typedef typename std::__is_integer<_InputIterator>::__type _Integral;
-      _M_assign_dispatch(__first, __last, _Integral());
-    }
+	  // Check whether it's an integral type.  If so, it's not an iterator.
+	  typedef typename std::__is_integer<_InputIterator>::__type _Integral;
+	  _M_assign_dispatch(__first, __last, _Integral());
+	}
 #endif
 
 #if __cplusplus >= 201103L
@@ -780,14 +742,12 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Replace the contents of the %list with copies of the elements
        *  in the initializer_list @a __l.  This is linear in __l.size().
        */
-      TM_SAFE(@step3)
       void
       assign(initializer_list<value_type> __l)
       { this->assign(__l.begin(), __l.end()); }
 #endif
 
       /// Get a copy of the memory allocation object.
-      TM_SAFE(@step3)
       allocator_type
       get_allocator() const _GLIBCXX_NOEXCEPT
       { return _Base::get_allocator(); }
@@ -797,7 +757,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Returns a read/write iterator that points to the first element in the
        *  %list.  Iteration is done in ordinary element order.
        */
-      TM_SAFE(@step3)
       iterator
       begin() _GLIBCXX_NOEXCEPT
       { return iterator(this->_M_impl._M_node._M_next); }
@@ -807,7 +766,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  first element in the %list.  Iteration is done in ordinary
        *  element order.
        */
-      TM_SAFE(@step3)
       const_iterator
       begin() const _GLIBCXX_NOEXCEPT
       { return const_iterator(this->_M_impl._M_node._M_next); }
@@ -817,7 +775,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  element in the %list.  Iteration is done in ordinary element
        *  order.
        */
-      TM_SAFE(@step3)
       iterator
       end() _GLIBCXX_NOEXCEPT
       { return iterator(&this->_M_impl._M_node); }
@@ -827,7 +784,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  the last element in the %list.  Iteration is done in ordinary
        *  element order.
        */
-      TM_SAFE(@step3)
       const_iterator
       end() const _GLIBCXX_NOEXCEPT
       { return const_iterator(&this->_M_impl._M_node); }
@@ -837,7 +793,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  element in the %list.  Iteration is done in reverse element
        *  order.
        */
-      TM_SAFE(@step3)
       reverse_iterator
       rbegin() _GLIBCXX_NOEXCEPT
       { return reverse_iterator(end()); }
@@ -847,7 +802,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  the last element in the %list.  Iteration is done in reverse
        *  element order.
        */
-      TM_SAFE(@step3)
       const_reverse_iterator
       rbegin() const _GLIBCXX_NOEXCEPT
       { return const_reverse_iterator(end()); }
@@ -857,7 +811,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  before the first element in the %list.  Iteration is done in
        *  reverse element order.
        */
-      TM_SAFE(@step3)
       reverse_iterator
       rend() _GLIBCXX_NOEXCEPT
       { return reverse_iterator(begin()); }
@@ -867,7 +820,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  before the first element in the %list.  Iteration is done in reverse
        *  element order.
        */
-      TM_SAFE(@step3)
       const_reverse_iterator
       rend() const _GLIBCXX_NOEXCEPT
       { return const_reverse_iterator(begin()); }
@@ -878,7 +830,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  first element in the %list.  Iteration is done in ordinary
        *  element order.
        */
-      TM_SAFE(@step3)
       const_iterator
       cbegin() const noexcept
       { return const_iterator(this->_M_impl._M_node._M_next); }
@@ -888,7 +839,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  the last element in the %list.  Iteration is done in ordinary
        *  element order.
        */
-      TM_SAFE(@step3)
       const_iterator
       cend() const noexcept
       { return const_iterator(&this->_M_impl._M_node); }
@@ -898,7 +848,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  the last element in the %list.  Iteration is done in reverse
        *  element order.
        */
-      TM_SAFE(@step3)
       const_reverse_iterator
       crbegin() const noexcept
       { return const_reverse_iterator(end()); }
@@ -908,7 +857,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  before the first element in the %list.  Iteration is done in reverse
        *  element order.
        */
-      TM_SAFE(@step3)
       const_reverse_iterator
       crend() const noexcept
       { return const_reverse_iterator(begin()); }
@@ -919,19 +867,16 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Returns true if the %list is empty.  (Thus begin() would equal
        *  end().)
        */
-      TM_SAFE(@step3)
       bool
       empty() const _GLIBCXX_NOEXCEPT
       { return this->_M_impl._M_node._M_next == &this->_M_impl._M_node; }
 
       /**  Returns the number of elements in the %list.  */
-      TM_SAFE(@step3)
       size_type
       size() const _GLIBCXX_NOEXCEPT
       { return std::distance(begin(), end()); }
 
       /**  Returns the size() of the largest possible %list.  */
-      TM_SAFE(@step3)
       size_type
       max_size() const _GLIBCXX_NOEXCEPT
       { return _M_get_Node_allocator().max_size(); }
@@ -946,7 +891,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  current size the %list is truncated, otherwise default
        *  constructed elements are appended.
        */
-      TM_SAFE(@step3)
       void
       resize(size_type __new_size);
 
@@ -960,7 +904,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  current size the %list is truncated, otherwise the %list is
        *  extended and new elements are populated with given data.
        */
-      TM_SAFE(@step3)
       void
       resize(size_type __new_size, const value_type& __x);
 #else
@@ -974,7 +917,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  current size the %list is truncated, otherwise the %list is
        *  extended and new elements are populated with given data.
        */
-      TM_SAFE(@step3)
       void
       resize(size_type __new_size, value_type __x = value_type());
 #endif
@@ -984,7 +926,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Returns a read/write reference to the data at the first
        *  element of the %list.
        */
-      TM_SAFE(@step3)
       reference
       front() _GLIBCXX_NOEXCEPT
       { return *begin(); }
@@ -993,7 +934,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Returns a read-only (constant) reference to the data at the first
        *  element of the %list.
        */
-      TM_SAFE(@step3)
       const_reference
       front() const _GLIBCXX_NOEXCEPT
       { return *begin(); }
@@ -1002,26 +942,24 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Returns a read/write reference to the data at the last element
        *  of the %list.
        */
-      TM_SAFE(@step3)
       reference
       back() _GLIBCXX_NOEXCEPT
-      {
-    iterator __tmp = end();
-    --__tmp;
-    return *__tmp;
+      { 
+	iterator __tmp = end();
+	--__tmp;
+	return *__tmp;
       }
 
       /**
        *  Returns a read-only (constant) reference to the data at the last
        *  element of the %list.
        */
-      TM_SAFE(@step3)
       const_reference
       back() const _GLIBCXX_NOEXCEPT
-      {
-    const_iterator __tmp = end();
-    --__tmp;
-    return *__tmp;
+      { 
+	const_iterator __tmp = end();
+	--__tmp;
+	return *__tmp;
       }
 
       // [23.2.2.3] modifiers
@@ -1035,19 +973,16 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  done in constant time, and does not invalidate iterators and
        *  references.
        */
-      TM_SAFE(@step3)
       void
       push_front(const value_type& __x)
       { this->_M_insert(begin(), __x); }
 
 #if __cplusplus >= 201103L
-      TM_SAFE(@step3)
       void
       push_front(value_type&& __x)
       { this->_M_insert(begin(), std::move(__x)); }
 
       template<typename... _Args>
-      TM_SAFE(@step3)
         void
         emplace_front(_Args&&... __args)
         { this->_M_insert(begin(), std::forward<_Args>(__args)...); }
@@ -1065,7 +1000,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  is needed, it should be retrieved before pop_front() is
        *  called.
        */
-      TM_SAFE(@step3)
       void
       pop_front() _GLIBCXX_NOEXCEPT
       { this->_M_erase(begin()); }
@@ -1080,19 +1014,16 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  in constant time, and does not invalidate iterators and
        *  references.
        */
-      TM_SAFE(@step2)
       void
       push_back(const value_type& __x)
       { this->_M_insert(end(), __x); }
 
 #if __cplusplus >= 201103L
-      TM_SAFE(@step2)
       void
       push_back(value_type&& __x)
       { this->_M_insert(end(), std::move(__x)); }
 
       template<typename... _Args>
-      TM_SAFE(@step3)
         void
         emplace_back(_Args&&... __args)
         { this->_M_insert(end(), std::forward<_Args>(__args)...); }
@@ -1109,7 +1040,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Note that no data is returned, and if the last element's data
        *  is needed, it should be retrieved before pop_back() is called.
        */
-      TM_SAFE(@step3)
       void
       pop_back() _GLIBCXX_NOEXCEPT
       { this->_M_erase(iterator(this->_M_impl._M_node._M_prev)); }
@@ -1128,7 +1058,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  and references.
        */
       template<typename... _Args>
-      TM_SAFE(@step3)
         iterator
         emplace(const_iterator __position, _Args&&... __args);
 
@@ -1143,7 +1072,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  operation can be done in constant time, and does not
        *  invalidate iterators and references.
        */
-      TM_SAFE(@step3)
       iterator
       insert(const_iterator __position, const value_type& __x);
 #else
@@ -1158,7 +1086,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  operation can be done in constant time, and does not
        *  invalidate iterators and references.
        */
-      TM_SAFE(@step3)
       iterator
       insert(iterator __position, const value_type& __x);
 #endif
@@ -1175,7 +1102,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  operation can be done in constant time, and does not
        *  invalidate iterators and references.
         */
-      TM_SAFE(@step3)
       iterator
       insert(const_iterator __position, value_type&& __x)
       { return emplace(__position, std::move(__x)); }
@@ -1195,7 +1121,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  This operation is linear in the number of elements inserted and
        *  does not invalidate iterators and references.
        */
-      TM_SAFE(@step3)
       iterator
       insert(const_iterator __p, initializer_list<value_type> __l)
       { return this->insert(__p, __l.begin(), __l.end()); }
@@ -1216,7 +1141,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  This operation is linear in the number of elements inserted and
        *  does not invalidate iterators and references.
        */
-      TM_SAFE(@step3)
       iterator
       insert(const_iterator __position, size_type __n, const value_type& __x);
 #else
@@ -1232,12 +1156,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  This operation is linear in the number of elements inserted and
        *  does not invalidate iterators and references.
        */
-      TM_SAFE(@step3)
       void
       insert(iterator __position, size_type __n, const value_type& __x)
       {
-    list __tmp(__n, __x, get_allocator());
-    splice(__position, __tmp);
+	list __tmp(__n, __x, get_allocator());
+	splice(__position, __tmp);
       }
 #endif
 
@@ -1258,11 +1181,10 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  does not invalidate iterators and references.
        */
       template<typename _InputIterator,
-           typename = std::_RequireInputIter<_InputIterator>>
-      TM_SAFE(@step3)
-    iterator
-    insert(const_iterator __position, _InputIterator __first,
-           _InputIterator __last);
+	       typename = std::_RequireInputIter<_InputIterator>>
+	iterator
+	insert(const_iterator __position, _InputIterator __first,
+	       _InputIterator __last);
 #else
       /**
        *  @brief  Inserts a range into the %list.
@@ -1278,14 +1200,13 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  does not invalidate iterators and references.
        */
       template<typename _InputIterator>
-      TM_SAFE(@step3)
         void
         insert(iterator __position, _InputIterator __first,
-           _InputIterator __last)
+	       _InputIterator __last)
         {
-      list __tmp(__first, __last, get_allocator());
-      splice(__position, __tmp);
-    }
+	  list __tmp(__first, __last, get_allocator());
+	  splice(__position, __tmp);
+	}
 #endif
 
       /**
@@ -1303,7 +1224,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  is itself a pointer, the pointed-to memory is not touched in
        *  any way.  Managing the pointer is the user's responsibility.
        */
-      TM_SAFE(@step3)
       iterator
 #if __cplusplus >= 201103L
       erase(const_iterator __position) noexcept;
@@ -1329,7 +1249,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  pointed-to memory is not touched in any way.  Managing the pointer
        *  is the user's responsibility.
        */
-      TM_SAFE(@step3)
       iterator
 #if __cplusplus >= 201103L
       erase(const_iterator __first, const_iterator __last) noexcept
@@ -1337,9 +1256,9 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       erase(iterator __first, iterator __last)
 #endif
       {
-    while (__first != __last)
-      __first = erase(__first);
-    return __last._M_const_cast();
+	while (__first != __last)
+	  __first = erase(__first);
+	return __last._M_const_cast();
       }
 
       /**
@@ -1351,17 +1270,16 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  specialized such that std::swap(l1,l2) will feed to this
        *  function.
        */
-      TM_SAFE(@step1)
       void
       swap(list& __x)
       {
-    __detail::_List_node_base::swap(this->_M_impl._M_node,
-                    __x._M_impl._M_node);
+	__detail::_List_node_base::swap(this->_M_impl._M_node, 
+					__x._M_impl._M_node);
 
-    // _GLIBCXX_RESOLVE_LIB_DEFECTS
-    // 431. Swapping containers with unequal allocators.
-    std::__alloc_swap<typename _Base::_Node_alloc_type>::
-      _S_do_it(_M_get_Node_allocator(), __x._M_get_Node_allocator());
+	// _GLIBCXX_RESOLVE_LIB_DEFECTS
+	// 431. Swapping containers with unequal allocators.
+	std::__alloc_swap<typename _Base::_Node_alloc_type>::
+	  _S_do_it(_M_get_Node_allocator(), __x._M_get_Node_allocator());
       }
 
       /**
@@ -1370,7 +1288,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  pointers, the pointed-to memory is not touched in any way.
        *  Managing the pointer is the user's responsibility.
        */
-      TM_SAFE(@step3)
       void
       clear() _GLIBCXX_NOEXCEPT
       {
@@ -1390,7 +1307,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *
        *  Requires this != @a __x.
        */
-      TM_SAFE(@step3)
       void
 #if __cplusplus >= 201103L
       splice(const_iterator __position, list&& __x) noexcept
@@ -1398,17 +1314,16 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       splice(iterator __position, list& __x)
 #endif
       {
-    if (!__x.empty())
-      {
-        _M_check_equal_allocators(__x);
+	if (!__x.empty())
+	  {
+	    _M_check_equal_allocators(__x);
 
-        this->_M_transfer(__position._M_const_cast(),
-                  __x.begin(), __x.end());
-      }
+	    this->_M_transfer(__position._M_const_cast(),
+			      __x.begin(), __x.end());
+	  }
       }
 
 #if __cplusplus >= 201103L
-      TM_SAFE(@step3)
       void
       splice(const_iterator __position, list& __x) noexcept
       { splice(__position, std::move(__x)); }
@@ -1425,7 +1340,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Removes the element in list @a __x referenced by @a __i and
        *  inserts it into the current list before @a __position.
        */
-      TM_SAFE(@step3)
       void
       splice(const_iterator __position, list&& __x, const_iterator __i) noexcept
 #else
@@ -1438,21 +1352,20 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Removes the element in list @a __x referenced by @a __i and
        *  inserts it into the current list before @a __position.
        */
-      TM_SAFE(@step3)
       void
       splice(iterator __position, list& __x, iterator __i)
 #endif
       {
-    iterator __j = __i._M_const_cast();
-    ++__j;
-    if (__position == __i || __position == __j)
-      return;
+	iterator __j = __i._M_const_cast();
+	++__j;
+	if (__position == __i || __position == __j)
+	  return;
 
-    if (this != &__x)
-      _M_check_equal_allocators(__x);
+	if (this != &__x)
+	  _M_check_equal_allocators(__x);
 
-    this->_M_transfer(__position._M_const_cast(),
-              __i._M_const_cast(), __j);
+	this->_M_transfer(__position._M_const_cast(),
+			  __i._M_const_cast(), __j);
       }
 
 #if __cplusplus >= 201103L
@@ -1466,7 +1379,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Removes the element in list @a __x referenced by @a __i and
        *  inserts it into the current list before @a __position.
        */
-      TM_SAFE(@step3)
       void
       splice(const_iterator __position, list& __x, const_iterator __i) noexcept
       { splice(__position, std::move(__x), __i); }
@@ -1486,10 +1398,9 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *
        *  Undefined if @a __position is in [__first,__last).
        */
-      TM_SAFE(@step3)
       void
       splice(const_iterator __position, list&& __x, const_iterator __first,
-         const_iterator __last) noexcept
+	     const_iterator __last) noexcept
 #else
       /**
        *  @brief  Insert range from another %list.
@@ -1503,21 +1414,20 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *
        *  Undefined if @a __position is in [__first,__last).
        */
-      TM_SAFE(@step3)
       void
       splice(iterator __position, list& __x, iterator __first,
-         iterator __last)
+	     iterator __last)
 #endif
       {
-    if (__first != __last)
-      {
-        if (this != &__x)
-          _M_check_equal_allocators(__x);
+	if (__first != __last)
+	  {
+	    if (this != &__x)
+	      _M_check_equal_allocators(__x);
 
-        this->_M_transfer(__position._M_const_cast(),
-                  __first._M_const_cast(),
-                  __last._M_const_cast());
-      }
+	    this->_M_transfer(__position._M_const_cast(),
+			      __first._M_const_cast(),
+			      __last._M_const_cast());
+	  }
       }
 
 #if __cplusplus >= 201103L
@@ -1534,10 +1444,9 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *
        *  Undefined if @a __position is in [__first,__last).
        */
-      TM_SAFE(@step3)
       void
       splice(const_iterator __position, list& __x, const_iterator __first,
-         const_iterator __last) noexcept
+	     const_iterator __last) noexcept
       { splice(__position, std::move(__x), __first, __last); }
 #endif
 
@@ -1552,7 +1461,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  touched in any way.  Managing the pointer is the user's
        *  responsibility.
        */
-      TM_SAFE(@step3)
       void
       remove(const _Tp& __value);
 
@@ -1568,7 +1476,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  responsibility.
        */
       template<typename _Predicate>
-      TM_SAFE(@step3)
         void
         remove_if(_Predicate);
 
@@ -1582,7 +1489,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  the pointed-to memory is not touched in any way.  Managing
        *  the pointer is the user's responsibility.
        */
-      TM_SAFE(@step3)
       void
       unique();
 
@@ -1599,7 +1505,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Managing the pointer is the user's responsibility.
        */
       template<typename _BinaryPredicate>
-      TM_SAFE(@step3)
         void
         unique(_BinaryPredicate);
 
@@ -1614,16 +1519,13 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
 #if __cplusplus >= 201103L
       void
-      TM_SAFE(@step3)
       merge(list&& __x);
 
       void
-      TM_SAFE(@step3)
       merge(list& __x)
       { merge(std::move(__x)); }
 #else
       void
-      TM_SAFE(@step3)
       merge(list& __x);
 #endif
 
@@ -1642,18 +1544,15 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
 #if __cplusplus >= 201103L
       template<typename _StrictWeakOrdering>
-      TM_SAFE(@step3)
         void
         merge(list&& __x, _StrictWeakOrdering __comp);
 
       template<typename _StrictWeakOrdering>
-      TM_SAFE(@step3)
         void
         merge(list& __x, _StrictWeakOrdering __comp)
         { merge(std::move(__x), __comp); }
 #else
       template<typename _StrictWeakOrdering>
-      TM_SAFE(@step3)
         void
         merge(list& __x, _StrictWeakOrdering __comp);
 #endif
@@ -1663,7 +1562,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *
        *  Reverse the order of elements in the list in linear time.
        */
-      TM_SAFE(@step3)
       void
       reverse() _GLIBCXX_NOEXCEPT
       { this->_M_impl._M_node._M_reverse(); }
@@ -1674,7 +1572,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  Sorts the elements of this list in NlogN time.  Equivalent
        *  elements remain in list order.
        */
-      TM_SAFE(@step3)
       void
       sort();
 
@@ -1685,7 +1582,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  elements remain in list order.
        */
       template<typename _StrictWeakOrdering>
-      TM_SAFE(@step3)
         void
         sort(_StrictWeakOrdering);
 
@@ -1705,23 +1601,23 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       template<typename _InputIterator>
         void
         _M_initialize_dispatch(_InputIterator __first, _InputIterator __last,
-                   __false_type)
+			       __false_type)
         {
-      for (; __first != __last; ++__first)
+	  for (; __first != __last; ++__first)
 #if __cplusplus >= 201103L
-        emplace_back(*__first);
+	    emplace_back(*__first);
 #else
-        push_back(*__first);
+	    push_back(*__first);
 #endif
-    }
+	}
 
       // Called by list(n,v,a), and the range constructor when it turns out
       // to be the same thing.
       void
       _M_fill_initialize(size_type __n, const value_type& __x)
       {
-    for (; __n; --__n)
-      push_back(__x);
+	for (; __n; --__n)
+	  push_back(__x);
       }
 
 #if __cplusplus >= 201103L
@@ -1729,8 +1625,8 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       void
       _M_default_initialize(size_type __n)
       {
-    for (; __n; --__n)
-      emplace_back();
+	for (; __n; --__n)
+	  emplace_back();
       }
 
       // Called by resize(sz).
@@ -1753,7 +1649,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       template<typename _InputIterator>
         void
         _M_assign_dispatch(_InputIterator __first, _InputIterator __last,
-               __false_type);
+			   __false_type);
 
       // Called by assign(n,t), and the range assign when it turns out
       // to be the same thing.
@@ -1768,7 +1664,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       // Inserts new element at position given and with value given.
 #if __cplusplus < 201103L
-      TM_SAFE(@step2)
       void
       _M_insert(iterator __position, const value_type& __x)
       {
@@ -1777,12 +1672,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       }
 #else
      template<typename... _Args>
-     TM_SAFE(@step2)
        void
        _M_insert(iterator __position, _Args&&... __args)
        {
-     _Node* __tmp = _M_create_node(std::forward<_Args>(__args)...);
-     __tmp->_M_hook(__position._M_node);
+	 _Node* __tmp = _M_create_node(std::forward<_Args>(__args)...);
+	 __tmp->_M_hook(__position._M_node);
        }
 #endif
 
@@ -1795,21 +1689,18 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #if __cplusplus >= 201103L
         _M_get_Node_allocator().destroy(__n);
 #else
-    _M_get_Tp_allocator().destroy(std::__addressof(__n->_M_data));
+	_M_get_Tp_allocator().destroy(std::__addressof(__n->_M_data));
 #endif
         _M_put_node(__n);
       }
 
       // To implement the splice (and merge) bits of N1599.
-      TM_SAFE(@step3)
       void
       _M_check_equal_allocators(list& __x) _GLIBCXX_NOEXCEPT
       {
-    if (std::__alloc_neq<typename _Base::_Node_alloc_type>::
-        _S_do_it(_M_get_Node_allocator(), __x._M_get_Node_allocator()))
-        // [TM]
-        // __builtin_abort();
-        wrapped_abort();
+	if (std::__alloc_neq<typename _Base::_Node_alloc_type>::
+	    _S_do_it(_M_get_Node_allocator(), __x._M_get_Node_allocator()))
+	  __builtin_abort();
       }
     };
 
@@ -1824,7 +1715,6 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
    *  equal, and if corresponding elements compare equal.
   */
   template<typename _Tp, typename _Alloc>
-      TM_SAFE(@step3)
     inline bool
     operator==(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
     {
@@ -1835,10 +1725,10 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       const_iterator __i1 = __x.begin();
       const_iterator __i2 = __y.begin();
       while (__i1 != __end1 && __i2 != __end2 && *__i1 == *__i2)
-    {
-      ++__i1;
-      ++__i2;
-    }
+	{
+	  ++__i1;
+	  ++__i2;
+	}
       return __i1 == __end1 && __i2 == __end2;
     }
 
@@ -1854,43 +1744,37 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
    *  See std::lexicographical_compare() for how the determination is made.
   */
   template<typename _Tp, typename _Alloc>
-      TM_SAFE(@step3)
     inline bool
     operator<(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
     { return std::lexicographical_compare(__x.begin(), __x.end(),
-                      __y.begin(), __y.end()); }
+					  __y.begin(), __y.end()); }
 
   /// Based on operator==
   template<typename _Tp, typename _Alloc>
-      TM_SAFE(@step3)
     inline bool
     operator!=(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
     { return !(__x == __y); }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
-      TM_SAFE(@step3)
     inline bool
     operator>(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
     { return __y < __x; }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
-      TM_SAFE(@step3)
     inline bool
     operator<=(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
     { return !(__y < __x); }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
-      TM_SAFE(@step3)
     inline bool
     operator>=(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
     { return !(__x < __y); }
 
   /// See std::list::swap().
   template<typename _Tp, typename _Alloc>
-      TM_SAFE(@step3)
     inline void
     swap(list<_Tp, _Alloc>& __x, list<_Tp, _Alloc>& __y)
     { __x.swap(__y); }
