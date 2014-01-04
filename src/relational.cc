@@ -8,6 +8,8 @@
  */
 void relational_test()
 {
+    std::cout << "Testing relational operators" << std::endl;
+
     my_list = new std::list<int>({1, 2, 3});
     std::list<int> l2({1, 2, 3});
     std::list<int> l3({2, 3, 4});
@@ -31,4 +33,6 @@ void relational_test()
 
     t = *my_list <= l2;
     std::cout << "Testing <= ... " << (t?"OK":"FAILED") << std::endl;
+
+    delete my_list;
 }

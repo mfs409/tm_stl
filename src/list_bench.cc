@@ -214,7 +214,8 @@ void sequential_test()
     observers_test();
     // test relational operators
     relational_test();
-
+    // test swap
+    swap_test();
 }
 
 int main()

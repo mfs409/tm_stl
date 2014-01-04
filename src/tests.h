@@ -35,6 +35,9 @@ void observers_test();
 // test for relational operators
 void relational_test();
 
+// test swap operation
+void swap_test();
+
 // a short-term helper function for outputting expected and observed results
 void check(std::string s);
 
