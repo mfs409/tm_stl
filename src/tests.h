@@ -32,6 +32,9 @@ void operations_test();
 // observers tests, from observers.cc
 void observers_test();
 
+// test for relational operators
+void relational_test();
+
 // a short-term helper function for outputting expected and observed results
 void check(std::string s);
 

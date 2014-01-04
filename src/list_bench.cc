@@ -212,6 +212,9 @@ void sequential_test()
     operations_test();
     // test observers
     observers_test();
+    // test relational operators
+    relational_test();
+
 }
 
 int main()
