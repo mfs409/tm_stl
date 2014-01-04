@@ -55,3 +55,19 @@ void ctor_test()
     check("Expect 1, 2, 3, 4, 5, 6");
     delete my_list;
 }
+
+/**
+ *  The list that all our sequential tests use
+ */
+std::list<int>* my_list;
+
+/**
+ *  A helper to print our list when visually checking for correctness
+ */
+void check(std::string s)
+{
+    std::cout << s << std::endl << " List: ";
+    for (auto i : *my_list)
+        std::cout << i << ", ";
+    std::cout << std::endl;
+}

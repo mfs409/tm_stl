@@ -70,10 +70,53 @@
 #include <mutex>
 #include <cassert>
 #include <iostream>
+#include <unistd.h>
 
 #include "barrier.h"
-
 #include "tests.h"
+
+using std::cout;
+using std::endl;
+
+/// configured via command line args: run sequential tests?
+bool run_sequential = true;
+/// configured via command line args: run concurrent tests?
+bool run_concurrent = false;
+/// configured via command line args: number of threads
+int  num_threads = 4;
+
+/**
+ *  Report on how to use the command line to configure this program
+ */
+void usage()
+{
+    cout << "Command-Line Options:" << endl
+         << "  -s       : run the sequential tests" << endl
+         << "  -c       : run the concurrent tests" << endl
+         << "  -n <int> : specify the number of threads" << endl
+         << "  -h       : display this message" << endl << endl;
+    exit(0);
+}
+
+/**
+ *  Parse command line arguments using getopt()
+ */
+void parseargs(int argc, char** argv)
+{
+    // parse the command-line options
+    int opt;
+    while ((opt = getopt(argc, argv, "scn:h")) != -1) {
+        switch (opt) {
+          case 's': run_sequential = true; run_concurrent = false; break;
+          case 'c': run_concurrent = true; run_sequential = false; break;
+          case 'n': num_threads = atoi(optarg);                    break;
+          case 'h': usage();                                       break;
+        }
+    }
+}
+
+
+#if 0
 
 std::list<int>* global_list_ptr = NULL;
 std::list<int>  global_list;
@@ -89,23 +132,6 @@ std::mutex global_mutex;
 #define END_TX   }
 #endif
 
-/**
- *  The list that all our sequential tests use
- */
-std::list<int>* my_list;
-
-/**
- *  A helper to print our list when visually checking for correctness
- */
-void check(std::string s)
-{
-    std::cout << s << std::endl << " List: ";
-    for (auto i : *my_list)
-        std::cout << i << ", ";
-    std::cout << std::endl;
-}
-
-#if 0
 void listtest(int id)
 {
     // wait for all threads to be ready
@@ -221,12 +247,8 @@ void sequential_test()
     swap_test();
 }
 
-int main()
+void concurrent_test()
 {
-    sequential_test();
-
-    // for now, just do the sequential tests
-    return 0;
 #if 0
     // set up a barrier and construct/start the threads
     int num_threads = 4;
@@ -242,4 +264,17 @@ int main()
     for (auto i : global_list)
         printf("item: %d\n", i);
 #endif
+}
+
+/**
+ *  The main routine simply parses the arguments, dumps the arguments, populates the
+ */
+int main(int argc, char** argv)
+{
+    parseargs(argc, argv);
+
+    if (run_sequential)
+        sequential_test();
+    if (run_concurrent)
+        concurrent_test();
 }
