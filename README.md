@@ -11,7 +11,7 @@ inc/:
    standard header files.  We then manually copy any include files that our
    program needs into this folder tree, so that we can easily track which
    (hopefully few) files actually require modification in order to achieve a
-   fully transactional std::list.
+   fully transactional collection.
    
 inc/stdinc:
    This folder stores unmodified copies of the files in
@@ -51,25 +51,29 @@ src/:
    because so much of the STL is implemented in templates, and thus a "safe"
    template function isn't statically checked for safety until it is actually
    instantiated.  Consequently, we require a program that calls every method
-   of std::list, to ensure that the transaction_safe annotations do not
+   of the collection, to ensure that the transaction_safe annotations do not
    generate errors due to unsafe calls within safe code.  That program is
    implemented in this folder.
 
 Status
 ----
 
-The first step is to produce a sequential program that instantiates
-everything in std::list.  This effort is underway.  We are using
-www.cplusplus.com as a reference to identify every public method in
-std::list, in all of its forms.  Note that we are only concerned with
-C++11... C++98-only versions mentioned on the site are being ignored.
+### std::list (in progress)
 
-The second step is to create a multithreaded program that also instantiates
-everything in std::list.  There is an initial ad-hoc attempt at this.  The
-ad-hoc code will be deleted once we finish step 1, because it would be better
-to use step 1 as a starting point for doing step 2 correctly.
+  + The first step is to produce a sequential program that instantiates every
+    method of std::list (matching not just names, but parameter types).  This
+    effort is underway.  We are using www.cplusplus.com as a reference to
+    identify every public method in std::list, in all of its forms.  Note
+    that we are only concerned with C++11... C++98-only versions mentioned on
+    the site are being ignored. **Status: DONE**
 
-There are currently annotations in the files in inc/tm_stdinc.  These
-annotations are legacy, from when we were doing things in a more ad-hoc
-fashion.  All annotations will be discarded, and the effort re-done, once we
-finish step 1.
+  + The second step is to create a multithreaded program that also
+    instantiates everything in std::list.  There is an initial ad-hoc attempt
+    at this.  The ad-hoc code will be deleted once we finish step 1, because
+    it would be better to use step 1 as a starting point for doing step 2
+    correctly.
+
+  + There are currently annotations in the files in inc/tm_stdinc.  These
+    annotations are legacy, from when we were doing things in a more ad-hoc
+    fashion.  All annotations will be discarded, and the effort re-done, once
+    we finish step 1.
