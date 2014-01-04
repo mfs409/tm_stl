@@ -15,7 +15,8 @@ BITS          ?= 32
 #
 # Names of input files
 #
-CXXFILES       = list_bench assign cap ctor element iter modifier
+CXXFILES       = list_bench assign cap ctor element iter modifier \
+                 operations observers
 LIBFILES       = list functexcept snprintf_lite
 IFOLDERS       = platform_inc stdinc libinc tm_stdinc tm_platform_inc
 

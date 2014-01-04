@@ -26,6 +26,12 @@ void element_test();
 // modifier tests, from modifier.cc
 void modifier_test();
 
+// operations tests, from operations.cc
+void operations_test();
+
+// observers tests, from observers.cc
+void observers_test();
+
 // a short-term helper function for outputting expected and observed results
 void check(std::string s);
 

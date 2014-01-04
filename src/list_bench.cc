@@ -4,56 +4,65 @@
   According to http://www.cplusplus.com/reference/list/list/, the std::list
   interface consists of the following:
 
-|--------------------+-------------------------------------+----------+---------|
-| Category           |                                     | #Methods | #Tested |
-|--------------------+-------------------------------------+----------+---------|
-| Member Functions   | (constructor)                       |        6 |         |
-|                    | (destructor)                        |        1 |         |
-|                    | operator=                           |          |         |
-|--------------------+-------------------------------------+----------+---------|
-| Iterators          | begin                               |        2 |         |
-| (note: must be     | end                                 |        2 |         |
-| sure to handle all | rbegin                              |        2 |         |
-| of the methods     | rend                                |        2 |         |
-| that can be called | cbegin                              |        1 |         |
-| on an iterator!)   | cend                                |        1 |         |
-|                    | crbegin                             |        1 |         |
-|                    | crend                               |        1 |         |
-|--------------------+-------------------------------------+----------+---------|
-| Capacity           | empty                               |        1 |         |
-|                    | size                                |        1 |         |
-|                    | max_size                            |        1 |         |
-|--------------------+-------------------------------------+----------+---------|
-| Element access     | front                               |        2 |         |
-|                    | back                                |        2 |         |
-|--------------------+-------------------------------------+----------+---------|
-| Modifiers          | assign                              |        3 |         |
-|                    | emplace                             |        1 |         |
-|                    | emplace_front                       |        1 |         |
-|                    | emplace_back                        |        1 |         |
-|                    | push_front                          |        2 |         |
-|                    | pop_front                           |        1 |         |
-|                    | push_back                           |        2 |         |
-|                    | pop_back                            |        1 |         |
-|                    | insert                              |        5 |         |
-|                    | erase                               |        2 |         |
-|                    | swap                                |        1 |         |
-|                    | resize                              |        2 |         |
-|                    | clear                               |        1 |         |
-|--------------------+-------------------------------------+----------+---------|
-| Operations         | splice                              |          |         |
-|                    | remove                              |          |         |
-|                    | remove_if                           |          |         |
-|                    | unique                              |          |         |
-|                    | merge                               |          |         |
-|                    | sort                                |          |         |
-|                    | reverse                             |          |         |
-|--------------------+-------------------------------------+----------+---------|
-| Observers          | get_allocator                       |          |         |
-|--------------------+-------------------------------------+----------+---------|
-| Non-member         | relational operators (forward_list) |          |         |
-| function overloads | swap (forward_list)                 |          |         |
-|--------------------+-------------------------------------+----------+---------|
+|--------------------+---------------------+-----------+----------|
+| Category           | Method              | # Methods | # Tested |
+| (* if not started) |                     |           | with TM  |
+|--------------------+---------------------+-----------+----------|
+| Member Functions   | (constructor)       |         6 |          |
+|                    | (destructor)        |         1 |          |
+|                    | operator=           |         3 |          |
+|--------------------+---------------------+-----------+----------|
+| Iterators          | begin               |         2 |          |
+|                    | end                 |         2 |          |
+| (note: must be     | rbegin              |         2 |          |
+| sure to handle     | rend                |         2 |          |
+| all 16 methods     | cbegin              |         1 |          |
+| that can be        | cend                |         1 |          |
+| called on          | crbegin             |         1 |          |
+| an iterator!)      | crend               |         1 |          |
+|--------------------+---------------------+-----------+----------|
+| Capacity           | empty               |         1 |          |
+|                    | size                |         1 |          |
+|                    | max_size            |         1 |          |
+|--------------------+---------------------+-----------+----------|
+| Element access     | front               |         2 |          |
+|                    | back                |         2 |          |
+|--------------------+---------------------+-----------+----------|
+| Modifiers          | assign              |         3 |          |
+|                    | emplace             |         1 |          |
+|                    | emplace_front       |         1 |          |
+|                    | emplace_back        |         1 |          |
+|                    | push_front          |         2 |          |
+|                    | pop_front           |         1 |          |
+|                    | push_back           |         2 |          |
+|                    | pop_back            |         1 |          |
+|                    | insert              |         5 |          |
+|                    | erase               |         2 |          |
+|                    | swap                |         1 |          |
+|                    | resize              |         2 |          |
+|                    | clear               |         1 |          |
+|--------------------+---------------------+-----------+----------|
+| Operations         | splice              |         6 |          |
+|                    | remove              |         1 |          |
+|                    | remove_if           |         2 |          |
+|                    | unique              |         3 |          |
+|                    | merge               |         4 |          |
+|                    | sort                |         2 |          |
+|                    | reverse             |         1 |          |
+|--------------------+---------------------+-----------+----------|
+| Observers          | get_allocator       |         1 |          |
+|--------------------+---------------------+-----------+----------|
+| TODO               |                     |           |          |
+|--------------------+---------------------+-----------+----------|
+| Non-member         | '=='                |         1 |          |
+| function           | '!='                |         1 |          |
+| overloads (NMFOs)  | '<'                 |         1 |          |
+| (Relational        | '<='                |         1 |          |
+| Operators)         | '>'                 |         1 |          |
+|                    | '>='                |         1 |          |
+|--------------------+---------------------+-----------+----------|
+| NMFO (swap)        | swap (forward_list) |         1 |          |
+|--------------------+---------------------+-----------+----------|
 */
 
 #include <list>
@@ -180,7 +189,6 @@ void listtest(int id)
  *  The current effort is a bit ad-hoc.  Let's create a sequential test for
  *  *everything*, then transactionalize it piecemeal.
  */
-
 void sequential_test()
 {
     // test constructors and destructor
@@ -200,6 +208,10 @@ void sequential_test()
     element_test();
     // test modifiers
     modifier_test();
+    // test operations
+    operations_test();
+    // test observers
+    observers_test();
 }
 
 int main()
