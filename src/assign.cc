@@ -3,6 +3,9 @@
 #include <list>
 #include "sequential_tests.h"
 
+std::list<int> z({1, 2, 3, 4, 5, 6});
+std::list<int> y;
+
 /**
  * Here is the sequential operator= test.
  */
@@ -13,6 +16,7 @@ void assign_test_seq()
   std::list<int> tmp({1, 2, 3, 4, 5, 6});
 
   // test copy assignment (1)
+  y = z;
   std::list<int> t2 = tmp;
   tmp.clear();
   my_list = &tmp;
