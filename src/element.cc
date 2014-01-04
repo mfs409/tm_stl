@@ -1,12 +1,12 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "tests.h"
+#include "sequential_tests.h"
 
 /**
  *  Test the flavors of front() and back()
  */
-void element_test()
+void element_test_seq()
 {
     std::cout << "Testing element access methods:" << std::endl;
 

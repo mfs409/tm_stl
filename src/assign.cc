@@ -1,12 +1,12 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "tests.h"
+#include "sequential_tests.h"
 
 /**
  * Here is the sequential operator= test.
  */
-void assign_test()
+void assign_test_seq()
 {
   std::cout << "Testing operator=" << std::endl;
   // create a list with the initializer list operator

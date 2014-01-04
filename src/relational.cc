@@ -1,12 +1,12 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "tests.h"
+#include "sequential_tests.h"
 
 /**
  * Here is the test of relational operators from forward_list.
  */
-void relational_test()
+void relational_test_seq()
 {
     std::cout << "Testing relational operators" << std::endl;
 

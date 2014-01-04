@@ -1,8 +1,10 @@
+#pragma once
+
 #include <atomic>
 
 /**
  * A standard sense-reversing barrier, based on pseudocode from
- *  http://www.cs.rochester.edu/research/synchronization/pseudocode/ss.html
+ * http://www.cs.rochester.edu/research/synchronization/pseudocode/ss.html
  */
 class barrier
 {

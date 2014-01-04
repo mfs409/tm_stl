@@ -1,12 +1,12 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "tests.h"
+#include "sequential_tests.h"
 
 /**
  * Test std::list capacity methods
  */
-void cap_test()
+void cap_test_seq()
 {
     std::cout << "Testing capacity methods" << std::endl;
 

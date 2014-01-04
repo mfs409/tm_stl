@@ -1,12 +1,12 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "tests.h"
+#include "sequential_tests.h"
 
 /**
  * Here is the test of the swap operation from forward_list
  */
-void swap_test()
+void swap_test_seq()
 {
     std::cout << "Testing swap" << std::endl;
 

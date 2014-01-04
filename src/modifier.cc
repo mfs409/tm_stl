@@ -1,12 +1,12 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "tests.h"
+#include "sequential_tests.h"
 
 /**
  * Test the many modifier methods of std::list
  */
-void modifier_test()
+void modifier_test_seq()
 {
     std::cout << "Testing modifiers" << std::endl;
     std::cout << "Note: non-trivial constructors are not yet tested" << std::endl;

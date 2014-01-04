@@ -1,12 +1,12 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "tests.h"
+#include "sequential_tests.h"
 
 /**
  *  Test std::list's observers
  */
-void observers_test()
+void observers_test_seq()
 {
     std::cout << "Testing observers" << std::endl;
 

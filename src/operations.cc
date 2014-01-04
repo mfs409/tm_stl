@@ -2,7 +2,7 @@
 #include <string>
 #include <list>
 #include <cassert>
-#include "tests.h"
+#include "sequential_tests.h"
 
 /**
  * A functor for remove_if
@@ -16,7 +16,7 @@ struct is_even
 /**
  * Test the many modifier methods of std::list
  */
-void operations_test()
+void operations_test_seq()
 {
     std::cout << "Testing operations" << std::endl;
     // test splice all elements (1)

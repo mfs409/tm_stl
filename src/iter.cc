@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "tests.h"
+#include "sequential_tests.h"
 
 /**
  * Verify that our iterators support the features described in
@@ -11,7 +11,7 @@
 /**
  *  This is for basic (forward, mutable) iterators
  */
-void iterator_test()
+void iterator_test_seq()
 {
     std::cout << "Testing iterators" << std::endl;
 
@@ -106,7 +106,7 @@ void iterator_test()
 /**
  *  This is for reverse iterators
  */
-void reverse_iterator_test()
+void reverse_iterator_test_seq()
 {
     std::cout << "Testing reverse iterators" << std::endl;
 
@@ -200,7 +200,7 @@ void reverse_iterator_test()
 /**
  *  This is for legacy const iterators, where we use begin()
  */
-void legacy_const_iterator_test()
+void legacy_const_iterator_test_seq()
 {
     std::cout << "Testing legacy const iterators" << std::endl;
 
@@ -290,7 +290,7 @@ void legacy_const_iterator_test()
 /**
  *  This is for legacy const reverse iterators, where we use rbegin()
  */
-void legacy_const_reverse_iterator_test()
+void legacy_const_reverse_iterator_test_seq()
 {
     std::cout << "Testing legacy const reverse iterators" << std::endl;
 
@@ -379,7 +379,7 @@ void legacy_const_reverse_iterator_test()
 /**
  *  This is for c++ const iterators, where we use cbegin()
  */
-void const_iterator_test()
+void const_iterator_test_seq()
 {
     std::cout << "Testing C++11 const iterators" << std::endl;
 
@@ -469,7 +469,7 @@ void const_iterator_test()
 /**
  *  This is for C++11 const reverse iterators, where we use crbegin()
  */
-void const_reverse_iterator_test()
+void const_reverse_iterator_test_seq()
 {
     std::cout << "Testing C++11 const reverse iterators" << std::endl;
 

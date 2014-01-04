@@ -73,21 +73,40 @@
 #include <unistd.h>
 
 #include "barrier.h"
-#include "tests.h"
+#include "sequential_tests.h"
+#include "concurrent_tests.h"
 
 using std::cout;
 using std::endl;
 
 /// configured via command line args: run sequential tests?
 bool run_sequential = true;
+
 /// configured via command line args: run concurrent tests?
 bool run_concurrent = false;
+
 /// configured via command line args: number of threads
 int  num_threads = 4;
 
-/**
- *  Report on how to use the command line to configure this program
- */
+/// the barrier to use when we are in concurrent mode
+barrier* global_barrier;
+
+/// the mutex to use when we are in concurrent mode with tm turned off
+std::mutex global_mutex;
+
+/// the list that all our sequential tests use
+std::list<int>* my_list;
+
+/// a helper to print our list when visually checking for correctness
+void check(std::string s)
+{
+    std::cout << s << std::endl << " List: ";
+    for (auto i : *my_list)
+        std::cout << i << ", ";
+    std::cout << std::endl;
+}
+
+/// Report on how to use the command line to configure this program
 void usage()
 {
     cout << "Command-Line Options:" << endl
@@ -98,9 +117,7 @@ void usage()
     exit(0);
 }
 
-/**
- *  Parse command line arguments using getopt()
- */
+/// Parse command line arguments using getopt()
 void parseargs(int argc, char** argv)
 {
     // parse the command-line options
@@ -115,28 +132,46 @@ void parseargs(int argc, char** argv)
     }
 }
 
+/// A sequential test for exercising every method of std::list
+void sequential_test()
+{
+    // test constructors and destructor
+    ctor_test_seq();
+    // test assignment operators
+    assign_test_seq();
+    // test iterators
+    iterator_test_seq();
+    reverse_iterator_test_seq();
+    legacy_const_iterator_test_seq();
+    legacy_const_reverse_iterator_test_seq();
+    const_iterator_test_seq();
+    const_reverse_iterator_test_seq();
+    // test capacity
+    cap_test_seq();
+    // test element access
+    element_test_seq();
+    // test modifiers
+    modifier_test_seq();
+    // test operations
+    operations_test_seq();
+    // test observers
+    observers_test_seq();
+    // test relational operators
+    relational_test_seq();
+    // test swap
+    swap_test_seq();
+}
 
-#if 0
-
-std::list<int>* global_list_ptr = NULL;
-std::list<int>  global_list;
-
-barrier* global_barrier;
-
-#ifdef NO_TM
-std::mutex global_mutex;
-#define BEGIN_TX {std::lock_guard<std::mutex> _g(global_mutex);
-#define END_TX   }
-#else
-#define BEGIN_TX __transaction_atomic {
-#define END_TX   }
-#endif
-
-void listtest(int id)
+/// A concurrent test for exercising every method of std::list.  This is
+/// called by every thread
+void thread_concurrent_test(int id)
 {
     // wait for all threads to be ready
     global_barrier->arrive(id);
 
+    // test constructors and destructors
+    ctor_test_concurrent(id);
+#if 0
     // @step: 1
     //
     // Test construction, destruction, and operator=; be sure to test
@@ -211,64 +246,26 @@ void listtest(int id)
         END_TX;
     }
     global_barrier->arrive(id);
-}
 #endif
-
-/**
- *  The current effort is a bit ad-hoc.  Let's create a sequential test for
- *  *everything*, then transactionalize it piecemeal.
- */
-void sequential_test()
-{
-    // test constructors and destructor
-    ctor_test();
-    // test assignment operators
-    assign_test();
-    // test iterators
-    iterator_test();
-    reverse_iterator_test();
-    legacy_const_iterator_test();
-    legacy_const_reverse_iterator_test();
-    const_iterator_test();
-    const_reverse_iterator_test();
-    // test capacity
-    cap_test();
-    // test element access
-    element_test();
-    // test modifiers
-    modifier_test();
-    // test operations
-    operations_test();
-    // test observers
-    observers_test();
-    // test relational operators
-    relational_test();
-    // test swap
-    swap_test();
 }
 
+/// Kick off a test with many threads simultaneously invoking every possible
+/// method of std::list.
+///
+/// This function just creates the threads and waits for them to finish
 void concurrent_test()
 {
-#if 0
     // set up a barrier and construct/start the threads
-    int num_threads = 4;
     std::thread* threads = new std::thread[num_threads];
     global_barrier = new barrier(num_threads);
     for (int i = 0; i < num_threads; ++i)
-        threads[i] = std::thread(listtest, i);
+        threads[i] = std::thread(thread_concurrent_test, i);
     // wait for the threads to finish
     for (int i = 0; i < num_threads; ++i)
         threads[i].join();
-
-    // print the list...
-    for (auto i : global_list)
-        printf("item: %d\n", i);
-#endif
 }
 
-/**
- *  The main routine simply parses the arguments, dumps the arguments, populates the
- */
+/// main() just parses arguments and picks the test to run...
 int main(int argc, char** argv)
 {
     parseargs(argc, argv);
