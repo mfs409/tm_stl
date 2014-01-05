@@ -4,6 +4,9 @@
   According to http://www.cplusplus.com/reference/list/list/, the std::list
   interface consists of the following:
 
+Note: '>' indicates that I have not verified that the methods are actually
+being called
+
 |--------------------+---------------+-----------+-------------------------+----------|
 | Category           | Method        | # Methods | Location                | # Tested |
 | (* if not started) |               |           | (default: stl_list.h)   | with TM  |
@@ -12,56 +15,56 @@
 |                    |               |           | 597, 608, 627/633       |          |
 |                    | (destructor)  |         1 | 387                     |          |
 |                    | operator=     |         3 | 658->list.tcc:225,      |          |
-|                    |               |           | 669, 686               |          |
+|                    |               |           | 669, 686                |          |
 |--------------------+---------------+-----------+-------------------------+----------|
-| Iterators          | begin         |         2 |                         |          |
-|                    | end           |         2 |                         |          |
-| (note: must be     | rbegin        |         2 |                         |          |
-| sure to handle     | rend          |         2 |                         |          |
-| all 16 methods     | cbegin        |         1 |                         |          |
-| that can be        | cend          |         1 |                         |          |
-| called on          | crbegin       |         1 |                         |          |
-| an iterator!)      | crend         |         1 |                         |          |
+| Iterators          | begin         |         2 | >                       |          |
+|                    | end           |         2 | >                       |          |
+| (note: must be     | rbegin        |         2 | >                       |          |
+| sure to handle     | rend          |         2 | >                       |          |
+| all 16 methods     | cbegin        |         1 | >                       |          |
+| that can be        | cend          |         1 | >                       |          |
+| called on          | crbegin       |         1 | >                       |          |
+| an iterator!)      | crend         |         1 | >                       |          |
 |--------------------+---------------+-----------+-------------------------+----------|
-| Capacity           | empty         |         1 |                         |          |
-|                    | size          |         1 |                         |          |
-|                    | max_size      |         1 |                         |          |
+| Capacity           | empty         |         1 | 871                     |          |
+|                    | size          |         1 | 876                     |          |
+|                    | max_size      |         1 | 881                     |          |
 |--------------------+---------------+-----------+-------------------------+----------|
-| Element access     | front         |         2 |                         |          |
-|                    | back          |         2 |                         |          |
+| Element access     | front         |         2 | 930, 938                |          |
+|                    | back          |         2 | 946, 958                |          |
 |--------------------+---------------+-----------+-------------------------+----------|
-| Modifiers          | assign        |         3 |                         |          |
-|                    | emplace       |         1 |                         |          |
-|                    | emplace_front |         1 |                         |          |
-|                    | emplace_back  |         1 |                         |          |
-|                    | push_front    |         2 |                         |          |
-|                    | pop_front     |         1 |                         |          |
-|                    | push_back     |         2 |                         |          |
-|                    | pop_back      |         1 |                         |          |
-|                    | insert        |         5 |                         |          |
-|                    | erase         |         2 |                         |          |
-|                    | swap          |         1 |                         |          |
-|                    | resize        |         2 |                         |          |
-|                    | clear         |         1 |                         |          |
+| Modifiers          | assign        |         3 | >                       |          |
+|                    | emplace       |         1 | >                       |          |
+|                    | emplace_front |         1 | >                       |          |
+|                    | emplace_back  |         1 | >                       |          |
+|                    | push_front    |         2 | >                       |          |
+|                    | pop_front     |         1 | >                       |          |
+|                    | push_back     |         2 | >                       |          |
+|                    | pop_back      |         1 | >                       |          |
+|                    | insert        |         5 | >                       |          |
+|                    | erase         |         2 | >                       |          |
+|                    | swap          |         1 | >                       |          |
+|                    | resize        |         2 | >                       |          |
+|                    | clear         |         1 | >                       |          |
 |--------------------+---------------+-----------+-------------------------+----------|
-| Operations         | splice        |         6 |                         |          |
-|                    | remove        |         1 |                         |          |
-|                    | remove_if     |         2 |                         |          |
-|                    | unique        |         3 |                         |          |
-|                    | merge         |         4 |                         |          |
-|                    | sort          |         2 |                         |          |
-|                    | reverse       |         1 |                         |          |
+| Operations         | splice        |         6 | >                       |          |
+|                    | remove        |         1 | >                       |          |
+|                    | remove_if     |         2 | >                       |          |
+|                    | unique        |         3 | >                       |          |
+|                    | merge         |         4 | >                       |          |
+|                    | sort          |         2 | >                       |          |
+|                    | reverse       |         1 | >                       |          |
 |--------------------+---------------+-----------+-------------------------+----------|
-| Observers          | get_allocator |         1 |                         |          |
+| Observers          | get_allocator |         1 | >                       |          |
 |--------------------+---------------+-----------+-------------------------+----------|
-| Non-member         | '=='          |         1 |                         |          |
-| function           | '!='          |         1 |                         |          |
-| overloads (NMFOs)  | '<'           |         1 |                         |          |
-| (Relational        | '<='          |         1 |                         |          |
-| Operators)         | '>'           |         1 |                         |          |
-|                    | '>='          |         1 |                         |          |
+| Non-member         | '=='          |         1 | >                       |          |
+| function           | '!='          |         1 | >                       |          |
+| overloads (NMFOs)  | '<'           |         1 | >                       |          |
+| (Relational        | '<='          |         1 | >                       |          |
+| Operators)         | '>'           |         1 | >                       |          |
+|                    | '>='          |         1 | >                       |          |
 |--------------------+---------------+-----------+-------------------------+----------|
-| NMFO (swap)        | swap          |         1 |                         |          |
+| NMFO (swap)        | swap          |         1 | >                       |          |
 |--------------------+---------------+-----------+-------------------------+----------|
 */
 

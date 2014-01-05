@@ -16,8 +16,9 @@ void element_test_seq()
     int b = my_list->back();
     std::cout << "Expect 1, 6: " << f << ", " << b << std::endl;
 
-    std::list<int>::const_reference cb = my_list->back();
-    std::list<int>::const_reference cf = my_list->front();
+    const std::list<int>* z = my_list;
+    std::list<int>::const_reference cb = z->back();
+    std::list<int>::const_reference cf = z->front();
     // Ensure these don't compile:
     // cf += 11;
     // cb += 11;
