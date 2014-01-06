@@ -211,6 +211,27 @@ void thread_concurrent_test(int id)
     ctor_test_concurrent(id);
     // test assignment operators
     assign_test_concurrent(id);
+    // test iterators
+    iterator_test_concurrent(id);
+    // reverse_iterator_test_seq();
+    // legacy_const_iterator_test_seq();
+    // legacy_const_reverse_iterator_test_seq();
+    // const_iterator_test_seq();
+    // const_reverse_iterator_test_seq();
+    // test capacity
+    // cap_test_seq();
+    // test element access
+    // element_test_seq();
+    // test modifiers
+    // modifier_test_seq();
+    // test operations
+    // operations_test_seq();
+    // test observers
+    // observers_test_seq();
+    // test relational operators
+    // relational_test_seq();
+    // test swap
+    // swap_test_seq();
 #if 0
     // @step: 1
     //
