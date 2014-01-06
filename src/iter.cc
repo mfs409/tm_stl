@@ -8,6 +8,17 @@
  * http://www.cplusplus.com/reference/iterator/BidirectionalIterator/
  */
 
+/// for testing ->
+namespace
+{
+  struct Q
+  {
+      int a;
+      int b;
+      Q() : a(1), b(2) { }
+  };
+}
+
 /**
  *  This is for basic (forward, mutable) iterators
  */
@@ -17,6 +28,15 @@ void iterator_test_seq()
 
     // use the initializer list constructor
     my_list = new std::list<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+
+    // test begin and end
+    std::list<int>::iterator test_b = my_list->begin();
+    std::list<int>::iterator test_e = my_list->end();
+    // a hack to prevent it being optimized out
+    int tmp = 0;
+    for (auto i = test_b; i != test_e; ++i)
+        tmp += *i;
+    std::cout << "computed " << tmp << " expected 55" << std::endl;
 
     // iterators should be default constructable (1)
     std::list<int>::iterator i;
@@ -46,6 +66,12 @@ void iterator_test_seq()
     *b = -6;
     val = *my_list->begin();
     std::cout << "Expecting -6, found " << val << std::endl;
+
+    // iterator access with ->
+    std::list<Q> foo;
+    foo.emplace(foo.begin());
+    auto x = foo.begin();
+    std::cout << "Expecting 1, 2: " << x->a << ", " << x->b << std::endl;
 
     // iterators can be incremented (9)
     i = b;
@@ -113,6 +139,15 @@ void reverse_iterator_test_seq()
     // use the initializer list constructor
     my_list = new std::list<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 
+    // test begin and end
+    std::list<int>::reverse_iterator test_b = my_list->rbegin();
+    std::list<int>::reverse_iterator test_e = my_list->rend();
+    // a hack to prevent it being optimized out
+    int tmp = 0;
+    for (auto i = test_b; i != test_e; ++i)
+        tmp += *i;
+    std::cout << "computed " << tmp << " expected 55" << std::endl;
+
     // iterators should be default constructable (1)
     std::list<int>::reverse_iterator i;
     // iterators should be copy constructable(2)
@@ -141,6 +176,12 @@ void reverse_iterator_test_seq()
     *b = -6;
     val = *my_list->rbegin();
     std::cout << "Expecting -6, found " << val << std::endl;
+
+    // iterator access with ->
+    std::list<Q> foo;
+    foo.emplace(foo.begin());
+    std::list<Q>::reverse_iterator x = foo.rbegin();
+    std::cout << "-> test... Expecting 1, 2: " << x->a << ", " << x->b << std::endl;
 
     // iterators can be incremented (9)
     i = b;
@@ -207,6 +248,16 @@ void legacy_const_iterator_test_seq()
     // use the initializer list constructor
     my_list = new std::list<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 
+    // test begin and end
+    const std::list<int>* l2 = my_list;
+    std::list<int>::const_iterator test_b = l2->begin();
+    std::list<int>::const_iterator test_e = l2->end();
+    // a hack to prevent it being optimized out
+    int tmp = 0;
+    for (auto i = test_b; i != test_e; ++i)
+        tmp += *i;
+    std::cout << "computed " << tmp << " expected 55" << std::endl;
+
     // iterators should be default constructable (1)
     std::list<int>::const_iterator i;
     // iterators should be copy constructable(2)
@@ -230,6 +281,12 @@ void legacy_const_iterator_test_seq()
     // state (7)
     int val = *b;
     std::cout << "Expecting 1, found " << val << std::endl;
+
+    // iterator access with ->
+    std::list<Q> foo;
+    foo.emplace(foo.begin());
+    std::list<Q>::const_iterator x = foo.begin();
+    std::cout << "Expecting 1, 2: " << x->a << ", " << x->b << std::endl;
 
     // iterators can be incremented (9)
     i = b;
@@ -297,6 +354,16 @@ void legacy_const_reverse_iterator_test_seq()
     // use the initializer list constructor
     my_list = new std::list<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 
+    // test begin and end
+    const std::list<int>* l2 = my_list;
+    std::list<int>::const_reverse_iterator test_b = l2->rbegin();
+    std::list<int>::const_reverse_iterator test_e = l2->rend();
+    // a hack to prevent it being optimized out
+    int tmp = 0;
+    for (auto i = test_b; i != test_e; ++i)
+        tmp += *i;
+    std::cout << "computed " << tmp << " expected 55" << std::endl;
+
     // iterators should be default constructable (1)
     std::list<int>::const_reverse_iterator i;
     // iterators should be copy constructable(2)
@@ -320,6 +387,12 @@ void legacy_const_reverse_iterator_test_seq()
     // state (7)
     int val = *b;
     std::cout << "Expecting 10, found " << val << std::endl;
+
+    // iterator access with ->
+    std::list<Q> foo;
+    foo.emplace(foo.begin());
+    std::list<Q>::const_reverse_iterator x = foo.rbegin();
+    std::cout << "-> test... Expecting 1, 2: " << x->a << ", " << x->b << std::endl;
 
     // iterators can be incremented (9)
     i = b;
