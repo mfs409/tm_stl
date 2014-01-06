@@ -71,6 +71,8 @@ std::list<int>* per_thread_list[256] = {NULL}; // 256 is way more than enough...
     dsize = 0;                                    \
     for (auto i : *ctor_list)                     \
         data[dsize++] = i
+
+/// destroy the list and set the pointer to NULL
 #define CLEAR_LIST                                \
     delete ctor_list;                             \
     ctor_list = NULL

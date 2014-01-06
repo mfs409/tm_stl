@@ -48,6 +48,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   __throw_bad_exception(void) __attribute__((__noreturn__));
 
   // Helper for exception objects in <new>
+ __attribute__((transaction_safe))
   void
   __throw_bad_alloc(void) __attribute__((__noreturn__));
 

@@ -95,6 +95,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
       // NB: __n is permitted to be 0.  The C++ standard says nothing
       // about what the return value is when __n == 0.
+      __attribute__((transaction_safe))
       pointer
       allocate(size_type __n, const void* = 0)
       { 

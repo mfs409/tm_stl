@@ -209,6 +209,8 @@ void thread_concurrent_test(int id)
 
     // test constructors and destructors
     ctor_test_concurrent(id);
+    // test assignment operators
+    assign_test_concurrent(id);
 #if 0
     // @step: 1
     //

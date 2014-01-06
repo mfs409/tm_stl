@@ -25,7 +25,7 @@ IFOLDERS       = platform_inc stdinc libinc tm_stdinc tm_platform_inc
 #
 EXEFILES       = $(ODIR)/list_bench_tm $(ODIR)/list_bench_notm
 TM_OFILES      = $(patsubst %, $(ODIR)/%_tm.o, $(CXXFILES) $(LIBFILES))
-NOTM_OFILES    = $(patsubst %, $(ODIR)/%_notm.o, $(CXXFILES))
+NOTM_OFILES    = $(patsubst %, $(ODIR)/%_notm.o, $(CXXFILES) $(LIBFILES))
 DEPS           = $(patsubst %.o, %.d, $(TM_OFILES) $(NOTM_OFILES))
 
 #
@@ -59,17 +59,25 @@ $(ODIR)/%_tm.o: $(SDIR)/%.cc
 	@echo "[CXX] $< --> $@"
 	@$(CXX) -c $< -o $@ $(CXXFLAGS)
 
+$(ODIR)/%_tm.o:$(LDIR)/libstdc++-v3/c++98/%.cc
+	@echo "[CXX] $< --> $@"
+	@$(CXX) -c $< -o $@ $(CXXFLAGS)
+
+$(ODIR)/%_tm.o:$(LDIR)/libstdc++-v3/c++11/%.cc
+	@echo "[CXX] $< --> $@"
+	@$(CXX) -c $< -o $@ $(CXXFLAGS)
+
 $(ODIR)/%_notm.o: $(SDIR)/%.cc
 	@echo "[CXX] $< --> $@"
 	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_NOTM)
 
-$(ODIR)/%_tm.o:$(LDIR)/libstdc++-v3/c++98/%.cc
+$(ODIR)/%_notm.o:$(LDIR)/libstdc++-v3/c++98/%.cc
 	@echo "[CXX] $< --> $@"
-	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_TM)
+	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_NOTM)
 
-$(ODIR)/%_tm.o:$(LDIR)/libstdc++-v3/c++11/%.cc
+$(ODIR)/%_notm.o:$(LDIR)/libstdc++-v3/c++11/%.cc
 	@echo "[CXX] $< --> $@"
-	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_TM)
+	@$(CXX) -c $< -o $@ $(CXXFLAGS) $(CXXFLAGS_NOTM)
 
 #
 # Rules for building executables
