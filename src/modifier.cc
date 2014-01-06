@@ -40,7 +40,8 @@ void modifier_test_seq()
     // test push_front with const value type (1)
     delete my_list;
     my_list = new std::list<int>({1, 2, 3});
-    my_list->push_front(6);
+    const int x6 = 6;
+    my_list->push_front(x6);
     check("Expect 6, 1, 2, 3");
 
     // test push_front with move (2)
@@ -50,7 +51,8 @@ void modifier_test_seq()
 
     // test push_back with const value type (1) and with move (2)
     x = 9;
-    my_list->push_back(99);
+    const int x99 = 99;
+    my_list->push_back(x99);
     my_list->push_back(std::move(x));
     check("Expect 7, 6, 1, 2, 3, 99, 9");
 
@@ -67,7 +69,8 @@ void modifier_test_seq()
     check("Expect 1, 8, 2, 3, 4, 5");
 
     // test insert of single element (1)
-    my_list->insert(i, 9);
+    const int x9 = 9;
+    my_list->insert(i, x9);
     check("Expect 1, 8, 9, 2, 3, 4, 5");
 
     // test fill insert (2)
@@ -117,6 +120,7 @@ void modifier_test_seq()
 
     // test clear (1)
     my_list->clear();
-    check("Expect empty");
+    my_list->push_front(1);
+    check("Expect 1");
     delete my_list;
 }
