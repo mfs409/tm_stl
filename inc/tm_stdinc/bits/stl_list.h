@@ -90,6 +90,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
       _M_transfer(_List_node_base* const __first,
 		  _List_node_base* const __last) _GLIBCXX_USE_NOEXCEPT;
 
+      __attribute__((transaction_safe))
       void
       _M_reverse() _GLIBCXX_USE_NOEXCEPT;
 
