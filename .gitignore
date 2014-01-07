@@ -17,3 +17,6 @@
 
 # output folders
 obj/
+
+# scratch stuff
+scratch/
