@@ -213,101 +213,25 @@ void thread_concurrent_test(int id)
     assign_test_concurrent(id);
     // test iterators
     iterator_test_concurrent(id);
-    // reverse_iterator_test_seq();
-    // legacy_const_iterator_test_seq();
-    // legacy_const_reverse_iterator_test_seq();
-    // const_iterator_test_seq();
-    // const_reverse_iterator_test_seq();
+    reverse_iterator_test_concurrent(id);
+    legacy_const_iterator_test_concurrent(id);
+    legacy_const_reverse_iterator_test_concurrent(id);
+    const_iterator_test_concurrent(id);
+    const_reverse_iterator_test_concurrent(id);
     // test capacity
-    // cap_test_seq();
+    cap_test_concurrent(id);
     // test element access
-    // element_test_seq();
+    element_test_concurrent(id);
     // test modifiers
-    // modifier_test_seq();
+    modifier_test_concurrent(id);
     // test operations
-    // operations_test_seq();
+    operations_test_concurrent(id);
     // test observers
-    // observers_test_seq();
+    observers_test_concurrent(id);
     // test relational operators
-    // relational_test_seq();
+    relational_test_concurrent(id);
     // test swap
-    // swap_test_seq();
-#if 0
-    // @step: 1
-    //
-    // Test construction, destruction, and operator=; be sure to test
-    // ctor/dtor for stack and heap allocations.  Note that stl_list.h has
-    // three operator=() methods, but we're only testing one of them
-    bool success = false;
-    BEGIN_TX;
-    if (global_list_ptr == NULL) {
-        // a locally constructed list... it should be constructed and
-        // destructed in this scope
-        std::list<int> my_other_list();
-        // operator= on the global list
-        global_list = std::list<int>();
-        // construct and destruct the list on the heap
-        global_list_ptr = new std::list<int>();
-        delete(global_list_ptr);
-        // make another one, and this time, keep it
-        global_list_ptr = new std::list<int>();
-        success = true;
-    }
-    END_TX;
-    global_barrier->arrive(id);
-
-    // @step: 2
-    //
-    // The thread who succeeded in the insertion will push an entry, so that
-    // we know who constructed.  Also push onto the heap list.  Then everyone
-    // pushes, pops, and pushes again
-    BEGIN_TX;
-    if (success) {
-        global_list.push_back(id);
-        global_list_ptr->push_back(id);
-    }
-    END_TX;
-    global_barrier->arrive(id);
-    BEGIN_TX;
-    global_list.push_back(id);
-    global_list_ptr->push_back(id);
-    END_TX;
-    global_barrier->arrive(id);
-    int i0, i1, i2;
-    BEGIN_TX;
-    i0 = global_list.front();
-    i1 = global_list.back(); global_list.pop_back();
-    i2 = global_list_ptr->back(); global_list_ptr->pop_back();
-    END_TX;
-    global_barrier->arrive(id);
-    printf("thread %d popped %d/%d, head is %d\n", id, i1, i2, i0);
-    BEGIN_TX;
-    global_list.push_back(id);
-    global_list_ptr->push_back(id);
-    END_TX;
-    global_barrier->arrive(id);
-
-    // @step: 3
-    //
-    // Now let's clear the list and start trying to do more fun stuff with it
-    if (id == 0) {
-        BEGIN_TX;
-        global_list.clear();
-        global_list_ptr->clear();
-        END_TX;
-        // initialize the list with all ints between 0 and 50, except for
-        // those divisible by 5
-        BEGIN_TX;
-        for (int i = 0; i < 50; ++i) {
-            if (i%5 != 0) {
-                global_list.push_back(i);
-                global_list_ptr->push_back(i);
-            }
-        }
-        END_TX;
-    }
-    global_barrier->arrive(id);
-#endif
+    swap_test_concurrent(id);
 }
 
 /// Kick off a test with many threads simultaneously invoking every possible

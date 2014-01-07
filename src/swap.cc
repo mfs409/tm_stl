@@ -31,3 +31,12 @@ void swap_test_seq()
     }
     std::cout << "Range check " << (ok?"passed":"failed") << std::endl;
 }
+
+void swap_test_concurrent(int id)
+{
+    // helper message
+    if (id == 0) {
+        std::cout << std::endl
+                  << "Testing swap [TODO]" << std::endl;
+    }
+}

@@ -133,3 +133,12 @@ void operations_test_seq()
     check("Expect 6, 5, 4, 3, 2, 1");
     delete my_list;
 }
+
+void operations_test_concurrent(int id)
+{
+    // helper message
+    if (id == 0) {
+        std::cout << std::endl
+                  << "Testing operations [TODO]" << std::endl;
+    }
+}

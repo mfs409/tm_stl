@@ -135,4 +135,6 @@ void assign_test_concurrent(int id)
     CLEAR_LIST;
     END_TX;
     VERIFY("initializer assignment (3)", 4, {6, 3, 8, 2});
+
+    global_barrier->arrive(id);
 }

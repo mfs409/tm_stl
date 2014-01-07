@@ -36,3 +36,12 @@ void relational_test_seq()
 
     delete my_list;
 }
+
+void relational_test_concurrent(int id)
+{
+    // helper message
+    if (id == 0) {
+        std::cout << std::endl
+                  << "Testing relational operators [TODO]" << std::endl;
+    }
+}

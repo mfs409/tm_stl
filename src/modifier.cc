@@ -124,3 +124,12 @@ void modifier_test_seq()
     check("Expect 1");
     delete my_list;
 }
+
+void modifier_test_concurrent(int id)
+{
+    // helper message
+    if (id == 0) {
+        std::cout << std::endl
+                  << "Testing modifiers [TODO]" << std::endl;
+    }
+}

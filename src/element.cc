@@ -31,3 +31,13 @@ void element_test_seq()
               << rf << ", " << rb << std::endl;
     delete my_list;
 }
+
+void element_test_concurrent(int id)
+{
+    // helper message
+    if (id == 0) {
+        std::cout << std::endl
+                  << "Testing element access methods [TODO]" << std::endl;
+    }
+
+}

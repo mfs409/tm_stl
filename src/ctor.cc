@@ -192,4 +192,6 @@ void ctor_test_concurrent(int id)
     CLEAR_LIST;
     END_TX;
     VERIFY("ilist ctor (6)", 6, {6, 3, 8, 2, 9, 1});
+
+    global_barrier->arrive(id);
 }
