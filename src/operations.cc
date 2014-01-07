@@ -392,4 +392,6 @@ void operations_test_concurrent(int id)
     CLEAR_LIST;
     END_TX;
     VERIFY("reverse (1)", 6, {6, 5, 4, 3, 2, 1});
+
+    global_barrier->arrive(id);
 }
