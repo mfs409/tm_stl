@@ -1,10 +1,10 @@
 #
 # Set up directories
 #
-ODIR := obj
-IDIR := inc
-LDIR := lib
-SDIR := src
+ODIR := ./obj
+IDIR := ../inc
+LDIR := ../lib
+SDIR := ./
 output_folder := $(shell mkdir -p $(ODIR))
 
 #
