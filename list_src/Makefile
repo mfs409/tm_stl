@@ -15,7 +15,7 @@ BITS          ?= 32
 #
 # Names of input files
 #
-CXXFILES       = list_bench assign cap ctor element iter modifier \
+CXXFILES       = bench assign cap ctor element iter modifier \
                  operations observers relational swap
 LIBFILES       = list functexcept snprintf_lite
 IFOLDERS       = platform_inc stdinc libinc tm_stdinc tm_platform_inc
@@ -23,7 +23,7 @@ IFOLDERS       = platform_inc stdinc libinc tm_stdinc tm_platform_inc
 #
 # Names of compiler output files
 #
-EXEFILES       = $(ODIR)/list_bench_tm $(ODIR)/list_bench_notm
+EXEFILES       = $(ODIR)/bench_tm $(ODIR)/bench_notm
 TM_OFILES      = $(patsubst %, $(ODIR)/%_tm.o, $(CXXFILES) $(LIBFILES))
 NOTM_OFILES    = $(patsubst %, $(ODIR)/%_notm.o, $(CXXFILES) $(LIBFILES))
 DEPS           = $(patsubst %.o, %.d, $(TM_OFILES) $(NOTM_OFILES))
@@ -82,12 +82,12 @@ $(ODIR)/%_notm.o:$(LDIR)/libstdc++-v3/c++11/%.cc
 #
 # Rules for building executables
 #
-$(ODIR)/list_bench_tm:   $(TM_OFILES)
+$(ODIR)/bench_tm:   $(TM_OFILES)
 $(ODIR)/%_tm:$(ODIR)/%_tm.o
 	@echo "[LD] $^ --> $@"
 	@$(CXX) $^ -o $@ $(LDFLAGS)
 
-$(ODIR)/list_bench_notm: $(NOTM_OFILES)
+$(ODIR)/bench_notm: $(NOTM_OFILES)
 $(ODIR)/%_notm:$(ODIR)/%_notm.o
 	@echo "[LD] $^ --> $@"
 	@$(CXX) $^ -o $@ $(LDFLAGS)
