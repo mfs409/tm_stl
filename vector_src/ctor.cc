@@ -5,6 +5,9 @@
 #include "concurrent_tests.h"
 #include <cassert>
 
+/// The vector we will use for our tests
+std::vector<int>* ctor_vector = NULL;
+
 /**
  * Here is the sequential ctor test.  It also happens to be the sequential
  * dtor test, since there is only a basic dtor.
@@ -16,50 +19,47 @@ void ctor_test_seq()
               << "of the constructors" << std::endl;
 
     // test basic constructor (1)
-    my_vector = new std::vector<int>();
-    check("Expect an empty vector");
-    delete my_vector;
+    ctor_vector = new std::vector<int>();
+    check("Expect an empty vector", ctor_vector);
+    delete ctor_vector;
 
     // test sized constructor (2)
-    my_vector = new std::vector<int>(5);
-    check("Expect 5 default entries");
-    delete my_vector;
+    ctor_vector = new std::vector<int>(5);
+    check("Expect 5 default entries", ctor_vector);
+    delete ctor_vector;
 
     // test sized constructor with defaults (2)
-    my_vector = new std::vector<int>(5, 1);
-    check("Expect 5 ones");
-    delete my_vector;
+    ctor_vector = new std::vector<int>(5, 1);
+    check("Expect 5 ones", ctor_vector);
+    delete ctor_vector;
 
     // test range constructor (3)
     int a[] = {1, 2, 3};
-    my_vector = new std::vector<int>(a, a+3);
-    check("Expect 1,2,3");
+    ctor_vector = new std::vector<int>(a, a+3);
+    check("Expect 1,2,3", ctor_vector);
 
     // test the copy constructor (4)
-    std::vector<int>* old = my_vector;
-    my_vector = new std::vector<int>(*old);
+    std::vector<int>* old = ctor_vector;
+    ctor_vector = new std::vector<int>(*old);
     delete old;
-    check("Expect 1,2,3");
+    check("Expect 1,2,3", ctor_vector);
 
     // test the move constructor (5)
-    old = my_vector;
-    my_vector = new std::vector<int>(std::move(*old));
-    std::vector<int>* swapper = my_vector;
-    my_vector = old;
-    check("Expect empty");
-    my_vector = swapper;
-    check("Expect 1, 2, 3");
+    old = ctor_vector;
+    ctor_vector = new std::vector<int>(std::move(*old));
+    std::vector<int>* swapper = ctor_vector;
+    ctor_vector = old;
+    check("Expect empty", ctor_vector);
+    ctor_vector = swapper;
+    check("Expect 1, 2, 3", ctor_vector);
     delete old;
     delete swapper;
 
     // test the initializer vector constructor (6)
-    my_vector = new std::vector<int>({1, 2, 3, 4, 5, 6});
-    check("Expect 1, 2, 3, 4, 5, 6");
-    delete my_vector;
+    ctor_vector = new std::vector<int>({1, 2, 3, 4, 5, 6});
+    check("Expect 1, 2, 3, 4, 5, 6", ctor_vector);
+    delete ctor_vector;
 }
-
-/// The vector we will use for our tests
-std::vector<int>* ctor_vector = NULL;
 
 /// An extra array of vectors, which is sometimes useful.  Note that while we
 /// treat this as per-thread, it's globally visible, so the compiler can't

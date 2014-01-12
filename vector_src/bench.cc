@@ -8,53 +8,53 @@
 | Category           | Method        | # Methods | Location       |
 | (* if not started) |               |           | (default: ???) |
 |--------------------+---------------+-----------+----------------|
-| Member Functions   | ctor          | ?         | ?              |
-|                    | dtor          |           |                |
-|                    | operator =    |           |                |
+| Member Functions   | ctor          | 6*        |                |
+|                    | dtor          | 1*        |                |
+|                    | operator =    | 3*        |                |
 |--------------------+---------------+-----------+----------------|
-| Iterators          | begin         |           |                |
-|                    | end           |           |                |
-|                    | rbegin        |           |                |
-|                    | rend          |           |                |
-|                    | cbegin        |           |                |
-|                    | cend          |           |                |
-|                    | crbegin       |           |                |
-|                    | crend         |           |                |
+| Iterators          | begin         | 2*        |                |
+|                    | end           | 2*        |                |
+|                    | rbegin        | 2*        |                |
+|                    | rend          | 2*        |                |
+|                    | cbegin        | 1*        |                |
+|                    | cend          | 1*        |                |
+|                    | crbegin       | 1*        |                |
+|                    | crend         | 1*        |                |
 |--------------------+---------------+-----------+----------------|
-| Capacity           | size          |           |                |
-|                    | max_size      |           |                |
-|                    | resize        |           |                |
-|                    | capacity      |           |                |
-|                    | empty         |           |                |
-|                    | reserve       |           |                |
-|                    | shrink_to_fit |           |                |
+| Capacity           | size          | 1*        |                |
+|                    | max_size      | 1*        |                |
+|                    | resize        | 2*        |                |
+|                    | capacity      | 1*        |                |
+|                    | empty         | 1*        |                |
+|                    | reserve       | 1*        |                |
+|                    | shrink_to_fit | 1*        |                |
 |--------------------+---------------+-----------+----------------|
-| Element access     | operator []   |           |                |
-|                    | at            |           |                |
-|                    | front         |           |                |
-|                    | back          |           |                |
-|                    | data          |           |                |
+| Element access     | operator []   | 2*        |                |
+|                    | at            | 2*        |                |
+|                    | front         | 2*        |                |
+|                    | back          | 2*        |                |
+|                    | data          | 2*        |                |
 |--------------------+---------------+-----------+----------------|
-| Modifiers          | assign        |           |                |
-|                    | push_back     |           |                |
-|                    | pop_back      |           |                |
-|                    | insert        |           |                |
-|                    | erase         |           |                |
-|                    | swap          |           |                |
-|                    | clear         |           |                |
-|                    | emplace       |           |                |
-|                    | emplace_back  |           |                |
+| Modifiers          | assign        | 3*        |                |
+|                    | push_back     | 2*        |                |
+|                    | pop_back      | 1*        |                |
+|                    | insert        | 5*        |                |
+|                    | erase         | 2*        |                |
+|                    | swap          | 1*        |                |
+|                    | clear         | 1*        |                |
+|                    | emplace       | 1*        |                |
+|                    | emplace_back  | 1*        |                |
 |--------------------+---------------+-----------+----------------|
-| Allocator          | get_allocator |           |                |
+| Allocator          | get_allocator | 1*        |                |
 |--------------------+---------------+-----------+----------------|
-| Non-member         | '=='          |           |                |
-| function           | '!='          |           |                |
-| overloads (NMFOs)  | '<'           |           |                |
-| (Relational        | '<='          |           |                |
-| Operators)         | '>'           |           |                |
-|                    | '>='          |           |                |
+| Non-member         | '=='          | 1*        |                |
+| function           | '!='          | 1*        |                |
+| overloads (NMFOs)  | '<'           | 1*        |                |
+| (Relational        | '<='          | 1*        |                |
+| Operators)         | '>'           | 1*        |                |
+|                    | '>='          | 1*        |                |
 |--------------------+---------------+-----------+----------------|
-| NMFO (swap)        | swap          |           |                |
+| NMFO (swap)        | swap          | 1*        |                |
 |--------------------+---------------+-----------+----------------|
 */
 
@@ -89,11 +89,8 @@ barrier* global_barrier;
 /// the mutex to use when we are in concurrent mode with tm turned off
 std::mutex global_mutex;
 
-/// the list that all our sequential tests use
-std::vector<int>* my_vector;
-
 /// a helper to print our list when visually checking for correctness
-void check(std::string s)
+void check(std::string s, std::vector<int>* my_vector)
 {
     std::cout << s << std::endl << " List: ";
     for (auto i : *my_vector)

@@ -38,9 +38,5 @@ void relational_test_seq();
 // test swap operation
 void swap_test_seq() ;
 
-// a short-term helper function for outputting expected and observed results
-void check(std::string s);
-
-// a short-term helper... make the vector a global so that we know transactions
-// won't optimize it out.
-extern std::vector<int>* my_vector;
+// temp helper function for checking sequential codes
+void check(std::string s, std::vector<int>* my_vector);
