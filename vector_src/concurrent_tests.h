@@ -41,10 +41,6 @@ void relational_test_concurrent(int id);
 // test swap operation
 void swap_test_concurrent(int id);
 
-// a short-term helper... make the vector a global so that we know transactions
-// won't optimize it out.
-extern std::vector<int>* my_vector;
-
 extern barrier* global_barrier;
 
 extern std::mutex global_mutex;

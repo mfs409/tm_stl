@@ -129,9 +129,9 @@ void sequential_test()
 {
     // test constructors and destructor
     ctor_test_seq();
-#if 0
     // test assignment operators
     assign_test_seq();
+#if 0
     // test iterators
     iterator_test_seq();
     reverse_iterator_test_seq();
@@ -164,9 +164,9 @@ void thread_concurrent_test(int id)
     global_barrier->arrive(id);
     // test constructors and destructors
     ctor_test_concurrent(id);
-#if 0
     // test assignment operators
     assign_test_concurrent(id);
+#if 0
     // test iterators
     iterator_test_concurrent(id);
     reverse_iterator_test_concurrent(id);

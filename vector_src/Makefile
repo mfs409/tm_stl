@@ -15,7 +15,7 @@ BITS          ?= 32
 #
 # Names of input files
 #
-CXXFILES       = bench ctor
+CXXFILES       = bench ctor assign
 LIBFILES       = functexcept snprintf_lite # list
 IFOLDERS       = platform_inc stdinc libinc tm_stdinc tm_platform_inc
 
