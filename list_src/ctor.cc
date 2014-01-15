@@ -137,7 +137,21 @@ void ctor_test_concurrent(int id)
     COPY_LIST;
     CLEAR_LIST;
     END_TX;
-    VERIFY("sized ctor (2)", 5, {0, 0, 0, 0, 0, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17});
+    VERIFY("sized ctor (2a)", 5, {0, 0, 0, 0, 0, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17});
+
+    // test sized constructor (2b)
+    global_barrier->arrive(id);
+    // make sure we'll detect errors in data[]
+    for (int i = 0; i < 16; ++i)
+        data[i] = 17;
+    BEGIN_TX;
+    // call the sized constructor, expect {0,0,0,0,0}
+    // NB: we padded data[] to detect overflow
+    ctor_list = new std::list<int>(5, 9);
+    COPY_LIST;
+    CLEAR_LIST;
+    END_TX;
+    VERIFY("sized ctor (2b)", 5, {9, 9, 9, 9, 9, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17});
 
     // test range constructor (3)
     global_barrier->arrive(id);

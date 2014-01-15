@@ -539,7 +539,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       explicit
       list(const allocator_type& __a = allocator_type()) _GLIBCXX_NOEXCEPT
-    : _Base(_Node_alloc_type(__a)) { TRACE("ctor 1"); }
+    : _Base(_Node_alloc_type(__a)) { TRACE("ctor: default (1)"); }
 
 #if __cplusplus >= 201103L
       /**
@@ -552,7 +552,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       explicit
       list(size_type __n)
       : _Base()
-      { TRACE("ctor 2"); _M_default_initialize(__n); }
+      { TRACE("ctor: fill (2a)"); _M_default_initialize(__n); }
 
       /**
        *  @brief  Creates a %list with copies of an exemplar element.
@@ -565,7 +565,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       list(size_type __n, const value_type& __value,
        const allocator_type& __a = allocator_type())
       : _Base(_Node_alloc_type(__a))
-      { TRACE("ctor 3"); _M_fill_initialize(__n, __value); }
+      { TRACE("ctor: fill (2b)"); _M_fill_initialize(__n, __value); }
 #else
       /**
        *  @brief  Creates a %list with copies of an exemplar element.
@@ -579,7 +579,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       list(size_type __n, const value_type& __value = value_type(),
        const allocator_type& __a = allocator_type())
       : _Base(_Node_alloc_type(__a))
-      { TRACE("ctor 4"); _M_fill_initialize(__n, __value); }
+      { TRACE("ctor: fill (c++98) (2)"); _M_fill_initialize(__n, __value); }
 #endif
 
       /**
@@ -591,7 +591,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       list(const list& __x)
       : _Base(__x._M_get_Node_allocator())
-      { TRACE("ctor 5"); _M_initialize_dispatch(__x.begin(), __x.end(), __false_type()); }
+      { TRACE("ctor: copy (4)"); _M_initialize_dispatch(__x.begin(), __x.end(), __false_type()); }
 
 #if __cplusplus >= 201103L
       /**
@@ -602,7 +602,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  The contents of @a __x are a valid, but unspecified %list.
        */
       list(list&& __x) noexcept
-      : _Base(std::move(__x)) { TRACE("ctor 6"); }
+      : _Base(std::move(__x)) { TRACE("ctor: move (5)"); }
 
       /**
        *  @brief  Builds a %list from an initializer_list
@@ -615,7 +615,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       list(initializer_list<value_type> __l,
            const allocator_type& __a = allocator_type())
       : _Base(_Node_alloc_type(__a))
-      { TRACE("ctor 7"); _M_initialize_dispatch(__l.begin(), __l.end(), __false_type()); }
+      { TRACE("ctor: initializer list (6)"); _M_initialize_dispatch(__l.begin(), __l.end(), __false_type()); }
 #endif
 
       /**
@@ -634,13 +634,13 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
         list(_InputIterator __first, _InputIterator __last,
          const allocator_type& __a = allocator_type())
     : _Base(_Node_alloc_type(__a))
-        { TRACE("ctor 8"); _M_initialize_dispatch(__first, __last, __false_type()); }
+        { TRACE("ctor: range (3)"); _M_initialize_dispatch(__first, __last, __false_type()); }
 #else
       template<typename _InputIterator>
         list(_InputIterator __first, _InputIterator __last,
          const allocator_type& __a = allocator_type())
     : _Base(_Node_alloc_type(__a))
-        { TRACE("ctor 9");
+        { TRACE("ctor: range (c++98) (3)");
       // Check whether it's an integral type.  If so, it's not an iterator.
       typedef typename std::__is_integer<_InputIterator>::__type _Integral;
       _M_initialize_dispatch(__first, __last, _Integral());
