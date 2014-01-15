@@ -1,5 +1,0 @@
-#ifdef NO_TM
-#define INST(x) printf("call to %s (%s)\n", x, __PRETTY_FUNCTION__)
-#else
-#define INST(x)
-#endif
