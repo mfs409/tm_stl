@@ -36,6 +36,7 @@ DEPS           = $(patsubst %.o, %.d, $(TM_OFILES) $(NOTM_OFILES))
 # and want changes to force recompilation.
 CXX            = g++
 CXXFLAGS       = -MD -O2 -fgnu-tm -ggdb -m$(BITS) -std=c++11 -nostdinc \
+                 -include ../inc/local/trace.h \
                  -I/usr/include/ $(patsubst %, -I$(IDIR)/%, $(IFOLDERS))
 CXXFLAGS_NOTM  = -DNO_TM
 LDFLAGS        = -m$(BITS) -lstdc++ -fgnu-tm

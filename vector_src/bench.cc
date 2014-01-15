@@ -8,9 +8,9 @@
 | Category           | Method        | # Methods | Location       |
 | (* if not started) |               |           | (default: ???) |
 |--------------------+---------------+-----------+----------------|
-| Member Functions   | ctor          | 6*        |                |
-|                    | dtor          | 1*        |                |
-|                    | operator =    | 3*        |                |
+| Member Functions   | ctor          | 6         |                |
+|                    | dtor          | 1         |                |
+|                    | operator =    | 3         |                |
 |--------------------+---------------+-----------+----------------|
 | Iterators          | begin         | 2*        |                |
 |                    | end           | 2*        |                |
