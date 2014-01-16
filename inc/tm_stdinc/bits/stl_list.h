@@ -141,11 +141,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       typedef _Tp&                               reference;
 
       _List_iterator() _GLIBCXX_NOEXCEPT
-      : _M_node() { }
+      : _M_node() { TRACE("iterator: default_constructable (1)"); }
 
       explicit
       _List_iterator(__detail::_List_node_base* __x) _GLIBCXX_NOEXCEPT
-      : _M_node(__x) { }
+      : _M_node(__x) { TRACE("iterator: copy_constructable (2)"); }
 
       _Self
       _M_const_cast() const _GLIBCXX_NOEXCEPT
@@ -154,22 +154,22 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       // Must downcast from _List_node_base to _List_node to get to _M_data.
       reference
       operator*() const _GLIBCXX_NOEXCEPT
-      { return static_cast<_Node*>(_M_node)->_M_data; }
+      { TRACE("iterator: operator * (1)"); return static_cast<_Node*>(_M_node)->_M_data; }
 
       pointer
       operator->() const _GLIBCXX_NOEXCEPT
-      { return std::__addressof(static_cast<_Node*>(_M_node)->_M_data); }
+      { TRACE("iterator: operator -> (1)"); return std::__addressof(static_cast<_Node*>(_M_node)->_M_data); }
 
       _Self&
       operator++() _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("iterator: operator ++ (1)");
     _M_node = _M_node->_M_next;
     return *this;
       }
 
       _Self
       operator++(int) _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("iterator: operator ++ (2)");
     _Self __tmp = *this;
     _M_node = _M_node->_M_next;
     return __tmp;
@@ -177,14 +177,14 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       _Self&
       operator--() _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("iterator: operator -- (1)");
     _M_node = _M_node->_M_prev;
     return *this;
       }
 
       _Self
       operator--(int) _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("iterator: operator -- (2)");
     _Self __tmp = *this;
     _M_node = _M_node->_M_prev;
     return __tmp;
@@ -192,11 +192,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       bool
       operator==(const _Self& __x) const _GLIBCXX_NOEXCEPT
-      { return _M_node == __x._M_node; }
+      { TRACE("iterator: operator == (1)"); return _M_node == __x._M_node; }
 
       bool
       operator!=(const _Self& __x) const _GLIBCXX_NOEXCEPT
-      { return _M_node != __x._M_node; }
+      { TRACE("iterator: operator != (1)"); return _M_node != __x._M_node; }
 
       // The only member points to the %list element.
       __detail::_List_node_base* _M_node;
@@ -675,7 +675,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       list&
       operator=(list&& __x)
-      {
+      { TRACE("operator=: move (2)");
     // NB: DR 1204.
     // NB: DR 675.
     this->clear();
@@ -692,7 +692,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       list&
       operator=(initializer_list<value_type> __l)
-      {
+      { TRACE("operator=: initializer list (3)");
     this->assign(__l.begin(), __l.end());
     return *this;
       }
@@ -766,7 +766,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       begin() _GLIBCXX_NOEXCEPT
-      { return iterator(this->_M_impl._M_node._M_next); }
+      { TRACE("iterator: begin (1)"); return iterator(this->_M_impl._M_node._M_next); }
 
       /**
        *  Returns a read-only (constant) iterator that points to the
@@ -775,7 +775,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       begin() const _GLIBCXX_NOEXCEPT
-      { return const_iterator(this->_M_impl._M_node._M_next); }
+      { TRACE("iterator: begin (2)"); return const_iterator(this->_M_impl._M_node._M_next); }
 
       /**
        *  Returns a read/write iterator that points one past the last
@@ -784,7 +784,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       end() _GLIBCXX_NOEXCEPT
-      { return iterator(&this->_M_impl._M_node); }
+      { TRACE("iterator: end (1)"); return iterator(&this->_M_impl._M_node); }
 
       /**
        *  Returns a read-only (constant) iterator that points one past
@@ -793,7 +793,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       end() const _GLIBCXX_NOEXCEPT
-      { return const_iterator(&this->_M_impl._M_node); }
+      { TRACE("iterator: end (2)"); return const_iterator(&this->_M_impl._M_node); }
 
       /**
        *  Returns a read/write reverse iterator that points to the last

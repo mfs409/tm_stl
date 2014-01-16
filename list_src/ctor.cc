@@ -1,69 +1,15 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "sequential_tests.h"
-#include "concurrent_tests.h"
 #include <cassert>
-
-/**
- * Here is the sequential ctor test.  It also happens to be the sequential
- * dtor test, since there is only a basic dtor.
- */
-void ctor_test_seq()
-{
-    std::cout << "Testing ctor and dtor" << std::endl;
-    std::cout << "Note: we aren't testing the allocator parameter "
-              << "of the constructors" << std::endl;
-
-    // test basic constructor (1)
-    my_list = new std::list<int>();
-    check("Expect an empty list");
-    delete my_list;
-
-    // test sized constructor (2)
-    my_list = new std::list<int>(5);
-    check("Expect 5 default entries");
-    delete my_list;
-
-    // test sized constructor with defaults (2)
-    my_list = new std::list<int>(5, 1);
-    check("Expect 5 ones");
-    delete my_list;
-
-    // test range constructor (3)
-    int a[] = {1, 2, 3};
-    my_list = new std::list<int>(a, a+3);
-    check("Expect 1,2,3");
-
-    // test the copy constructor (4)
-    std::list<int>* old = my_list;
-    my_list = new std::list<int>(*old);
-    delete old;
-    check("Expect 1,2,3");
-
-    // test the move constructor (5)
-    old = my_list;
-    my_list = new std::list<int>(std::move(*old));
-    std::list<int>* swapper = my_list;
-    my_list = old;
-    check("Expect empty");
-    my_list = swapper;
-    check("Expect 1, 2, 3");
-    delete old;
-    delete swapper;
-
-    // test the initializer list constructor (6)
-    my_list = new std::list<int>({1, 2, 3, 4, 5, 6});
-    check("Expect 1, 2, 3, 4, 5, 6");
-    delete my_list;
-}
+#include "concurrent_tests.h"
 
 /// The list we will use for our tests
 std::list<int>* ctor_list = NULL;
 
 /// An extra array of lists, which is sometimes useful.  Note that while we
-/// treat this as per-thread, it's globally visible, so the compiler can't
-/// assume anything...
+/// treat this as per-thread, it's globally visible, so that the compiler
+/// can't assume anything...
 std::list<int>* per_thread_list[256] = {NULL}; // 256 is way more than enough...
 
 /// clone the list to a local array represented by dsize, data[]

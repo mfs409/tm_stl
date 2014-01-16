@@ -41,10 +41,6 @@ void relational_test_concurrent(int id);
 // test swap operation
 void swap_test_concurrent(int id);
 
-// a short-term helper... make the list a global so that we know transactions
-// won't optimize it out.
-extern std::list<int>* my_list;
-
 extern barrier* global_barrier;
 
 extern std::mutex global_mutex;
