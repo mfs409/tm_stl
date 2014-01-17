@@ -179,7 +179,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     void
     list<_Tp, _Alloc>::
     resize(size_type __new_size)
-    {
+    {TRACE("modifiers: resize (1/2)");
       iterator __i = begin();
       size_type __len = 0;
       for (; __i != end() && __len < __new_size; ++__i, ++__len)
@@ -194,7 +194,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     void
     list<_Tp, _Alloc>::
     resize(size_type __new_size, const value_type& __x)
-    {
+    {TRACE("modifiers: resize (2/2)");
       iterator __i = begin();
       size_type __len = 0;
       for (; __i != end() && __len < __new_size; ++__i, ++__len)
@@ -279,7 +279,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     void
     list<_Tp, _Alloc>::
     remove(const value_type& __value)
-    {
+    { TRACE("operations: remove (1)");
       iterator __first = begin();
       iterator __last = end();
       iterator __extra = __last;
@@ -307,7 +307,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     void
     list<_Tp, _Alloc>::
     unique()
-    {
+    { TRACE("operations: unique (1)");
       iterator __first = begin();
       iterator __last = end();
       if (__first == __last)
