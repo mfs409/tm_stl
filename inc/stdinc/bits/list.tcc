@@ -86,7 +86,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       typename list<_Tp, _Alloc>::iterator
       list<_Tp, _Alloc>::
       emplace(const_iterator __position, _Args&&... __args)
-      {
+      { TRACE("modifiers: emplace (1)");
     _Node* __tmp = _M_create_node(std::forward<_Args>(__args)...);
     __tmp->_M_hook(__position._M_const_cast()._M_node);
     return iterator(__tmp);
@@ -101,7 +101,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #else
     insert(iterator __position, const value_type& __x)
 #endif
-    {
+    { TRACE("modifiers: insert (1/5)");
       _Node* __tmp = _M_create_node(__x);
       __tmp->_M_hook(__position._M_const_cast()._M_node);
       return iterator(__tmp);
@@ -112,7 +112,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     typename list<_Tp, _Alloc>::iterator
     list<_Tp, _Alloc>::
     insert(const_iterator __position, size_type __n, const value_type& __x)
-    {
+    { TRACE("modifiers: insert (4/5)");
       if (__n)
     {
       list __tmp(__n, __x, get_allocator());
@@ -129,7 +129,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       list<_Tp, _Alloc>::
       insert(const_iterator __position, _InputIterator __first,
          _InputIterator __last)
-      {
+      { TRACE("modifiers: insert (5/5)");
     list __tmp(__first, __last, get_allocator());
     if (!__tmp.empty())
       {
@@ -149,7 +149,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #else
     erase(iterator __position)
 #endif
-    {
+    { TRACE("modifiers: erase (1/2)");
       iterator __ret = iterator(__position._M_node->_M_next);
       _M_erase(__position._M_const_cast());
       return __ret;
@@ -225,7 +225,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     list<_Tp, _Alloc>&
     list<_Tp, _Alloc>::
     operator=(const list& __x)
-    { TRACE("operator=: copy (1)");
+    { TRACE("operator=: copy (1/3)");
       if (this != &__x)
     {
       iterator __first1 = begin();
@@ -307,7 +307,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     void
     list<_Tp, _Alloc>::
     unique()
-    { TRACE("operations: unique (1)");
+    { TRACE("operations: unique (1/2)");
       iterator __first = begin();
       iterator __last = end();
       if (__first == __last)
@@ -331,7 +331,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #else
     merge(list& __x)
 #endif
-    {
+    { TRACE("operations: merge (1/4)");
       // _GLIBCXX_RESOLVE_LIB_DEFECTS
       // 300. list::merge() specification incomplete
       if (this != &__x)
@@ -365,7 +365,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #else
       merge(list& __x, _StrictWeakOrdering __comp)
 #endif
-      {
+      { TRACE("operations: merge (3/4)");
     // _GLIBCXX_RESOLVE_LIB_DEFECTS
     // 300. list::merge() specification incomplete
     if (this != &__x)
@@ -394,7 +394,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     void
     list<_Tp, _Alloc>::
     sort()
-    {
+    { TRACE("operations: sort (1/2)");
       // Do nothing if the list has length 0 or 1.
       if (this->_M_impl._M_node._M_next != &this->_M_impl._M_node
       && this->_M_impl._M_node._M_next->_M_next != &this->_M_impl._M_node)
@@ -432,7 +432,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       void
       list<_Tp, _Alloc>::
       remove_if(_Predicate __pred)
-      {
+      { TRACE("operations: remove_if (1)");
         iterator __first = begin();
         iterator __last = end();
         while (__first != __last)
@@ -450,7 +450,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       void
       list<_Tp, _Alloc>::
       unique(_BinaryPredicate __binary_pred)
-      {
+      { TRACE("operations: unique (2/2)");
         iterator __first = begin();
         iterator __last = end();
         if (__first == __last)
@@ -471,7 +471,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       void
       list<_Tp, _Alloc>::
       sort(_StrictWeakOrdering __comp)
-      {
+      { TRACE("operations: sort (2/2)");
     // Do nothing if the list has length 0 or 1.
     if (this->_M_impl._M_node._M_next != &this->_M_impl._M_node
         && this->_M_impl._M_node._M_next->_M_next != &this->_M_impl._M_node)

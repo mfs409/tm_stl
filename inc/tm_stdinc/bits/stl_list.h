@@ -675,7 +675,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       list&
       operator=(list&& __x)
-      { TRACE("operator=: move (2)");
+      { TRACE("operator=: move (2/3)");
     // NB: DR 1204.
     // NB: DR 675.
     this->clear();
@@ -692,7 +692,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       list&
       operator=(initializer_list<value_type> __l)
-      { TRACE("operator=: initializer list (3)");
+      { TRACE("operator=: initializer list (3/3)");
     this->assign(__l.begin(), __l.end());
     return *this;
       }
@@ -1023,17 +1023,17 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       push_back(const value_type& __x)
-      { this->_M_insert(end(), __x); }
+      { TRACE("modifiers: push_back (1/2)"); this->_M_insert(end(), __x); }
 
 #if __cplusplus >= 201103L
       void
       push_back(value_type&& __x)
-      { this->_M_insert(end(), std::move(__x)); }
+      { TRACE("modifiers: push_back (2/2)"); this->_M_insert(end(), std::move(__x)); }
 
       template<typename... _Args>
         void
         emplace_back(_Args&&... __args)
-        { this->_M_insert(end(), std::forward<_Args>(__args)...); }
+        { TRACE("modifiers: emplace_back (1)"); this->_M_insert(end(), std::forward<_Args>(__args)...); }
 #endif
 
       /**
@@ -1049,7 +1049,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       pop_back() _GLIBCXX_NOEXCEPT
-      { this->_M_erase(iterator(this->_M_impl._M_node._M_prev)); }
+      { TRACE("modifiers: pop_back (1)"); this->_M_erase(iterator(this->_M_impl._M_node._M_prev)); }
 
 #if __cplusplus >= 201103L
       /**
@@ -1111,7 +1111,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
         */
       iterator
       insert(const_iterator __position, value_type&& __x)
-      { return emplace(__position, std::move(__x)); }
+      { TRACE("modifiers: insert (2/5)"); return emplace(__position, std::move(__x)); }
 
       /**
        *  @brief  Inserts the contents of an initializer_list into %list
@@ -1130,7 +1130,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       insert(const_iterator __p, initializer_list<value_type> __l)
-      { return this->insert(__p, __l.begin(), __l.end()); }
+      { TRACE("modifiers: insert (3/5)"); return this->insert(__p, __l.begin(), __l.end()); }
 #endif
 
 #if __cplusplus >= 201103L
@@ -1262,7 +1262,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #else
       erase(iterator __first, iterator __last)
 #endif
-      {
+      { TRACE("modifiers: erase (2/2)");
     while (__first != __last)
       __first = erase(__first);
     return __last._M_const_cast();
@@ -1279,7 +1279,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       swap(list& __x)
-      {
+      { TRACE("modifiers: swap (1)");
     __detail::_List_node_base::swap(this->_M_impl._M_node,
                     __x._M_impl._M_node);
 
@@ -1297,7 +1297,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       clear() _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("modifiers: clear (1)");
         _Base::_M_clear();
         _Base::_M_init();
       }
@@ -1320,7 +1320,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #else
       splice(iterator __position, list& __x)
 #endif
-      {
+      { TRACE("operations: splice (1/6)");
     if (!__x.empty())
       {
         _M_check_equal_allocators(__x);
@@ -1333,7 +1333,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #if __cplusplus >= 201103L
       void
       splice(const_iterator __position, list& __x) noexcept
-      { splice(__position, std::move(__x)); }
+      { TRACE("operations: splice (2/6)"); splice(__position, std::move(__x)); }
 #endif
 
 #if __cplusplus >= 201103L
@@ -1362,7 +1362,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       void
       splice(iterator __position, list& __x, iterator __i)
 #endif
-      {
+      { TRACE("operations: splice (3/6)");
     iterator __j = __i._M_const_cast();
     ++__j;
     if (__position == __i || __position == __j)
@@ -1388,7 +1388,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       splice(const_iterator __position, list& __x, const_iterator __i) noexcept
-      { splice(__position, std::move(__x), __i); }
+      { TRACE("operations: splice (4/6)"); splice(__position, std::move(__x), __i); }
 #endif
 
 #if __cplusplus >= 201103L
@@ -1425,7 +1425,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       splice(iterator __position, list& __x, iterator __first,
          iterator __last)
 #endif
-      {
+      { TRACE("operations: splice (5/6)");
     if (__first != __last)
       {
         if (this != &__x)
@@ -1454,7 +1454,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       void
       splice(const_iterator __position, list& __x, const_iterator __first,
          const_iterator __last) noexcept
-      { splice(__position, std::move(__x), __first, __last); }
+      { TRACE("operations: splice (6/6)"); splice(__position, std::move(__x), __first, __last); }
 #endif
 
       /**
@@ -1530,7 +1530,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       void
       merge(list& __x)
-      { merge(std::move(__x)); }
+      { TRACE("operations: merge (2/4)"); merge(std::move(__x)); }
 #else
       void
       merge(list& __x);
@@ -1557,7 +1557,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       template<typename _StrictWeakOrdering>
         void
         merge(list& __x, _StrictWeakOrdering __comp)
-        { merge(std::move(__x), __comp); }
+        { TRACE("operations: merge (4/4)"); merge(std::move(__x), __comp); }
 #else
       template<typename _StrictWeakOrdering>
         void
@@ -1571,7 +1571,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       reverse() _GLIBCXX_NOEXCEPT
-      { this->_M_impl._M_node._M_reverse(); }
+      { TRACE("operations: reverse (1)"); this->_M_impl._M_node._M_reverse(); }
 
       /**
        *  @brief  Sort the elements.
@@ -1724,7 +1724,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
   template<typename _Tp, typename _Alloc>
     inline bool
     operator==(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-    {
+    { TRACE("overloads: operator== (1)");
       typedef typename list<_Tp, _Alloc>::const_iterator const_iterator;
       const_iterator __end1 = __x.end();
       const_iterator __end2 = __y.end();
@@ -1753,38 +1753,38 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
   template<typename _Tp, typename _Alloc>
     inline bool
     operator<(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-    { return std::lexicographical_compare(__x.begin(), __x.end(),
+    { TRACE("overloads: operator< (1)"); return std::lexicographical_compare(__x.begin(), __x.end(),
                       __y.begin(), __y.end()); }
 
   /// Based on operator==
   template<typename _Tp, typename _Alloc>
     inline bool
     operator!=(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-    { return !(__x == __y); }
+    { TRACE("overloads: operator!= (1)"); return !(__x == __y); }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
     inline bool
     operator>(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-    { return __y < __x; }
+    { TRACE("overloads: operator> (1)"); return __y < __x; }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
     inline bool
     operator<=(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-    { return !(__y < __x); }
+    { TRACE("overloads: operator<= (1)"); return !(__y < __x); }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
     inline bool
     operator>=(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-    { return !(__x < __y); }
+    { TRACE("overloads: operator>= (1)"); return !(__x < __y); }
 
   /// See std::list::swap().
   template<typename _Tp, typename _Alloc>
     inline void
     swap(list<_Tp, _Alloc>& __x, list<_Tp, _Alloc>& __y)
-    { __x.swap(__y); }
+    { TRACE("overloads: swap (1)"); __x.swap(__y); }
 
 _GLIBCXX_END_NAMESPACE_CONTAINER
 } // namespace std

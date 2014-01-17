@@ -155,7 +155,7 @@ void operations_test_concurrent(int id)
     END_TX;
     VERIFY("remove_if with function (1)", 6, {1, 2, 4, 5, 7, 8});
 
-    // test remove_if with function object (2)
+    // test remove_if with function object (1) (this is not a different method)
     global_barrier->arrive(id);
     BEGIN_TX;
     ops_list = new std::list<int>({1, 2, 4, 5, 7, 8});
@@ -163,7 +163,7 @@ void operations_test_concurrent(int id)
     COPY_LIST;
     CLEAR_LIST;
     END_TX;
-    VERIFY("remove_if with function object (2)", 3, {1, 5, 7});
+    VERIFY("remove_if with function object (1)", 3, {1, 5, 7});
 
     // test unique (1)
     global_barrier->arrive(id);
@@ -185,7 +185,7 @@ void operations_test_concurrent(int id)
     END_TX;
     VERIFY("unique with function (2)", 2, {2, 3});
 
-    // test unique with functor(3)
+    // test unique with functor(2) (this is not a different method)
     global_barrier->arrive(id);
     BEGIN_TX;
     ops_list = new std::list<int>({2, 4, 3, 9});

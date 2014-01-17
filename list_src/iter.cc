@@ -531,11 +531,6 @@ void legacy_const_iterator_test_concurrent(int id)
     // iterators can be dereferenced as an rvalue if in a dereferenceable
     // state (7)
     val1 = *b;
-#if 0 // does not apply to const iterators
-    // iterators can be dereferenced as an lvalue (8)
-    *b = -6;
-    val2 = *iter_list->begin();
-#endif
     // iterator access with ->
     std::list<Q>::const_iterator x = foo.begin();
     val3 = x->a;
@@ -722,11 +717,6 @@ void legacy_const_reverse_iterator_test_concurrent(int id)
     // iterators can be dereferenced as an rvalue if in a dereferenceable
     // state (7)
     val1 = *b;
-#if 0 // does not apply to const iterators
-    // iterators can be dereferenced as an lvalue (8)
-    *b = -6;
-    val2 = *iter_list->begin();
-#endif
     // iterator access with ->
     std::list<Q>::const_reverse_iterator x = foo.rbegin();
     val3 = x->a;
@@ -860,6 +850,24 @@ void const_iterator_test_concurrent(int id)
     else if (id == 0)
         std::cout << " [OK] cbegin() and cend()" << std::endl;
 
+    // test that const and non-const iterators can be compared
+    global_barrier->arrive(id);
+    bool ok = true;
+    BEGIN_TX;
+    // make a list
+    iter_list = new std::list<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    // get const iterators
+    std::list<int>::const_iterator test_b = iter_list->cbegin();
+    std::list<int>::const_iterator test_e = iter_list->cend();
+    std::list<int>::iterator other_b = iter_list->begin();
+    std::list<int>::iterator other_e = iter_list->end();
+    ok = ok & (test_b == other_b) && (other_e == test_e) && (test_b != other_e) && (other_b != test_e);
+    END_TX;
+    if (!ok)
+        std::cout << "["<<id<<"] failed const vs. non-const equality tests" << std::endl;
+    else if (id == 0)
+        std::cout << " [OK] const vs. non-const equality tests" << std::endl;
+
     // test ctors and dtors
     global_barrier->arrive(id);
     BEGIN_TX;
@@ -914,18 +922,13 @@ void const_iterator_test_concurrent(int id)
     // iterators can be dereferenced as an rvalue if in a dereferenceable
     // state (7)
     val1 = *b;
-#if 0 // does not apply to const iterators
-    // iterators can be dereferenced as an lvalue (8)
-    *b = -6;
-    val2 = *iter_list->cbegin();
-#endif
     // iterator access with ->
     std::list<Q>::const_iterator x = foo.cbegin();
     val3 = x->a;
     val4 = x->b;
     CLEAR_LIST;
     END_TX;
-    bool ok = (val1 == 1) && (val3 == 1) && (val4 == 2);
+    ok = (val1 == 1) && (val3 == 1) && (val4 == 2);
     if (!ok)
         std::cout << "["<<id<<"] errors on * or ->" << std::endl;
     else if (id == 0)
@@ -1105,11 +1108,6 @@ void const_reverse_iterator_test_concurrent(int id)
     // iterators can be dereferenced as an rvalue if in a dereferenceable
     // state (7)
     val1 = *b;
-#if 0 // does not apply to const iterators
-    // iterators can be dereferenced as an lvalue (8)
-    *b = -6;
-    val2 = *iter_list->begin();
-#endif
     // iterator access with ->
     std::list<Q>::const_reverse_iterator x = foo.crbegin();
     val3 = x->a;
