@@ -5,9 +5,8 @@
 # Makefile handle all rules and other global declarations
 #
 
-CXXFILES       = bench assign cap ctor element iter modifier \
-                 operations observers relational swap
+CXXFILES       = bench
 
-LIBFILES       = list functexcept snprintf_lite
+LIBFILES       = functexcept snprintf_lite
 
 include ../common/common.mk
