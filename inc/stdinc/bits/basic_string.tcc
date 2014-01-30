@@ -166,12 +166,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     }
 
   template<typename _CharT, typename _Traits, typename _Alloc>
+      __attribute__((transaction_safe))
     basic_string<_CharT, _Traits, _Alloc>::
     basic_string(const basic_string& __str)
     : _M_dataplus(__str._M_rep()->_M_grab(_Alloc(__str.get_allocator()),
                       __str.get_allocator()),
           __str.get_allocator())
-    { TRACE("ctor: copy (?)"); }
+    { TRACE("ctor: copy (2)"); }
 
   template<typename _CharT, typename _Traits, typename _Alloc>
     basic_string<_CharT, _Traits, _Alloc>::

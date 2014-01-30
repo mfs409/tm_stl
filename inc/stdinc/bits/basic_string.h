@@ -457,7 +457,6 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        *  @brief  Construct string with copy of value of @a str.
        *  @param  __str  Source string.
        */
-      __attribute__((transaction_safe))
       basic_string(const basic_string& __str);
       /**
        *  @brief  Construct string as copy of a substring.
@@ -515,7 +514,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       noexcept // FIXME C++11: should always be noexcept.
 #endif
       : _M_dataplus(__str._M_dataplus)
-      {
+      { TRACE("ctor: move (9)");
 #if _GLIBCXX_FULLY_DYNAMIC_STRING == 0
     __str._M_data(_S_empty_rep()._M_refdata());
 #else
@@ -545,7 +544,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        *  @brief  Destroy the string instance.
        */
       ~basic_string() _GLIBCXX_NOEXCEPT
-      { _M_rep()->_M_dispose(this->get_allocator()); }
+      { TRACE("dtor: basic (1)"); _M_rep()->_M_dispose(this->get_allocator()); }
 
       /**
        *  @brief  Assign the value of @a str to this string.
@@ -1806,7 +1805,6 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        *  time.
       */
       // PR 58265, this should be noexcept.
-        __attribute__((transaction_safe))
       void
       swap(basic_string& __s);
 

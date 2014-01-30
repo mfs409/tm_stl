@@ -7,6 +7,6 @@
 
 CXXFILES       = bench ctor
 
-LIBFILES       = # functexcept snprintf_lite
+LIBFILES       = string-inst # functexcept snprintf_lite
 
 include ../common/common.mk

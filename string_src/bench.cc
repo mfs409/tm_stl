@@ -11,8 +11,9 @@
 | Category               | Method            | # Methods | Location                       |
 | (* if not started)     |                   |           | (default: bits/basic_string.h) |
 |------------------------+-------------------+-----------+--------------------------------|
-| Member Functions       | (constructor)     |         9 | 444, 461->???                  |
-|                        | (destructor)      |         1 |                                |
+| Member Functions       | (constructor)     |         9 | 444, 461->basic_string.tcc:175 |
+|                        |                   |           |                                |
+|                        | (destructor)      |         1 | 548                            |
 |                        | operator=         |         5 |                                |
 |------------------------+-------------------+-----------+--------------------------------|
 | Iterators              | begin             |         2 |                                |
