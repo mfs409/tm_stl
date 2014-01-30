@@ -115,20 +115,20 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
       // Types:
     public:
-      typedef _Traits					    traits_type;
-      typedef typename _Traits::char_type		    value_type;
-      typedef _Alloc					    allocator_type;
-      typedef typename _CharT_alloc_type::size_type	    size_type;
+      typedef _Traits                       traits_type;
+      typedef typename _Traits::char_type           value_type;
+      typedef _Alloc                        allocator_type;
+      typedef typename _CharT_alloc_type::size_type     size_type;
       typedef typename _CharT_alloc_type::difference_type   difference_type;
-      typedef typename _CharT_alloc_type::reference	    reference;
+      typedef typename _CharT_alloc_type::reference     reference;
       typedef typename _CharT_alloc_type::const_reference   const_reference;
-      typedef typename _CharT_alloc_type::pointer	    pointer;
-      typedef typename _CharT_alloc_type::const_pointer	    const_pointer;
+      typedef typename _CharT_alloc_type::pointer       pointer;
+      typedef typename _CharT_alloc_type::const_pointer     const_pointer;
       typedef __gnu_cxx::__normal_iterator<pointer, basic_string>  iterator;
       typedef __gnu_cxx::__normal_iterator<const_pointer, basic_string>
                                                             const_iterator;
-      typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
-      typedef std::reverse_iterator<iterator>		    reverse_iterator;
+      typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+      typedef std::reverse_iterator<iterator>           reverse_iterator;
 
     private:
       // _Rep: string representation
@@ -147,134 +147,134 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
       struct _Rep_base
       {
-	size_type		_M_length;
-	size_type		_M_capacity;
-	_Atomic_word		_M_refcount;
+    size_type       _M_length;
+    size_type       _M_capacity;
+    _Atomic_word        _M_refcount;
       };
 
       struct _Rep : _Rep_base
       {
-	// Types:
-	typedef typename _Alloc::template rebind<char>::other _Raw_bytes_alloc;
+    // Types:
+    typedef typename _Alloc::template rebind<char>::other _Raw_bytes_alloc;
 
-	// (Public) Data members:
+    // (Public) Data members:
 
-	// The maximum number of individual char_type elements of an
-	// individual string is determined by _S_max_size. This is the
-	// value that will be returned by max_size().  (Whereas npos
-	// is the maximum number of bytes the allocator can allocate.)
-	// If one was to divvy up the theoretical largest size string,
-	// with a terminating character and m _CharT elements, it'd
-	// look like this:
-	// npos = sizeof(_Rep) + (m * sizeof(_CharT)) + sizeof(_CharT)
-	// Solving for m:
-	// m = ((npos - sizeof(_Rep))/sizeof(CharT)) - 1
-	// In addition, this implementation quarters this amount.
-	static const size_type	_S_max_size;
-	static const _CharT	_S_terminal;
+    // The maximum number of individual char_type elements of an
+    // individual string is determined by _S_max_size. This is the
+    // value that will be returned by max_size().  (Whereas npos
+    // is the maximum number of bytes the allocator can allocate.)
+    // If one was to divvy up the theoretical largest size string,
+    // with a terminating character and m _CharT elements, it'd
+    // look like this:
+    // npos = sizeof(_Rep) + (m * sizeof(_CharT)) + sizeof(_CharT)
+    // Solving for m:
+    // m = ((npos - sizeof(_Rep))/sizeof(CharT)) - 1
+    // In addition, this implementation quarters this amount.
+    static const size_type  _S_max_size;
+    static const _CharT _S_terminal;
 
-	// The following storage is init'd to 0 by the linker, resulting
+    // The following storage is init'd to 0 by the linker, resulting
         // (carefully) in an empty string with one reference.
         static size_type _S_empty_rep_storage[];
 
         static _Rep&
         _S_empty_rep() _GLIBCXX_NOEXCEPT
-        { 
-	  // NB: Mild hack to avoid strict-aliasing warnings.  Note that
-	  // _S_empty_rep_storage is never modified and the punning should
-	  // be reasonably safe in this case.
-	  void* __p = reinterpret_cast<void*>(&_S_empty_rep_storage);
-	  return *reinterpret_cast<_Rep*>(__p);
-	}
+        {
+      // NB: Mild hack to avoid strict-aliasing warnings.  Note that
+      // _S_empty_rep_storage is never modified and the punning should
+      // be reasonably safe in this case.
+      void* __p = reinterpret_cast<void*>(&_S_empty_rep_storage);
+      return *reinterpret_cast<_Rep*>(__p);
+    }
 
         bool
-	_M_is_leaked() const _GLIBCXX_NOEXCEPT
+    _M_is_leaked() const _GLIBCXX_NOEXCEPT
         { return this->_M_refcount < 0; }
 
         bool
-	_M_is_shared() const _GLIBCXX_NOEXCEPT
+    _M_is_shared() const _GLIBCXX_NOEXCEPT
         { return this->_M_refcount > 0; }
 
         void
-	_M_set_leaked() _GLIBCXX_NOEXCEPT
+    _M_set_leaked() _GLIBCXX_NOEXCEPT
         { this->_M_refcount = -1; }
 
         void
-	_M_set_sharable() _GLIBCXX_NOEXCEPT
+    _M_set_sharable() _GLIBCXX_NOEXCEPT
         { this->_M_refcount = 0; }
 
-	void
-	_M_set_length_and_sharable(size_type __n) _GLIBCXX_NOEXCEPT
-	{
+    void
+    _M_set_length_and_sharable(size_type __n) _GLIBCXX_NOEXCEPT
+    {
 #if _GLIBCXX_FULLY_DYNAMIC_STRING == 0
-	  if (__builtin_expect(this != &_S_empty_rep(), false))
+      if (__builtin_expect(this != &_S_empty_rep(), false))
 #endif
-	    {
-	      this->_M_set_sharable();  // One reference.
-	      this->_M_length = __n;
-	      traits_type::assign(this->_M_refdata()[__n], _S_terminal);
-	      // grrr. (per 21.3.4)
-	      // You cannot leave those LWG people alone for a second.
-	    }
-	}
+        {
+          this->_M_set_sharable();  // One reference.
+          this->_M_length = __n;
+          traits_type::assign(this->_M_refdata()[__n], _S_terminal);
+          // grrr. (per 21.3.4)
+          // You cannot leave those LWG people alone for a second.
+        }
+    }
 
-	_CharT*
-	_M_refdata() throw()
-	{ return reinterpret_cast<_CharT*>(this + 1); }
+    _CharT*
+    _M_refdata() throw()
+    { return reinterpret_cast<_CharT*>(this + 1); }
 
-	_CharT*
-	_M_grab(const _Alloc& __alloc1, const _Alloc& __alloc2)
-	{
-	  return (!_M_is_leaked() && __alloc1 == __alloc2)
-	          ? _M_refcopy() : _M_clone(__alloc1);
-	}
+    _CharT*
+    _M_grab(const _Alloc& __alloc1, const _Alloc& __alloc2)
+    {
+      return (!_M_is_leaked() && __alloc1 == __alloc2)
+              ? _M_refcopy() : _M_clone(__alloc1);
+    }
 
-	// Create & Destroy
-	static _Rep*
-	_S_create(size_type, size_type, const _Alloc&);
+    // Create & Destroy
+    static _Rep*
+    _S_create(size_type, size_type, const _Alloc&);
 
-	void
-	_M_dispose(const _Alloc& __a) _GLIBCXX_NOEXCEPT
-	{
+    void
+    _M_dispose(const _Alloc& __a) _GLIBCXX_NOEXCEPT
+    {
 #if _GLIBCXX_FULLY_DYNAMIC_STRING == 0
-	  if (__builtin_expect(this != &_S_empty_rep(), false))
+      if (__builtin_expect(this != &_S_empty_rep(), false))
 #endif
-	    {
-	      // Be race-detector-friendly.  For more info see bits/c++config.
-	      _GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE(&this->_M_refcount);
-	      if (__gnu_cxx::__exchange_and_add_dispatch(&this->_M_refcount,
-							 -1) <= 0)
-		{
-		  _GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER(&this->_M_refcount);
-		  _M_destroy(__a);
-		}
-	    }
-	}  // XXX MT
+        {
+          // Be race-detector-friendly.  For more info see bits/c++config.
+          _GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE(&this->_M_refcount);
+          if (__gnu_cxx::__exchange_and_add_dispatch(&this->_M_refcount,
+                             -1) <= 0)
+        {
+          _GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER(&this->_M_refcount);
+          _M_destroy(__a);
+        }
+        }
+    }  // XXX MT
 
-	void
-	_M_destroy(const _Alloc&) throw();
+    void
+    _M_destroy(const _Alloc&) throw();
 
-	_CharT*
-	_M_refcopy() throw()
-	{
+    _CharT*
+    _M_refcopy() throw()
+    {
 #if _GLIBCXX_FULLY_DYNAMIC_STRING == 0
-	  if (__builtin_expect(this != &_S_empty_rep(), false))
+      if (__builtin_expect(this != &_S_empty_rep(), false))
 #endif
             __gnu_cxx::__atomic_add_dispatch(&this->_M_refcount, 1);
-	  return _M_refdata();
-	}  // XXX MT
+      return _M_refdata();
+    }  // XXX MT
 
-	_CharT*
-	_M_clone(const _Alloc&, size_type __res = 0);
+    _CharT*
+    _M_clone(const _Alloc&, size_type __res = 0);
       };
 
       // Use empty-base optimization: http://www.cantrip.org/emptyopt.html
       struct _Alloc_hider : _Alloc
       {
-	_Alloc_hider(_CharT* __dat, const _Alloc& __a) _GLIBCXX_NOEXCEPT
-	: _Alloc(__a), _M_p(__dat) { }
+    _Alloc_hider(_CharT* __dat, const _Alloc& __a) _GLIBCXX_NOEXCEPT
+    : _Alloc(__a), _M_p(__dat) { }
 
-	_CharT* _M_p; // The actual data.
+    _CharT* _M_p; // The actual data.
       };
 
     public:
@@ -282,11 +282,11 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       // NB: This is an unsigned type, and thus represents the maximum
       // size that the allocator can hold.
       ///  Value returned by various member functions when they fail.
-      static const size_type	npos = static_cast<size_type>(-1);
+      static const size_type    npos = static_cast<size_type>(-1);
 
     private:
       // Data Members (private):
-      mutable _Alloc_hider	_M_dataplus;
+      mutable _Alloc_hider  _M_dataplus;
 
       _CharT*
       _M_data() const _GLIBCXX_NOEXCEPT
@@ -313,41 +313,41 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       void
       _M_leak()    // for use in begin() & non-const op[]
       {
-	if (!_M_rep()->_M_is_leaked())
-	  _M_leak_hard();
+    if (!_M_rep()->_M_is_leaked())
+      _M_leak_hard();
       }
 
       size_type
       _M_check(size_type __pos, const char* __s) const
       {
-	if (__pos > this->size())
-	  __throw_out_of_range_fmt(__N("%s: __pos (which is %zu) > "
-				       "this->size() (which is %zu)"),
-				   __s, __pos, this->size());
-	return __pos;
+    if (__pos > this->size())
+      __throw_out_of_range_fmt(__N("%s: __pos (which is %zu) > "
+                       "this->size() (which is %zu)"),
+                   __s, __pos, this->size());
+    return __pos;
       }
 
       void
       _M_check_length(size_type __n1, size_type __n2, const char* __s) const
       {
-	if (this->max_size() - (this->size() - __n1) < __n2)
-	  __throw_length_error(__N(__s));
+    if (this->max_size() - (this->size() - __n1) < __n2)
+      __throw_length_error(__N(__s));
       }
 
       // NB: _M_limit doesn't check for a bad __pos value.
       size_type
       _M_limit(size_type __pos, size_type __off) const _GLIBCXX_NOEXCEPT
       {
-	const bool __testoff =  __off < this->size() - __pos;
-	return __testoff ? __off : this->size() - __pos;
+    const bool __testoff =  __off < this->size() - __pos;
+    return __testoff ? __off : this->size() - __pos;
       }
 
       // True if _Rep and source do not overlap.
       bool
       _M_disjunct(const _CharT* __s) const _GLIBCXX_NOEXCEPT
       {
-	return (less<const _CharT*>()(__s, _M_data())
-		|| less<const _CharT*>()(_M_data() + this->size(), __s));
+    return (less<const _CharT*>()(__s, _M_data())
+        || less<const _CharT*>()(_M_data() + this->size(), __s));
       }
 
       // When __n = 1 way faster than the general multichar
@@ -355,28 +355,28 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       static void
       _M_copy(_CharT* __d, const _CharT* __s, size_type __n) _GLIBCXX_NOEXCEPT
       {
-	if (__n == 1)
-	  traits_type::assign(*__d, *__s);
-	else
-	  traits_type::copy(__d, __s, __n);
+    if (__n == 1)
+      traits_type::assign(*__d, *__s);
+    else
+      traits_type::copy(__d, __s, __n);
       }
 
       static void
       _M_move(_CharT* __d, const _CharT* __s, size_type __n) _GLIBCXX_NOEXCEPT
       {
-	if (__n == 1)
-	  traits_type::assign(*__d, *__s);
-	else
-	  traits_type::move(__d, __s, __n);	  
+    if (__n == 1)
+      traits_type::assign(*__d, *__s);
+    else
+      traits_type::move(__d, __s, __n);
       }
 
       static void
       _M_assign(_CharT* __d, size_type __n, _CharT __c) _GLIBCXX_NOEXCEPT
       {
-	if (__n == 1)
-	  traits_type::assign(*__d, __c);
-	else
-	  traits_type::assign(__d, __n, __c);	  
+    if (__n == 1)
+      traits_type::assign(*__d, __c);
+    else
+      traits_type::assign(__d, __n, __c);
       }
 
       // _S_copy_chars is a separate template to permit specialization
@@ -384,11 +384,11 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       template<class _Iterator>
         static void
         _S_copy_chars(_CharT* __p, _Iterator __k1, _Iterator __k2)
-	_GLIBCXX_NOEXCEPT
+    _GLIBCXX_NOEXCEPT
         {
-	  for (; __k1 != __k2; ++__k1, ++__p)
-	    traits_type::assign(*__p, *__k1); // These types are off.
-	}
+      for (; __k1 != __k2; ++__k1, ++__p)
+        traits_type::assign(*__p, *__k1); // These types are off.
+    }
 
       static void
       _S_copy_chars(_CharT* __p, iterator __k1, iterator __k2) _GLIBCXX_NOEXCEPT
@@ -411,14 +411,14 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       static int
       _S_compare(size_type __n1, size_type __n2) _GLIBCXX_NOEXCEPT
       {
-	const difference_type __d = difference_type(__n1 - __n2);
+    const difference_type __d = difference_type(__n1 - __n2);
 
-	if (__d > __gnu_cxx::__numeric_traits<int>::__max)
-	  return __gnu_cxx::__numeric_traits<int>::__max;
-	else if (__d < __gnu_cxx::__numeric_traits<int>::__min)
-	  return __gnu_cxx::__numeric_traits<int>::__min;
-	else
-	  return int(__d);
+    if (__d > __gnu_cxx::__numeric_traits<int>::__max)
+      return __gnu_cxx::__numeric_traits<int>::__max;
+    else if (__d < __gnu_cxx::__numeric_traits<int>::__min)
+      return __gnu_cxx::__numeric_traits<int>::__min;
+    else
+      return int(__d);
       }
 
       void
@@ -441,9 +441,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        */
       basic_string()
 #if _GLIBCXX_FULLY_DYNAMIC_STRING == 0
-      : _M_dataplus(_S_empty_rep()._M_refdata(), _Alloc()) { }
+      : _M_dataplus(_S_empty_rep()._M_refdata(), _Alloc()) { TRACE("ctor: default (1)"); }
 #else
-      : _M_dataplus(_S_construct(size_type(), _CharT(), _Alloc()), _Alloc()){ }
+      : _M_dataplus(_S_construct(size_type(), _CharT(), _Alloc()), _Alloc()){ TRACE("ctor: default (1)"); }
 #endif
 
       /**
@@ -457,6 +457,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        *  @brief  Construct string with copy of value of @a str.
        *  @param  __str  Source string.
        */
+      __attribute__((transaction_safe))
       basic_string(const basic_string& __str);
       /**
        *  @brief  Construct string as copy of a substring.
@@ -465,7 +466,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        *  @param  __n  Number of characters to copy (default remainder).
        */
       basic_string(const basic_string& __str, size_type __pos,
-		   size_type __n = npos);
+           size_type __n = npos);
       /**
        *  @brief  Construct string as copy of a substring.
        *  @param  __str  Source string.
@@ -474,7 +475,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        *  @param  __a  Allocator to use.
        */
       basic_string(const basic_string& __str, size_type __pos,
-		   size_type __n, const _Alloc& __a);
+           size_type __n, const _Alloc& __a);
 
       /**
        *  @brief  Construct string initialized by a character %array.
@@ -486,7 +487,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        *  has no special meaning.
        */
       basic_string(const _CharT* __s, size_type __n,
-		   const _Alloc& __a = _Alloc());
+           const _Alloc& __a = _Alloc());
       /**
        *  @brief  Construct string as copy of a C string.
        *  @param  __s  Source C string.
@@ -516,9 +517,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       : _M_dataplus(__str._M_dataplus)
       {
 #if _GLIBCXX_FULLY_DYNAMIC_STRING == 0
-	__str._M_data(_S_empty_rep()._M_refdata());
+    __str._M_data(_S_empty_rep()._M_refdata());
 #else
-	__str._M_data(_S_construct(size_type(), _CharT(), get_allocator()));
+    __str._M_data(_S_construct(size_type(), _CharT(), get_allocator()));
 #endif
       }
 
@@ -538,7 +539,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        */
       template<class _InputIterator>
         basic_string(_InputIterator __beg, _InputIterator __end,
-		     const _Alloc& __a = _Alloc());
+             const _Alloc& __a = _Alloc());
 
       /**
        *  @brief  Destroy the string instance.
@@ -551,7 +552,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        *  @param  __str  Source string.
        */
       basic_string&
-      operator=(const basic_string& __str) 
+      operator=(const basic_string& __str)
       { return this->assign(__str); }
 
       /**
@@ -559,7 +560,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        *  @param  __s  Source null-terminated string.
        */
       basic_string&
-      operator=(const _CharT* __s) 
+      operator=(const _CharT* __s)
       { return this->assign(__s); }
 
       /**
@@ -570,10 +571,10 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        *  (*this)[0] == @a c.
        */
       basic_string&
-      operator=(_CharT __c) 
-      { 
-	this->assign(1, __c); 
-	return *this;
+      operator=(_CharT __c)
+      {
+    this->assign(1, __c);
+    return *this;
       }
 
 #if __cplusplus >= 201103L
@@ -588,9 +589,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       basic_string&
       operator=(basic_string&& __str)
       {
-	// NB: DR 1204.
-	this->swap(__str);
-	return *this;
+    // NB: DR 1204.
+    this->swap(__str);
+    return *this;
       }
 
       /**
@@ -600,8 +601,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       basic_string&
       operator=(initializer_list<_CharT> __l)
       {
-	this->assign(__l.begin(), __l.size());
-	return *this;
+    this->assign(__l.begin(), __l.size());
+    return *this;
       }
 #endif // C++11
 
@@ -613,8 +614,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       iterator
       begin() // FIXME C++11: should be noexcept.
       {
-	_M_leak();
-	return iterator(_M_data());
+    _M_leak();
+    return iterator(_M_data());
       }
 
       /**
@@ -632,8 +633,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       iterator
       end() // FIXME C++11: should be noexcept.
       {
-	_M_leak();
-	return iterator(_M_data() + this->size());
+    _M_leak();
+    return iterator(_M_data() + this->size());
       }
 
       /**
@@ -767,13 +768,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       void
       shrink_to_fit() _GLIBCXX_NOEXCEPT
       {
-	if (capacity() > size())
-	  {
-	    __try
-	      { reserve(0); }
-	    __catch(...)
-	      { }
-	  }
+    if (capacity() > size())
+      {
+        __try
+          { reserve(0); }
+        __catch(...)
+          { }
+      }
       }
 #endif
 
@@ -814,7 +815,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       { _M_mutate(0, this->size(), 0); }
 
       /**
-       *  Returns true if the %string is empty.  Equivalent to 
+       *  Returns true if the %string is empty.  Equivalent to
        *  <code>*this == ""</code>.
        */
       bool
@@ -835,8 +836,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       const_reference
       operator[] (size_type __pos) const _GLIBCXX_NOEXCEPT
       {
-	_GLIBCXX_DEBUG_ASSERT(__pos <= size());
-	return _M_data()[__pos];
+    _GLIBCXX_DEBUG_ASSERT(__pos <= size());
+    return _M_data()[__pos];
       }
 
       /**
@@ -853,12 +854,12 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       operator[](size_type __pos)
       {
         // Allow pos == size() both in C++98 mode, as v3 extension,
-	// and in C++11 mode.
-	_GLIBCXX_DEBUG_ASSERT(__pos <= size());
+    // and in C++11 mode.
+    _GLIBCXX_DEBUG_ASSERT(__pos <= size());
         // In pedantic mode be strict in C++98 mode.
-	_GLIBCXX_DEBUG_PEDASSERT(__cplusplus >= 201103L || __pos < size());
-	_M_leak();
-	return _M_data()[__pos];
+    _GLIBCXX_DEBUG_PEDASSERT(__cplusplus >= 201103L || __pos < size());
+    _M_leak();
+    return _M_data()[__pos];
       }
 
       /**
@@ -874,12 +875,12 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       const_reference
       at(size_type __n) const
       {
-	if (__n >= this->size())
-	  __throw_out_of_range_fmt(__N("basic_string::at: __n "
-				       "(which is %zu) >= this->size() "
-				       "(which is %zu)"),
-				   __n, this->size());
-	return _M_data()[__n];
+    if (__n >= this->size())
+      __throw_out_of_range_fmt(__N("basic_string::at: __n "
+                       "(which is %zu) >= this->size() "
+                       "(which is %zu)"),
+                   __n, this->size());
+    return _M_data()[__n];
       }
 
       /**
@@ -896,13 +897,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       reference
       at(size_type __n)
       {
-	if (__n >= size())
-	  __throw_out_of_range_fmt(__N("basic_string::at: __n "
-				       "(which is %zu) >= this->size() "
-				       "(which is %zu)"),
-				   __n, this->size());
-	_M_leak();
-	return _M_data()[__n];
+    if (__n >= size())
+      __throw_out_of_range_fmt(__N("basic_string::at: __n "
+                       "(which is %zu) >= this->size() "
+                       "(which is %zu)"),
+                   __n, this->size());
+    _M_leak();
+    return _M_data()[__n];
       }
 
 #if __cplusplus >= 201103L
@@ -965,9 +966,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        */
       basic_string&
       operator+=(_CharT __c)
-      { 
-	this->push_back(__c);
-	return *this;
+      {
+    this->push_back(__c);
+    return *this;
       }
 
 #if __cplusplus >= 201103L
@@ -1022,8 +1023,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       basic_string&
       append(const _CharT* __s)
       {
-	__glibcxx_requires_string(__s);
-	return this->append(__s, traits_type::length(__s));
+    __glibcxx_requires_string(__s);
+    return this->append(__s, traits_type::length(__s));
       }
 
       /**
@@ -1067,12 +1068,12 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        */
       void
       push_back(_CharT __c)
-      { 
-	const size_type __len = 1 + this->size();
-	if (__len > this->capacity() || _M_rep()->_M_is_shared())
-	  this->reserve(__len);
-	traits_type::assign(_M_data()[this->size()], __c);
-	_M_rep()->_M_set_length_and_sharable(__len);
+      {
+    const size_type __len = 1 + this->size();
+    if (__len > this->capacity() || _M_rep()->_M_is_shared())
+      this->reserve(__len);
+    traits_type::assign(_M_data()[this->size()], __c);
+    _M_rep()->_M_set_length_and_sharable(__len);
       }
 
       /**
@@ -1096,8 +1097,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       basic_string&
       assign(basic_string&& __str)
       {
-	this->swap(__str);
-	return *this;
+    this->swap(__str);
+    return *this;
       }
 #endif // C++11
 
@@ -1117,8 +1118,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       basic_string&
       assign(const basic_string& __str, size_type __pos, size_type __n)
       { return this->assign(__str._M_data()
-			    + __str._M_check(__pos, "basic_string::assign"),
-			    __str._M_limit(__pos, __n)); }
+                + __str._M_check(__pos, "basic_string::assign"),
+                __str._M_limit(__pos, __n)); }
 
       /**
        *  @brief  Set value to a C substring.
@@ -1145,8 +1146,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       basic_string&
       assign(const _CharT* __s)
       {
-	__glibcxx_requires_string(__s);
-	return this->assign(__s, traits_type::length(__s));
+    __glibcxx_requires_string(__s);
+    return this->assign(__s, traits_type::length(__s));
       }
 
       /**
@@ -1201,7 +1202,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       void
       insert(iterator __p, size_type __n, _CharT __c)
-      {	this->replace(__p, __p, __n, __c);  }
+      { this->replace(__p, __p, __n, __c);  }
 
       /**
        *  @brief  Insert a range of characters.
@@ -1230,8 +1231,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       void
       insert(iterator __p, initializer_list<_CharT> __l)
       {
-	_GLIBCXX_DEBUG_PEDASSERT(__p >= _M_ibegin() && __p <= _M_iend());
-	this->insert(__p - _M_ibegin(), __l.begin(), __l.size());
+    _GLIBCXX_DEBUG_PEDASSERT(__p >= _M_ibegin() && __p <= _M_iend());
+    this->insert(__p - _M_ibegin(), __l.begin(), __l.size());
       }
 #endif // C++11
 
@@ -1271,10 +1272,10 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       basic_string&
       insert(size_type __pos1, const basic_string& __str,
-	     size_type __pos2, size_type __n)
+         size_type __pos2, size_type __n)
       { return this->insert(__pos1, __str._M_data()
-			    + __str._M_check(__pos2, "basic_string::insert"),
-			    __str._M_limit(__pos2, __n)); }
+                + __str._M_check(__pos2, "basic_string::insert"),
+                __str._M_limit(__pos2, __n)); }
 
       /**
        *  @brief  Insert a C substring.
@@ -1313,8 +1314,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       basic_string&
       insert(size_type __pos, const _CharT* __s)
       {
-	__glibcxx_requires_string(__s);
-	return this->insert(__pos, __s, traits_type::length(__s));
+    __glibcxx_requires_string(__s);
+    return this->insert(__pos, __s, traits_type::length(__s));
       }
 
       /**
@@ -1336,7 +1337,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       basic_string&
       insert(size_type __pos, size_type __n, _CharT __c)
       { return _M_replace_aux(_M_check(__pos, "basic_string::insert"),
-			      size_type(0), __n, __c); }
+                  size_type(0), __n, __c); }
 
       /**
        *  @brief  Insert one character.
@@ -1354,11 +1355,11 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       iterator
       insert(iterator __p, _CharT __c)
       {
-	_GLIBCXX_DEBUG_PEDASSERT(__p >= _M_ibegin() && __p <= _M_iend());
-	const size_type __pos = __p - _M_ibegin();
-	_M_replace_aux(__pos, size_type(0), size_type(1), __c);
-	_M_rep()->_M_set_leaked();
-	return iterator(_M_data() + __pos);
+    _GLIBCXX_DEBUG_PEDASSERT(__p >= _M_ibegin() && __p <= _M_iend());
+    const size_type __pos = __p - _M_ibegin();
+    _M_replace_aux(__pos, size_type(0), size_type(1), __c);
+    _M_rep()->_M_set_leaked();
+    return iterator(_M_data() + __pos);
       }
 
       /**
@@ -1378,10 +1379,10 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       basic_string&
       erase(size_type __pos = 0, size_type __n = npos)
-      { 
-	_M_mutate(_M_check(__pos, "basic_string::erase"),
-		  _M_limit(__pos, __n), size_type(0));
-	return *this;
+      {
+    _M_mutate(_M_check(__pos, "basic_string::erase"),
+          _M_limit(__pos, __n), size_type(0));
+    return *this;
       }
 
       /**
@@ -1395,12 +1396,12 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       iterator
       erase(iterator __position)
       {
-	_GLIBCXX_DEBUG_PEDASSERT(__position >= _M_ibegin()
-				 && __position < _M_iend());
-	const size_type __pos = __position - _M_ibegin();
-	_M_mutate(__pos, size_type(1), size_type(0));
-	_M_rep()->_M_set_leaked();
-	return iterator(_M_data() + __pos);
+    _GLIBCXX_DEBUG_PEDASSERT(__position >= _M_ibegin()
+                 && __position < _M_iend());
+    const size_type __pos = __position - _M_ibegin();
+    _M_mutate(__pos, size_type(1), size_type(0));
+    _M_rep()->_M_set_leaked();
+    return iterator(_M_data() + __pos);
       }
 
       /**
@@ -1414,7 +1415,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       iterator
       erase(iterator __first, iterator __last);
- 
+
 #if __cplusplus >= 201103L
       /**
        *  @brief  Remove the last character.
@@ -1467,10 +1468,10 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       basic_string&
       replace(size_type __pos1, size_type __n1, const basic_string& __str,
-	      size_type __pos2, size_type __n2)
+          size_type __pos2, size_type __n2)
       { return this->replace(__pos1, __n1, __str._M_data()
-			     + __str._M_check(__pos2, "basic_string::replace"),
-			     __str._M_limit(__pos2, __n2)); }
+                 + __str._M_check(__pos2, "basic_string::replace"),
+                 __str._M_limit(__pos2, __n2)); }
 
       /**
        *  @brief  Replace characters with value of a C substring.
@@ -1492,7 +1493,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       basic_string&
       replace(size_type __pos, size_type __n1, const _CharT* __s,
-	      size_type __n2);
+          size_type __n2);
 
       /**
        *  @brief  Replace characters with value of a C string.
@@ -1513,8 +1514,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       basic_string&
       replace(size_type __pos, size_type __n1, const _CharT* __s)
       {
-	__glibcxx_requires_string(__s);
-	return this->replace(__pos, __n1, __s, traits_type::length(__s));
+    __glibcxx_requires_string(__s);
+    return this->replace(__pos, __n1, __s, traits_type::length(__s));
       }
 
       /**
@@ -1537,7 +1538,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       basic_string&
       replace(size_type __pos, size_type __n1, size_type __n2, _CharT __c)
       { return _M_replace_aux(_M_check(__pos, "basic_string::replace"),
-			      _M_limit(__pos, __n1), __n2, __c); }
+                  _M_limit(__pos, __n1), __n2, __c); }
 
       /**
        *  @brief  Replace range of characters with string.
@@ -1574,9 +1575,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       basic_string&
       replace(iterator __i1, iterator __i2, const _CharT* __s, size_type __n)
       {
-	_GLIBCXX_DEBUG_PEDASSERT(_M_ibegin() <= __i1 && __i1 <= __i2
-				 && __i2 <= _M_iend());
-	return this->replace(__i1 - _M_ibegin(), __i2 - __i1, __s, __n);
+    _GLIBCXX_DEBUG_PEDASSERT(_M_ibegin() <= __i1 && __i1 <= __i2
+                 && __i2 <= _M_iend());
+    return this->replace(__i1 - _M_ibegin(), __i2 - __i1, __s, __n);
       }
 
       /**
@@ -1595,8 +1596,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       basic_string&
       replace(iterator __i1, iterator __i2, const _CharT* __s)
       {
-	__glibcxx_requires_string(__s);
-	return this->replace(__i1, __i2, __s, traits_type::length(__s));
+    __glibcxx_requires_string(__s);
+    return this->replace(__i1, __i2, __s, traits_type::length(__s));
       }
 
       /**
@@ -1616,9 +1617,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       basic_string&
       replace(iterator __i1, iterator __i2, size_type __n, _CharT __c)
       {
-	_GLIBCXX_DEBUG_PEDASSERT(_M_ibegin() <= __i1 && __i1 <= __i2
-				 && __i2 <= _M_iend());
-	return _M_replace_aux(__i1 - _M_ibegin(), __i2 - __i1, __n, __c);
+    _GLIBCXX_DEBUG_PEDASSERT(_M_ibegin() <= __i1 && __i1 <= __i2
+                 && __i2 <= _M_iend());
+    return _M_replace_aux(__i1 - _M_ibegin(), __i2 - __i1, __n, __c);
       }
 
       /**
@@ -1639,59 +1640,59 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       template<class _InputIterator>
         basic_string&
         replace(iterator __i1, iterator __i2,
-		_InputIterator __k1, _InputIterator __k2)
+        _InputIterator __k1, _InputIterator __k2)
         {
-	  _GLIBCXX_DEBUG_PEDASSERT(_M_ibegin() <= __i1 && __i1 <= __i2
-				   && __i2 <= _M_iend());
-	  __glibcxx_requires_valid_range(__k1, __k2);
-	  typedef typename std::__is_integer<_InputIterator>::__type _Integral;
-	  return _M_replace_dispatch(__i1, __i2, __k1, __k2, _Integral());
-	}
+      _GLIBCXX_DEBUG_PEDASSERT(_M_ibegin() <= __i1 && __i1 <= __i2
+                   && __i2 <= _M_iend());
+      __glibcxx_requires_valid_range(__k1, __k2);
+      typedef typename std::__is_integer<_InputIterator>::__type _Integral;
+      return _M_replace_dispatch(__i1, __i2, __k1, __k2, _Integral());
+    }
 
       // Specializations for the common case of pointer and iterator:
       // useful to avoid the overhead of temporary buffering in _M_replace.
       basic_string&
       replace(iterator __i1, iterator __i2, _CharT* __k1, _CharT* __k2)
       {
-	_GLIBCXX_DEBUG_PEDASSERT(_M_ibegin() <= __i1 && __i1 <= __i2
-				 && __i2 <= _M_iend());
-	__glibcxx_requires_valid_range(__k1, __k2);
-	return this->replace(__i1 - _M_ibegin(), __i2 - __i1,
-			     __k1, __k2 - __k1);
+    _GLIBCXX_DEBUG_PEDASSERT(_M_ibegin() <= __i1 && __i1 <= __i2
+                 && __i2 <= _M_iend());
+    __glibcxx_requires_valid_range(__k1, __k2);
+    return this->replace(__i1 - _M_ibegin(), __i2 - __i1,
+                 __k1, __k2 - __k1);
       }
 
       basic_string&
       replace(iterator __i1, iterator __i2,
-	      const _CharT* __k1, const _CharT* __k2)
+          const _CharT* __k1, const _CharT* __k2)
       {
-	_GLIBCXX_DEBUG_PEDASSERT(_M_ibegin() <= __i1 && __i1 <= __i2
-				 && __i2 <= _M_iend());
-	__glibcxx_requires_valid_range(__k1, __k2);
-	return this->replace(__i1 - _M_ibegin(), __i2 - __i1,
-			     __k1, __k2 - __k1);
+    _GLIBCXX_DEBUG_PEDASSERT(_M_ibegin() <= __i1 && __i1 <= __i2
+                 && __i2 <= _M_iend());
+    __glibcxx_requires_valid_range(__k1, __k2);
+    return this->replace(__i1 - _M_ibegin(), __i2 - __i1,
+                 __k1, __k2 - __k1);
       }
 
       basic_string&
       replace(iterator __i1, iterator __i2, iterator __k1, iterator __k2)
       {
-	_GLIBCXX_DEBUG_PEDASSERT(_M_ibegin() <= __i1 && __i1 <= __i2
-				 && __i2 <= _M_iend());
-	__glibcxx_requires_valid_range(__k1, __k2);
-	return this->replace(__i1 - _M_ibegin(), __i2 - __i1,
-			     __k1.base(), __k2 - __k1);
+    _GLIBCXX_DEBUG_PEDASSERT(_M_ibegin() <= __i1 && __i1 <= __i2
+                 && __i2 <= _M_iend());
+    __glibcxx_requires_valid_range(__k1, __k2);
+    return this->replace(__i1 - _M_ibegin(), __i2 - __i1,
+                 __k1.base(), __k2 - __k1);
       }
 
       basic_string&
       replace(iterator __i1, iterator __i2,
-	      const_iterator __k1, const_iterator __k2)
+          const_iterator __k1, const_iterator __k2)
       {
-	_GLIBCXX_DEBUG_PEDASSERT(_M_ibegin() <= __i1 && __i1 <= __i2
-				 && __i2 <= _M_iend());
-	__glibcxx_requires_valid_range(__k1, __k2);
-	return this->replace(__i1 - _M_ibegin(), __i2 - __i1,
-			     __k1.base(), __k2 - __k1);
+    _GLIBCXX_DEBUG_PEDASSERT(_M_ibegin() <= __i1 && __i1 <= __i2
+                 && __i2 <= _M_iend());
+    __glibcxx_requires_valid_range(__k1, __k2);
+    return this->replace(__i1 - _M_ibegin(), __i2 - __i1,
+                 __k1.base(), __k2 - __k1);
       }
-      
+
 #if __cplusplus >= 201103L
       /**
        *  @brief  Replace range of characters with initializer_list.
@@ -1708,49 +1709,49 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        *  thrown.
       */
       basic_string& replace(iterator __i1, iterator __i2,
-			    initializer_list<_CharT> __l)
+                initializer_list<_CharT> __l)
       { return this->replace(__i1, __i2, __l.begin(), __l.end()); }
 #endif // C++11
 
     private:
       template<class _Integer>
-	basic_string&
-	_M_replace_dispatch(iterator __i1, iterator __i2, _Integer __n,
-			    _Integer __val, __true_type)
+    basic_string&
+    _M_replace_dispatch(iterator __i1, iterator __i2, _Integer __n,
+                _Integer __val, __true_type)
         { return _M_replace_aux(__i1 - _M_ibegin(), __i2 - __i1, __n, __val); }
 
       template<class _InputIterator>
-	basic_string&
-	_M_replace_dispatch(iterator __i1, iterator __i2, _InputIterator __k1,
-			    _InputIterator __k2, __false_type);
+    basic_string&
+    _M_replace_dispatch(iterator __i1, iterator __i2, _InputIterator __k1,
+                _InputIterator __k2, __false_type);
 
       basic_string&
       _M_replace_aux(size_type __pos1, size_type __n1, size_type __n2,
-		     _CharT __c);
+             _CharT __c);
 
       basic_string&
       _M_replace_safe(size_type __pos1, size_type __n1, const _CharT* __s,
-		      size_type __n2);
+              size_type __n2);
 
       // _S_construct_aux is used to implement the 21.3.1 para 15 which
       // requires special behaviour if _InIter is an integral type
       template<class _InIterator>
         static _CharT*
         _S_construct_aux(_InIterator __beg, _InIterator __end,
-			 const _Alloc& __a, __false_type)
-	{
+             const _Alloc& __a, __false_type)
+    {
           typedef typename iterator_traits<_InIterator>::iterator_category _Tag;
           return _S_construct(__beg, __end, __a, _Tag());
-	}
+    }
 
       // _GLIBCXX_RESOLVE_LIB_DEFECTS
       // 438. Ambiguity in the "do the right thing" clause
       template<class _Integer>
         static _CharT*
         _S_construct_aux(_Integer __beg, _Integer __end,
-			 const _Alloc& __a, __true_type)
+             const _Alloc& __a, __true_type)
         { return _S_construct_aux_2(static_cast<size_type>(__beg),
-				    __end, __a); }
+                    __end, __a); }
 
       static _CharT*
       _S_construct_aux_2(size_type __req, _CharT __c, const _Alloc& __a)
@@ -1759,23 +1760,23 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       template<class _InIterator>
         static _CharT*
         _S_construct(_InIterator __beg, _InIterator __end, const _Alloc& __a)
-	{
-	  typedef typename std::__is_integer<_InIterator>::__type _Integral;
-	  return _S_construct_aux(__beg, __end, __a, _Integral());
+    {
+      typedef typename std::__is_integer<_InIterator>::__type _Integral;
+      return _S_construct_aux(__beg, __end, __a, _Integral());
         }
 
       // For Input Iterators, used in istreambuf_iterators, etc.
       template<class _InIterator>
         static _CharT*
          _S_construct(_InIterator __beg, _InIterator __end, const _Alloc& __a,
-		      input_iterator_tag);
+              input_iterator_tag);
 
       // For forward_iterators up to random_access_iterators, used for
       // string::iterator, _CharT*, etc.
       template<class _FwdIterator>
         static _CharT*
         _S_construct(_FwdIterator __beg, _FwdIterator __end, const _Alloc& __a,
-		     forward_iterator_tag);
+             forward_iterator_tag);
 
       static _CharT*
       _S_construct(size_type __req, _CharT __c, const _Alloc& __a);
@@ -1805,6 +1806,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        *  time.
       */
       // PR 58265, this should be noexcept.
+        __attribute__((transaction_safe))
       void
       swap(basic_string& __s);
 
@@ -1863,7 +1865,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       size_type
       find(const basic_string& __str, size_type __pos = 0) const
-	_GLIBCXX_NOEXCEPT
+    _GLIBCXX_NOEXCEPT
       { return this->find(__str.data(), __pos, __str.size()); }
 
       /**
@@ -1879,8 +1881,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       size_type
       find(const _CharT* __s, size_type __pos = 0) const
       {
-	__glibcxx_requires_string(__s);
-	return this->find(__s, __pos, traits_type::length(__s));
+    __glibcxx_requires_string(__s);
+    return this->find(__s, __pos, traits_type::length(__s));
       }
 
       /**
@@ -1908,7 +1910,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       size_type
       rfind(const basic_string& __str, size_type __pos = npos) const
-	_GLIBCXX_NOEXCEPT
+    _GLIBCXX_NOEXCEPT
       { return this->rfind(__str.data(), __pos, __str.size()); }
 
       /**
@@ -1939,8 +1941,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       size_type
       rfind(const _CharT* __s, size_type __pos = npos) const
       {
-	__glibcxx_requires_string(__s);
-	return this->rfind(__s, __pos, traits_type::length(__s));
+    __glibcxx_requires_string(__s);
+    return this->rfind(__s, __pos, traits_type::length(__s));
       }
 
       /**
@@ -1969,7 +1971,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       size_type
       find_first_of(const basic_string& __str, size_type __pos = 0) const
-	_GLIBCXX_NOEXCEPT
+    _GLIBCXX_NOEXCEPT
       { return this->find_first_of(__str.data(), __pos, __str.size()); }
 
       /**
@@ -2000,8 +2002,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       size_type
       find_first_of(const _CharT* __s, size_type __pos = 0) const
       {
-	__glibcxx_requires_string(__s);
-	return this->find_first_of(__s, __pos, traits_type::length(__s));
+    __glibcxx_requires_string(__s);
+    return this->find_first_of(__s, __pos, traits_type::length(__s));
       }
 
       /**
@@ -2033,7 +2035,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       size_type
       find_last_of(const basic_string& __str, size_type __pos = npos) const
-	_GLIBCXX_NOEXCEPT
+    _GLIBCXX_NOEXCEPT
       { return this->find_last_of(__str.data(), __pos, __str.size()); }
 
       /**
@@ -2064,8 +2066,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       size_type
       find_last_of(const _CharT* __s, size_type __pos = npos) const
       {
-	__glibcxx_requires_string(__s);
-	return this->find_last_of(__s, __pos, traits_type::length(__s));
+    __glibcxx_requires_string(__s);
+    return this->find_last_of(__s, __pos, traits_type::length(__s));
       }
 
       /**
@@ -2096,7 +2098,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       size_type
       find_first_not_of(const basic_string& __str, size_type __pos = 0) const
-	_GLIBCXX_NOEXCEPT
+    _GLIBCXX_NOEXCEPT
       { return this->find_first_not_of(__str.data(), __pos, __str.size()); }
 
       /**
@@ -2113,7 +2115,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       size_type
       find_first_not_of(const _CharT* __s, size_type __pos,
-			size_type __n) const;
+            size_type __n) const;
 
       /**
        *  @brief  Find position of a character not in C string.
@@ -2128,8 +2130,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       size_type
       find_first_not_of(const _CharT* __s, size_type __pos = 0) const
       {
-	__glibcxx_requires_string(__s);
-	return this->find_first_not_of(__s, __pos, traits_type::length(__s));
+    __glibcxx_requires_string(__s);
+    return this->find_first_not_of(__s, __pos, traits_type::length(__s));
       }
 
       /**
@@ -2144,7 +2146,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       size_type
       find_first_not_of(_CharT __c, size_type __pos = 0) const
-	_GLIBCXX_NOEXCEPT;
+    _GLIBCXX_NOEXCEPT;
 
       /**
        *  @brief  Find last position of a character not in string.
@@ -2159,7 +2161,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       size_type
       find_last_not_of(const basic_string& __str, size_type __pos = npos) const
-	_GLIBCXX_NOEXCEPT
+    _GLIBCXX_NOEXCEPT
       { return this->find_last_not_of(__str.data(), __pos, __str.size()); }
 
       /**
@@ -2176,7 +2178,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       size_type
       find_last_not_of(const _CharT* __s, size_type __pos,
-		       size_type __n) const;
+               size_type __n) const;
       /**
        *  @brief  Find last position of a character not in C string.
        *  @param __s  C string containing characters to avoid.
@@ -2191,8 +2193,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       size_type
       find_last_not_of(const _CharT* __s, size_type __pos = npos) const
       {
-	__glibcxx_requires_string(__s);
-	return this->find_last_not_of(__s, __pos, traits_type::length(__s));
+    __glibcxx_requires_string(__s);
+    return this->find_last_not_of(__s, __pos, traits_type::length(__s));
       }
 
       /**
@@ -2207,7 +2209,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       size_type
       find_last_not_of(_CharT __c, size_type __pos = npos) const
-	_GLIBCXX_NOEXCEPT;
+    _GLIBCXX_NOEXCEPT;
 
       /**
        *  @brief  Get a substring.
@@ -2224,7 +2226,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       basic_string
       substr(size_type __pos = 0, size_type __n = npos) const
       { return basic_string(*this,
-			    _M_check(__pos, "basic_string::substr"), __n); }
+                _M_check(__pos, "basic_string::substr"), __n); }
 
       /**
        *  @brief  Compare to a string.
@@ -2243,14 +2245,14 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       int
       compare(const basic_string& __str) const
       {
-	const size_type __size = this->size();
-	const size_type __osize = __str.size();
-	const size_type __len = std::min(__size, __osize);
+    const size_type __size = this->size();
+    const size_type __osize = __str.size();
+    const size_type __len = std::min(__size, __osize);
 
-	int __r = traits_type::compare(_M_data(), __str.data(), __len);
-	if (!__r)
-	  __r = _S_compare(__size, __osize);
-	return __r;
+    int __r = traits_type::compare(_M_data(), __str.data(), __len);
+    if (!__r)
+      __r = _S_compare(__size, __osize);
+    return __r;
       }
 
       /**
@@ -2300,7 +2302,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       int
       compare(size_type __pos1, size_type __n1, const basic_string& __str,
-	      size_type __pos2, size_type __n2) const;
+          size_type __pos2, size_type __n2) const;
 
       /**
        *  @brief  Compare to a C string.
@@ -2369,7 +2371,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       */
       int
       compare(size_type __pos, size_type __n1, const _CharT* __s,
-	      size_type __n2) const;
+          size_type __n2) const;
   };
 
   // operator+
@@ -2382,7 +2384,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     basic_string<_CharT, _Traits, _Alloc>
     operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	      const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+          const basic_string<_CharT, _Traits, _Alloc>& __rhs)
     {
       basic_string<_CharT, _Traits, _Alloc> __str(__lhs);
       __str.append(__rhs);
@@ -2398,7 +2400,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     basic_string<_CharT,_Traits,_Alloc>
     operator+(const _CharT* __lhs,
-	      const basic_string<_CharT,_Traits,_Alloc>& __rhs);
+          const basic_string<_CharT,_Traits,_Alloc>& __rhs);
 
   /**
    *  @brief  Concatenate character and string.
@@ -2419,7 +2421,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline basic_string<_CharT, _Traits, _Alloc>
     operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	     const _CharT* __rhs)
+         const _CharT* __rhs)
     {
       basic_string<_CharT, _Traits, _Alloc> __str(__lhs);
       __str.append(__rhs);
@@ -2436,8 +2438,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     inline basic_string<_CharT, _Traits, _Alloc>
     operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs, _CharT __rhs)
     {
-      typedef basic_string<_CharT, _Traits, _Alloc>	__string_type;
-      typedef typename __string_type::size_type		__size_type;
+      typedef basic_string<_CharT, _Traits, _Alloc> __string_type;
+      typedef typename __string_type::size_type     __size_type;
       __string_type __str(__lhs);
       __str.append(__size_type(1), __rhs);
       return __str;
@@ -2447,49 +2449,49 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline basic_string<_CharT, _Traits, _Alloc>
     operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
-	      const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+          const basic_string<_CharT, _Traits, _Alloc>& __rhs)
     { return std::move(__lhs.append(__rhs)); }
 
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline basic_string<_CharT, _Traits, _Alloc>
     operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	      basic_string<_CharT, _Traits, _Alloc>&& __rhs)
+          basic_string<_CharT, _Traits, _Alloc>&& __rhs)
     { return std::move(__rhs.insert(0, __lhs)); }
 
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline basic_string<_CharT, _Traits, _Alloc>
     operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
-	      basic_string<_CharT, _Traits, _Alloc>&& __rhs)
+          basic_string<_CharT, _Traits, _Alloc>&& __rhs)
     {
       const auto __size = __lhs.size() + __rhs.size();
       const bool __cond = (__size > __lhs.capacity()
-			   && __size <= __rhs.capacity());
+               && __size <= __rhs.capacity());
       return __cond ? std::move(__rhs.insert(0, __lhs))
-	            : std::move(__lhs.append(__rhs));
+                : std::move(__lhs.append(__rhs));
     }
 
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline basic_string<_CharT, _Traits, _Alloc>
     operator+(const _CharT* __lhs,
-	      basic_string<_CharT, _Traits, _Alloc>&& __rhs)
+          basic_string<_CharT, _Traits, _Alloc>&& __rhs)
     { return std::move(__rhs.insert(0, __lhs)); }
 
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline basic_string<_CharT, _Traits, _Alloc>
     operator+(_CharT __lhs,
-	      basic_string<_CharT, _Traits, _Alloc>&& __rhs)
+          basic_string<_CharT, _Traits, _Alloc>&& __rhs)
     { return std::move(__rhs.insert(0, 1, __lhs)); }
 
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline basic_string<_CharT, _Traits, _Alloc>
     operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
-	      const _CharT* __rhs)
+          const _CharT* __rhs)
     { return std::move(__lhs.append(__rhs)); }
 
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline basic_string<_CharT, _Traits, _Alloc>
     operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
-	      _CharT __rhs)
+          _CharT __rhs)
     { return std::move(__lhs.append(1, __rhs)); }
 #endif
 
@@ -2503,17 +2505,17 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	       const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+           const basic_string<_CharT, _Traits, _Alloc>& __rhs)
     { return __lhs.compare(__rhs) == 0; }
 
   template<typename _CharT>
     inline
     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value, bool>::__type
     operator==(const basic_string<_CharT>& __lhs,
-	       const basic_string<_CharT>& __rhs)
+           const basic_string<_CharT>& __rhs)
     { return (__lhs.size() == __rhs.size()
-	      && !std::char_traits<_CharT>::compare(__lhs.data(), __rhs.data(),
-						    __lhs.size())); }
+          && !std::char_traits<_CharT>::compare(__lhs.data(), __rhs.data(),
+                            __lhs.size())); }
 
   /**
    *  @brief  Test equivalence of C string and string.
@@ -2524,7 +2526,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator==(const _CharT* __lhs,
-	       const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+           const basic_string<_CharT, _Traits, _Alloc>& __rhs)
     { return __rhs.compare(__lhs) == 0; }
 
   /**
@@ -2536,7 +2538,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	       const _CharT* __rhs)
+           const _CharT* __rhs)
     { return __lhs.compare(__rhs) == 0; }
 
   // operator !=
@@ -2549,7 +2551,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator!=(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	       const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+           const basic_string<_CharT, _Traits, _Alloc>& __rhs)
     { return !(__lhs == __rhs); }
 
   /**
@@ -2561,7 +2563,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator!=(const _CharT* __lhs,
-	       const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+           const basic_string<_CharT, _Traits, _Alloc>& __rhs)
     { return !(__lhs == __rhs); }
 
   /**
@@ -2573,7 +2575,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator!=(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	       const _CharT* __rhs)
+           const _CharT* __rhs)
     { return !(__lhs == __rhs); }
 
   // operator <
@@ -2586,7 +2588,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator<(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	      const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+          const basic_string<_CharT, _Traits, _Alloc>& __rhs)
     { return __lhs.compare(__rhs) < 0; }
 
   /**
@@ -2598,7 +2600,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator<(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	      const _CharT* __rhs)
+          const _CharT* __rhs)
     { return __lhs.compare(__rhs) < 0; }
 
   /**
@@ -2610,7 +2612,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator<(const _CharT* __lhs,
-	      const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+          const basic_string<_CharT, _Traits, _Alloc>& __rhs)
     { return __rhs.compare(__lhs) > 0; }
 
   // operator >
@@ -2623,7 +2625,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator>(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	      const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+          const basic_string<_CharT, _Traits, _Alloc>& __rhs)
     { return __lhs.compare(__rhs) > 0; }
 
   /**
@@ -2635,7 +2637,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator>(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	      const _CharT* __rhs)
+          const _CharT* __rhs)
     { return __lhs.compare(__rhs) > 0; }
 
   /**
@@ -2647,7 +2649,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator>(const _CharT* __lhs,
-	      const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+          const basic_string<_CharT, _Traits, _Alloc>& __rhs)
     { return __rhs.compare(__lhs) < 0; }
 
   // operator <=
@@ -2660,7 +2662,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator<=(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	       const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+           const basic_string<_CharT, _Traits, _Alloc>& __rhs)
     { return __lhs.compare(__rhs) <= 0; }
 
   /**
@@ -2672,7 +2674,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator<=(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	       const _CharT* __rhs)
+           const _CharT* __rhs)
     { return __lhs.compare(__rhs) <= 0; }
 
   /**
@@ -2684,7 +2686,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator<=(const _CharT* __lhs,
-	       const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+           const basic_string<_CharT, _Traits, _Alloc>& __rhs)
     { return __rhs.compare(__lhs) >= 0; }
 
   // operator >=
@@ -2697,7 +2699,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator>=(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	       const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+           const basic_string<_CharT, _Traits, _Alloc>& __rhs)
     { return __lhs.compare(__rhs) >= 0; }
 
   /**
@@ -2709,7 +2711,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator>=(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	       const _CharT* __rhs)
+           const _CharT* __rhs)
     { return __lhs.compare(__rhs) >= 0; }
 
   /**
@@ -2721,7 +2723,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline bool
     operator>=(const _CharT* __lhs,
-	     const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+         const basic_string<_CharT, _Traits, _Alloc>& __rhs)
     { return __rhs.compare(__lhs) <= 0; }
 
   /**
@@ -2734,7 +2736,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline void
     swap(basic_string<_CharT, _Traits, _Alloc>& __lhs,
-	 basic_string<_CharT, _Traits, _Alloc>& __rhs)
+     basic_string<_CharT, _Traits, _Alloc>& __rhs)
     { __lhs.swap(__rhs); }
 
   /**
@@ -2752,7 +2754,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     basic_istream<_CharT, _Traits>&
     operator>>(basic_istream<_CharT, _Traits>& __is,
-	       basic_string<_CharT, _Traits, _Alloc>& __str);
+           basic_string<_CharT, _Traits, _Alloc>& __str);
 
   template<>
     basic_istream<char>&
@@ -2770,7 +2772,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline basic_ostream<_CharT, _Traits>&
     operator<<(basic_ostream<_CharT, _Traits>& __os,
-	       const basic_string<_CharT, _Traits, _Alloc>& __str)
+           const basic_string<_CharT, _Traits, _Alloc>& __str)
     {
       // _GLIBCXX_RESOLVE_LIB_DEFECTS
       // 586. string inserter not a formatted function
@@ -2793,7 +2795,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     basic_istream<_CharT, _Traits>&
     getline(basic_istream<_CharT, _Traits>& __is,
-	    basic_string<_CharT, _Traits, _Alloc>& __str, _CharT __delim);
+        basic_string<_CharT, _Traits, _Alloc>& __str, _CharT __delim);
 
   /**
    *  @brief  Read a line from stream into a string.
@@ -2810,20 +2812,20 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _CharT, typename _Traits, typename _Alloc>
     inline basic_istream<_CharT, _Traits>&
     getline(basic_istream<_CharT, _Traits>& __is,
-	    basic_string<_CharT, _Traits, _Alloc>& __str)
+        basic_string<_CharT, _Traits, _Alloc>& __str)
     { return getline(__is, __str, __is.widen('\n')); }
 
   template<>
     basic_istream<char>&
     getline(basic_istream<char>& __in, basic_string<char>& __str,
-	    char __delim);
+        char __delim);
 
 #ifdef _GLIBCXX_USE_WCHAR_T
   template<>
     basic_istream<wchar_t>&
     getline(basic_istream<wchar_t>& __in, basic_string<wchar_t>& __str,
-	    wchar_t __delim);
-#endif  
+        wchar_t __delim);
+#endif
 
 _GLIBCXX_END_NAMESPACE_VERSION
 } // namespace
@@ -2841,27 +2843,27 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   inline int
   stoi(const string& __str, size_t* __idx = 0, int __base = 10)
   { return __gnu_cxx::__stoa<long, int>(&std::strtol, "stoi", __str.c_str(),
-					__idx, __base); }
+                    __idx, __base); }
 
   inline long
   stol(const string& __str, size_t* __idx = 0, int __base = 10)
   { return __gnu_cxx::__stoa(&std::strtol, "stol", __str.c_str(),
-			     __idx, __base); }
+                 __idx, __base); }
 
   inline unsigned long
   stoul(const string& __str, size_t* __idx = 0, int __base = 10)
   { return __gnu_cxx::__stoa(&std::strtoul, "stoul", __str.c_str(),
-			     __idx, __base); }
+                 __idx, __base); }
 
   inline long long
   stoll(const string& __str, size_t* __idx = 0, int __base = 10)
   { return __gnu_cxx::__stoa(&std::strtoll, "stoll", __str.c_str(),
-			     __idx, __base); }
+                 __idx, __base); }
 
   inline unsigned long long
   stoull(const string& __str, size_t* __idx = 0, int __base = 10)
   { return __gnu_cxx::__stoa(&std::strtoull, "stoull", __str.c_str(),
-			     __idx, __base); }
+                 __idx, __base); }
 
   // NB: strtof vs strtod.
   inline float
@@ -2882,89 +2884,89 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   inline string
   to_string(int __val)
   { return __gnu_cxx::__to_xstring<string>(&std::vsnprintf, 4 * sizeof(int),
-					   "%d", __val); }
+                       "%d", __val); }
 
   inline string
   to_string(unsigned __val)
   { return __gnu_cxx::__to_xstring<string>(&std::vsnprintf,
-					   4 * sizeof(unsigned),
-					   "%u", __val); }
+                       4 * sizeof(unsigned),
+                       "%u", __val); }
 
   inline string
   to_string(long __val)
   { return __gnu_cxx::__to_xstring<string>(&std::vsnprintf, 4 * sizeof(long),
-					   "%ld", __val); }
+                       "%ld", __val); }
 
   inline string
   to_string(unsigned long __val)
   { return __gnu_cxx::__to_xstring<string>(&std::vsnprintf,
-					   4 * sizeof(unsigned long),
-					   "%lu", __val); }
+                       4 * sizeof(unsigned long),
+                       "%lu", __val); }
 
   inline string
   to_string(long long __val)
   { return __gnu_cxx::__to_xstring<string>(&std::vsnprintf,
-					   4 * sizeof(long long),
-					   "%lld", __val); }
+                       4 * sizeof(long long),
+                       "%lld", __val); }
 
   inline string
   to_string(unsigned long long __val)
   { return __gnu_cxx::__to_xstring<string>(&std::vsnprintf,
-					   4 * sizeof(unsigned long long),
-					   "%llu", __val); }
+                       4 * sizeof(unsigned long long),
+                       "%llu", __val); }
 
   inline string
   to_string(float __val)
   {
-    const int __n = 
+    const int __n =
       __gnu_cxx::__numeric_traits<float>::__max_exponent10 + 20;
     return __gnu_cxx::__to_xstring<string>(&std::vsnprintf, __n,
-					   "%f", __val);
+                       "%f", __val);
   }
 
   inline string
   to_string(double __val)
   {
-    const int __n = 
+    const int __n =
       __gnu_cxx::__numeric_traits<double>::__max_exponent10 + 20;
     return __gnu_cxx::__to_xstring<string>(&std::vsnprintf, __n,
-					   "%f", __val);
+                       "%f", __val);
   }
 
   inline string
   to_string(long double __val)
   {
-    const int __n = 
+    const int __n =
       __gnu_cxx::__numeric_traits<long double>::__max_exponent10 + 20;
     return __gnu_cxx::__to_xstring<string>(&std::vsnprintf, __n,
-					   "%Lf", __val);
+                       "%Lf", __val);
   }
 
 #ifdef _GLIBCXX_USE_WCHAR_T
-  inline int 
+  inline int
   stoi(const wstring& __str, size_t* __idx = 0, int __base = 10)
   { return __gnu_cxx::__stoa<long, int>(&std::wcstol, "stoi", __str.c_str(),
-					__idx, __base); }
+                    __idx, __base); }
 
-  inline long 
+  inline long
   stol(const wstring& __str, size_t* __idx = 0, int __base = 10)
   { return __gnu_cxx::__stoa(&std::wcstol, "stol", __str.c_str(),
-			     __idx, __base); }
+                 __idx, __base); }
 
   inline unsigned long
   stoul(const wstring& __str, size_t* __idx = 0, int __base = 10)
   { return __gnu_cxx::__stoa(&std::wcstoul, "stoul", __str.c_str(),
-			     __idx, __base); }
+                 __idx, __base); }
 
   inline long long
   stoll(const wstring& __str, size_t* __idx = 0, int __base = 10)
   { return __gnu_cxx::__stoa(&std::wcstoll, "stoll", __str.c_str(),
-			     __idx, __base); }
+                 __idx, __base); }
 
   inline unsigned long long
   stoull(const wstring& __str, size_t* __idx = 0, int __base = 10)
   { return __gnu_cxx::__stoa(&std::wcstoull, "stoull", __str.c_str(),
-			     __idx, __base); }
+                 __idx, __base); }
 
   // NB: wcstof vs wcstod.
   inline float
@@ -2983,36 +2985,36 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   inline wstring
   to_wstring(int __val)
   { return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf, 4 * sizeof(int),
-					    L"%d", __val); }
+                        L"%d", __val); }
 
   inline wstring
   to_wstring(unsigned __val)
   { return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf,
-					    4 * sizeof(unsigned),
-					    L"%u", __val); }
+                        4 * sizeof(unsigned),
+                        L"%u", __val); }
 
   inline wstring
   to_wstring(long __val)
   { return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf, 4 * sizeof(long),
-					    L"%ld", __val); }
+                        L"%ld", __val); }
 
   inline wstring
   to_wstring(unsigned long __val)
   { return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf,
-					    4 * sizeof(unsigned long),
-					    L"%lu", __val); }
+                        4 * sizeof(unsigned long),
+                        L"%lu", __val); }
 
   inline wstring
   to_wstring(long long __val)
   { return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf,
-					    4 * sizeof(long long),
-					    L"%lld", __val); }
+                        4 * sizeof(long long),
+                        L"%lld", __val); }
 
   inline wstring
   to_wstring(unsigned long long __val)
   { return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf,
-					    4 * sizeof(unsigned long long),
-					    L"%llu", __val); }
+                        4 * sizeof(unsigned long long),
+                        L"%llu", __val); }
 
   inline wstring
   to_wstring(float __val)
@@ -3020,7 +3022,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     const int __n =
       __gnu_cxx::__numeric_traits<float>::__max_exponent10 + 20;
     return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf, __n,
-					    L"%f", __val);
+                        L"%f", __val);
   }
 
   inline wstring
@@ -3029,7 +3031,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     const int __n =
       __gnu_cxx::__numeric_traits<double>::__max_exponent10 + 20;
     return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf, __n,
-					    L"%f", __val);
+                        L"%f", __val);
   }
 
   inline wstring
@@ -3038,7 +3040,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     const int __n =
       __gnu_cxx::__numeric_traits<long double>::__max_exponent10 + 20;
     return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf, __n,
-					    L"%Lf", __val);
+                        L"%Lf", __val);
   }
 #endif
 

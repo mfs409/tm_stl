@@ -5,88 +5,88 @@
   a few things that are declared in <string>.  We're only going to worry
   about std::string for now.
   Per http://www.cplusplus.com/reference/string/string/, we must address
-  the following:
+  the following (noting that std::string is actually basic_string<char>):
 
-|------------------------+-------------------+-----------+----------------|
-| Category               | Method            | # Methods | Location       |
-| (* if not started)     |                   |           | (default: TBD) |
-|------------------------+-------------------+-----------+----------------|
-| Member Functions       | (constructor)     |         9 |                |
-|                        | (destructor)      |         1 |                |
-|                        | operator=         |         5 |                |
-|------------------------+-------------------+-----------+----------------|
-| Iterators              | begin             |         2 |                |
-|                        | end               |         2 |                |
-|                        | rbegin            |         2 |                |
-|                        | rend              |         2 |                |
-|                        | cbegin            |         1 |                |
-|                        | cend              |         1 |                |
-|                        | crbegin           |         1 |                |
-|                        | crend             |         1 |                |
-|------------------------+-------------------+-----------+----------------|
-| iterator               | TBD               |           |                |
-| (methods)              |                   |           |                |
-|------------------------+-------------------+-----------+----------------|
-| const_iterator         | TBD               |           |                |
-| (methods)              |                   |           |                |
-|------------------------+-------------------+-----------+----------------|
-| reverse_iterator       | TBD               |           |                |
-| (methods)              |                   |           |                |
-|------------------------+-------------------+-----------+----------------|
-| const_reverse_iterator | TBD               |           |                |
-| (methods)              |                   |           |                |
-|------------------------+-------------------+-----------+----------------|
-| Capacity               | size              |         1 |                |
-|                        | length            |         1 |                |
-|                        | max_size          |         1 |                |
-|                        | resize            |         2 |                |
-|                        | capacity          |         1 |                |
-|                        | reserve           |         1 |                |
-|                        | clear             |         1 |                |
-|                        | empty             |         1 |                |
-|                        | shrink_to_fit     |         1 |                |
-|------------------------+-------------------+-----------+----------------|
-| Element access         | operator[]        |         2 |                |
-|                        | at                |         2 |                |
-|                        | back              |         2 |                |
-|                        | front             |         2 |                |
-|------------------------+-------------------+-----------+----------------|
-| Modifiers              | operator+=        |         4 |                |
-|                        | append            |         7 |                |
-|                        | push_back         |         1 |                |
-|                        | assign            |         8 |                |
-|                        | insert            |         9 |                |
-|                        | erase             |         3 |                |
-|                        | replace           |        11 |                |
-|                        | swap              |         1 |                |
-|                        | pop_back          |         1 |                |
-|------------------------+-------------------+-----------+----------------|
-| String Operations      | c_str             |         1 |                |
-|                        | data              |         1 |                |
-|                        | get_allocator     |         1 |                |
-|                        | copy              |         1 |                |
-|                        | find              |         4 |                |
-|                        | rfind             |         4 |                |
-|                        | find_first_of     |         4 |                |
-|                        | find_last_of      |         4 |                |
-|                        | find_first_not_of |         4 |                |
-|                        | find_last_not_of  |         4 |                |
-|                        | substr            |         1 |                |
-|                        | compare           |         6 |                |
-|------------------------+-------------------+-----------+----------------|
-| Non-member             | operator==        |         3 |                |
-| function               | operator!=        |         3 |                |
-| overloads (NMFOs)      | operator<         |         3 |                |
-| (Relational            | operator<=        |         3 |                |
-| Operators)             | operator>         |         3 |                |
-|                        | operator>=        |         3 |                |
-|------------------------+-------------------+-----------+----------------|
-| NMFO                   | operator+         |        12 |                |
-| (Other Operators)      | swap              |         1 |                |
-|                        | operator>>        |         1 |                |
-|                        | operator<<        |         1 |                |
-|                        | getline           |         4 |                |
-|------------------------+-------------------+-----------+----------------|
+|------------------------+-------------------+-----------+--------------------------------|
+| Category               | Method            | # Methods | Location                       |
+| (* if not started)     |                   |           | (default: bits/basic_string.h) |
+|------------------------+-------------------+-----------+--------------------------------|
+| Member Functions       | (constructor)     |         9 | 444, 461->???                  |
+|                        | (destructor)      |         1 |                                |
+|                        | operator=         |         5 |                                |
+|------------------------+-------------------+-----------+--------------------------------|
+| Iterators              | begin             |         2 |                                |
+|                        | end               |         2 |                                |
+|                        | rbegin            |         2 |                                |
+|                        | rend              |         2 |                                |
+|                        | cbegin            |         1 |                                |
+|                        | cend              |         1 |                                |
+|                        | crbegin           |         1 |                                |
+|                        | crend             |         1 |                                |
+|------------------------+-------------------+-----------+--------------------------------|
+| iterator               | TBD               |           |                                |
+| (methods)              |                   |           |                                |
+|------------------------+-------------------+-----------+--------------------------------|
+| const_iterator         | TBD               |           |                                |
+| (methods)              |                   |           |                                |
+|------------------------+-------------------+-----------+--------------------------------|
+| reverse_iterator       | TBD               |           |                                |
+| (methods)              |                   |           |                                |
+|------------------------+-------------------+-----------+--------------------------------|
+| const_reverse_iterator | TBD               |           |                                |
+| (methods)              |                   |           |                                |
+|------------------------+-------------------+-----------+--------------------------------|
+| Capacity               | size              |         1 |                                |
+|                        | length            |         1 |                                |
+|                        | max_size          |         1 |                                |
+|                        | resize            |         2 |                                |
+|                        | capacity          |         1 |                                |
+|                        | reserve           |         1 |                                |
+|                        | clear             |         1 |                                |
+|                        | empty             |         1 |                                |
+|                        | shrink_to_fit     |         1 |                                |
+|------------------------+-------------------+-----------+--------------------------------|
+| Element access         | operator[]        |         2 |                                |
+|                        | at                |         2 |                                |
+|                        | back              |         2 |                                |
+|                        | front             |         2 |                                |
+|------------------------+-------------------+-----------+--------------------------------|
+| Modifiers              | operator+=        |         4 |                                |
+|                        | append            |         7 |                                |
+|                        | push_back         |         1 |                                |
+|                        | assign            |         8 |                                |
+|                        | insert            |         9 |                                |
+|                        | erase             |         3 |                                |
+|                        | replace           |        11 |                                |
+|                        | swap              |         1 |                                |
+|                        | pop_back          |         1 |                                |
+|------------------------+-------------------+-----------+--------------------------------|
+| String Operations      | c_str             |         1 |                                |
+|                        | data              |         1 |                                |
+|                        | get_allocator     |         1 |                                |
+|                        | copy              |         1 |                                |
+|                        | find              |         4 |                                |
+|                        | rfind             |         4 |                                |
+|                        | find_first_of     |         4 |                                |
+|                        | find_last_of      |         4 |                                |
+|                        | find_first_not_of |         4 |                                |
+|                        | find_last_not_of  |         4 |                                |
+|                        | substr            |         1 |                                |
+|                        | compare           |         6 |                                |
+|------------------------+-------------------+-----------+--------------------------------|
+| Non-member             | operator==        |         3 |                                |
+| function               | operator!=        |         3 |                                |
+| overloads (NMFOs)      | operator<         |         3 |                                |
+| (Relational            | operator<=        |         3 |                                |
+| Operators)             | operator>         |         3 |                                |
+|                        | operator>=        |         3 |                                |
+|------------------------+-------------------+-----------+--------------------------------|
+| NMFO                   | operator+         |        12 |                                |
+| (Other Operators)      | swap              |         1 |                                |
+|                        | operator>>        |         1 |                                |
+|                        | operator<<        |         1 |                                |
+|                        | getline           |         4 |                                |
+|------------------------+-------------------+-----------+--------------------------------|
 */
 
 #include <string>
@@ -141,9 +141,9 @@ void thread_concurrent_test(int id)
 {
     // wait for all threads to be ready
     global_barrier->arrive(id);
-    /*
     // test constructors and destructors
-    ctor_test_concurrent(id);
+    ctor_test(id);
+    /*
     // test assignment operators
     assign_test_concurrent(id);
     // test iterators

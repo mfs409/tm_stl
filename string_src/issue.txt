@@ -1,0 +1,3 @@
+It looks like we are going to
+/proj/spear1/admin/build/gcc/x86_64-unknown-linux-gnu/32/libstdc++-v3/include/bits/basic_string.tcc
+to get the methods we need.  Why?

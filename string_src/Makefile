@@ -5,8 +5,8 @@
 # Makefile handle all rules and other global declarations
 #
 
-CXXFILES       = bench
+CXXFILES       = bench ctor
 
-LIBFILES       = functexcept snprintf_lite
+LIBFILES       = # functexcept snprintf_lite
 
 include ../common/common.mk
