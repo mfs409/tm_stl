@@ -15,7 +15,8 @@ BITS          ?= 32
 #
 # Names of input files
 #
-CXXFILES       = bench ctor assign
+#CXXFILES       = bench ctor assign iter cap element modifier observers relational swap
+CXXFILES       = bench ctor assign iter   observers  swap
 LIBFILES       = functexcept snprintf_lite # list
 IFOLDERS       = platform_inc stdinc libinc tm_stdinc tm_platform_inc
 
@@ -35,6 +36,7 @@ DEPS           = $(patsubst %.o, %.d, $(TM_OFILES) $(NOTM_OFILES))
 # and want changes to force recompilation.
 CXX            = g++
 CXXFLAGS       = -MD -O2 -fgnu-tm -ggdb -m$(BITS) -std=c++11 -nostdinc \
+                 -include ../inc/local/trace.h \
                  -I/usr/include/ $(patsubst %, -I$(IDIR)/%, $(IFOLDERS))
 CXXFLAGS_NOTM  = -DNO_TM
 LDFLAGS        = -m$(BITS) -lstdc++ -fgnu-tm

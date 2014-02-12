@@ -65,6 +65,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     vector<_Tp, _Alloc>::
     reserve(size_type __n)
     {
+      TRACE("reserve");
       if (__n > this->max_size())
 	__throw_length_error(__N("vector::reserve"));
       if (this->capacity() < __n)
@@ -91,6 +92,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       vector<_Tp, _Alloc>::
       emplace_back(_Args&&... __args)
       {
+      TRACE("emplace_back");
 	if (this->_M_impl._M_finish != this->_M_impl._M_end_of_storage)
 	  {
 	    _Alloc_traits::construct(this->_M_impl, this->_M_impl._M_finish,
@@ -111,6 +113,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     insert(iterator __position, const value_type& __x)
 #endif
     {
+      TRACE("vector.tcc insert");
       const size_type __n = __position - begin();
       if (this->_M_impl._M_finish != this->_M_impl._M_end_of_storage
 	  && __position == end())
@@ -298,6 +301,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       vector<_Tp, _Alloc>::
       emplace(const_iterator __position, _Args&&... __args)
       {
+        TRACE("emplace");
 	const size_type __n = __position - begin();
 	if (this->_M_impl._M_finish != this->_M_impl._M_end_of_storage
 	    && __position == end())
