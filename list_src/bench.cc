@@ -198,7 +198,7 @@ int main(int argc, char** argv)
     parseargs(argc, argv);
 
     // set up the barrier
-    global_barrier = new barrier(1);
+    global_barrier = new barrier(num_threads);
 
     // make threads
     std::thread* threads = new std::thread[num_threads];
