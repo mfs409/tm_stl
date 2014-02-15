@@ -2,7 +2,7 @@
 #include <string>
 #include <list>
 #include <cassert>
-#include "concurrent_tests.h"
+#include "tests.h"
 
 /// for testing ->
 namespace
@@ -52,7 +52,7 @@ std::list<Q> foo;
 /**
  * Transactional test of basic (forward, mutable) iterators
  */
-void iterator_test_concurrent(int id)
+void iterator_test(int id)
 {
     // invariant: the list starts off null
     assert(iter_list == NULL);
@@ -251,7 +251,7 @@ void iterator_test_concurrent(int id)
 /**
  *  Transactional test of mutable reverse iterators
  */
-void reverse_iterator_test_concurrent(int id)
+void reverse_iterator_test(int id)
 {
     // invariant: the list starts off null
     assert(iter_list == NULL);
@@ -442,7 +442,7 @@ void reverse_iterator_test_concurrent(int id)
 /**
  * Transactional test of legacy const forward iterators
  */
-void legacy_const_iterator_test_concurrent(int id)
+void legacy_const_iterator_test(int id)
 {
     // invariant: the list starts off null
     assert(iter_list == NULL);
@@ -628,7 +628,7 @@ void legacy_const_iterator_test_concurrent(int id)
 /**
  * Transactional test of legacy const reverse iterators
  */
-void legacy_const_reverse_iterator_test_concurrent(int id)
+void legacy_const_reverse_iterator_test(int id)
 {
     // invariant: the list starts off null
     assert(iter_list == NULL);
@@ -815,7 +815,7 @@ void legacy_const_reverse_iterator_test_concurrent(int id)
 /**
  * Transactional test of C++ const forward iterators with cbegin
  */
-void const_iterator_test_concurrent(int id)
+void const_iterator_test(int id)
 {
     // invariant: the list starts off null
     assert(iter_list == NULL);
@@ -1019,7 +1019,7 @@ void const_iterator_test_concurrent(int id)
 /**
  * Transactional test of C++11 const reverse iterators with crbegin
  */
-void const_reverse_iterator_test_concurrent(int id)
+void const_reverse_iterator_test(int id)
 {
     // invariant: the list starts off null
     assert(iter_list == NULL);

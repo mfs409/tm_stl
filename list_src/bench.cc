@@ -112,7 +112,7 @@
 #include <unistd.h>
 
 #include "../common/barrier.h"
-#include "concurrent_tests.h"
+#include "tests.h"
 
 using std::cout;
 using std::endl;
@@ -150,45 +150,45 @@ void parseargs(int argc, char** argv)
 
 /// A concurrent test for exercising every method of std::list.  This is
 /// called by every thread
-void thread_concurrent_test(int id)
+void per_thread_test(int id)
 {
     // wait for all threads to be ready
     global_barrier->arrive(id);
 
     // test constructors and destructors
-    ctor_test_concurrent(id);
+    ctor_test(id);
 
     // test assignment operators
-    assign_test_concurrent(id);
+    assign_test(id);
 
     // test iterators
-    iterator_test_concurrent(id);
-    reverse_iterator_test_concurrent(id);
-    legacy_const_iterator_test_concurrent(id);
-    legacy_const_reverse_iterator_test_concurrent(id);
-    const_iterator_test_concurrent(id);
-    const_reverse_iterator_test_concurrent(id);
+    iterator_test(id);
+    reverse_iterator_test(id);
+    legacy_const_iterator_test(id);
+    legacy_const_reverse_iterator_test(id);
+    const_iterator_test(id);
+    const_reverse_iterator_test(id);
 
     // test capacity
-    cap_test_concurrent(id);
+    cap_test(id);
 
     // test element access
-    element_test_concurrent(id);
+    element_test(id);
 
     // test modifiers
-    modifier_test_concurrent(id);
+    modifier_test(id);
 
     // test operations
-    operations_test_concurrent(id);
+    operations_test(id);
 
     // test observers
-    observers_test_concurrent(id);
+    observers_test(id);
 
     // test relational operators
-    relational_test_concurrent(id);
+    relational_test(id);
 
     // test swap
-    swap_test_concurrent(id);
+    swap_test(id);
 }
 
 /// main() just parses arguments, makes a barrier, and starts threads
@@ -203,7 +203,7 @@ int main(int argc, char** argv)
     // make threads
     std::thread* threads = new std::thread[num_threads];
     for (int i = 0; i < num_threads; ++i)
-        threads[i] = std::thread(thread_concurrent_test, i);
+        threads[i] = std::thread(per_thread_test, i);
 
     // wait for the threads to finish
     for (int i = 0; i < num_threads; ++i)

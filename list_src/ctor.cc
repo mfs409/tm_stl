@@ -2,7 +2,7 @@
 #include <string>
 #include <list>
 #include <cassert>
-#include "concurrent_tests.h"
+#include "tests.h"
 
 /// The list we will use for our tests
 std::list<int>* ctor_list = NULL;
@@ -44,7 +44,7 @@ std::list<int>* per_thread_list[256] = {NULL}; // 256 is way more than enough...
  * Here is the concurrent ctor test.  It also happens to be the concurrent
  * dtor test, since there is only a basic dtor.
  */
-void ctor_test_concurrent(int id)
+void ctor_test(int id)
 {
     // invariant: the list starts off null
     assert(ctor_list == NULL);

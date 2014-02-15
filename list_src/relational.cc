@@ -1,12 +1,12 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "concurrent_tests.h"
+#include "tests.h"
 
 /// The list we will use for our tests
 std::list<int>* rel_list = NULL;
 
-void relational_test_concurrent(int id)
+void relational_test(int id)
 {
     // helper message
     if (id == 0) {

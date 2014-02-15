@@ -2,7 +2,7 @@
 #include <string>
 #include <list>
 #include <cassert>
-#include "concurrent_tests.h"
+#include "tests.h"
 
 /// The list we will use for our tests
 std::list<int>* elt_list = NULL;
@@ -35,7 +35,7 @@ std::list<int>* elt_list = NULL;
     else if (id == 0)                                                   \
             std::cout << " [OK] " << testName << std::endl
 
-void element_test_concurrent(int id)
+void element_test(int id)
 {
     // helper message
     if (id == 0) {

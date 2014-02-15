@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "concurrent_tests.h"
+#include "tests.h"
 
 /// The list we will use for our tests
 std::list<int>* obs_list = NULL;
@@ -34,7 +34,7 @@ std::list<int>* obs_list = NULL;
     else if (id == 0)                                                   \
             std::cout << " [OK] " << testName << std::endl
 
-void observers_test_concurrent(int id)
+void observers_test(int id)
 {
     // helper message
     if (id == 0) {

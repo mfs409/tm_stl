@@ -2,7 +2,7 @@
 #include <string>
 #include <list>
 #include <cassert>
-#include "concurrent_tests.h"
+#include "tests.h"
 
 /**
  * A functor for remove_if
@@ -44,7 +44,7 @@ std::list<int>* ops_list = NULL;
     else if (id == 0)                                                   \
             std::cout << " [OK] " << testName << std::endl
 
-void operations_test_concurrent(int id)
+void operations_test(int id)
 {
     // helper message
     if (id == 0) {

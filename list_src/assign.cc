@@ -2,7 +2,7 @@
 #include <string>
 #include <list>
 #include <cassert>
-#include "concurrent_tests.h"
+#include "tests.h"
 
 /// The list we will use for our tests
 std::list<int>* assign_list = NULL;
@@ -44,7 +44,7 @@ std::list<int> extra2;
 /**
  * Here is the sequential operator= test.
  */
-void assign_test_concurrent(int id)
+void assign_test(int id)
 {
     // invariant: the list starts off null
     assert(assign_list == NULL);
