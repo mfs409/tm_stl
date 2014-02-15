@@ -185,10 +185,6 @@ void cap_test_seq()
 }
 
 
-
-
-
-
 void cap_test_concurrent(int id)
 {
     assert(cap_vector == NULL);
