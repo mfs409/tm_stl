@@ -43,7 +43,7 @@
 namespace __gnu_cxx
 {
   int __snprintf_lite(char *__buf, size_t __bufsize, const char *__fmt,
-		      va_list __ap);
+              va_list __ap);
 }
 
 namespace std _GLIBCXX_VISIBILITY(default)
@@ -125,7 +125,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   void
   __throw_system_error(int __i __attribute__((unused)))
   { _GLIBCXX_THROW_OR_ABORT(system_error(error_code(__i,
-						    generic_category()))); }
+                            generic_category()))); }
 
   void
   __throw_future_error(int __i __attribute__((unused)))
@@ -137,7 +137,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   void
   __throw_regex_error(regex_constants::error_type __ecode
-		      __attribute__((unused)))
+              __attribute__((unused)))
   { _GLIBCXX_THROW_OR_ABORT(regex_error(__ecode)); }
 
 _GLIBCXX_END_NAMESPACE_VERSION

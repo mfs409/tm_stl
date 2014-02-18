@@ -8,7 +8,7 @@ read -e libinc
 echo -n "Enter the path to your installed platform include files (e.g., /usr/include/c++/4.9.0/x86_64-unknown-linux-gnu/) :> "
 read -e platforminc
 
-echo -n "Enter the path to your gcc trunk's libstdc++-v3 folder (e.g., /proj/spear1/admin/src/gcc_trunk/libstdc++-v3/src/) :> "
+echo -n "Enter the path to your gcc trunk's libstdc++-v3 folder (e.g., /home/me/gcc_trunk/libstdc++-v3/src/) :> "
 read -e libsrc
 
 # confirm

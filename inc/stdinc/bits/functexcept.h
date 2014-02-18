@@ -69,6 +69,10 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   void
   __throw_invalid_argument(const char*) __attribute__((__noreturn__));
 
+  __attribute__((transaction_safe))
+  // [mfs] This *needs* to be transaction_safe if we are to get std::deque
+  //       working, but right now it cannot be made transaction_safe without
+  //       a ton of work...
   void
   __throw_length_error(const char*) __attribute__((__noreturn__));
 

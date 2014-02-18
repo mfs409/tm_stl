@@ -6,9 +6,10 @@
  * tests that we might run.
  */
 
-// constructor/destructor tests, from ctor.cc
-void ctor_test(int id);
+// member function tests, from member.cc: ctor tests, dtor tests, and operator= tests
+void member_test(int id);
 
+#if 0
 // operator= tests, from assign.cc
 void assign_test(int id);
 
@@ -40,3 +41,4 @@ void relational_test(int id);
 
 // test swap operation
 void swap_test(int id);
+#endif
