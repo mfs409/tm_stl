@@ -5,7 +5,7 @@
 # Makefile handle all rules and other global declarations
 #
 
-CXXFILES       = bench member
+CXXFILES       = bench member iter
 
 LIBFILES       = functexcept snprintf_lite
 

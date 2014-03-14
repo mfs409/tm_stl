@@ -19,70 +19,94 @@
      appropriate printf being called.  At that point, we know that every
      method within the category is now transaction_safe.
 
-|------------------------+---------------+-----------+-----------------------------|
-| Category               | Method        | # Methods | Trace Location              |
-| (* if not traced )     |               |           | (default: bits/stl_deque.h  |
-|------------------------+---------------+-----------+-----------------------------|
-| Member Functions       | (constructor) |         9 | 790, 803, 816, 842, 855,    |
-|                        |               |           | 871, 898 (no 4b, 5b in GCC) |
-| (VERIFICATION: TODO)   | (destructor)  |         1 | 917                         |
-|                        | operator=     |         3 | 927->deque.gcc:94, 939, 960 |
-|------------------------+---------------+-----------+-----------------------------|
-| Iterators              | begin         |         2 |                             |
-| (ctors only)           | end           |         2 |                             |
-| (VERIFICATION: TODO)   | rbegin        |         2 |                             |
-|                        | rend          |         2 |                             |
-|                        | cbegin        |         1 |                             |
-|                        | cend          |         1 |                             |
-|                        | crbegin       |         1 |                             |
-|                        | crend         |         1 |                             |
-|------------------------+---------------+-----------+-----------------------------|
-| iterator               |               |           |                             |
-| methods: TODO          |               |           |                             |
-|------------------------+---------------+-----------+-----------------------------|
-| const_iterator         |               |           |                             |
-| methods: TODO          |               |           |                             |
-|------------------------+---------------+-----------+-----------------------------|
-| reverse_iterator*      |               |           |                             |
-| methods: TODO          |               |           |                             |
-|------------------------+---------------+-----------+-----------------------------|
-| const_reverse_iterator |               |           |                             |
-| methods: TODO          |               |           |                             |
-|------------------------+---------------+-----------+-----------------------------|
-| Capacity               | size          |         1 |                             |
-| (VERIFICATION: TODO)   | max_size      |         1 |                             |
-|                        | resize        |         2 |                             |
-|                        | empty         |         1 |                             |
-|                        | shrink_to_fit |         1 |                             |
-|------------------------+---------------+-----------+-----------------------------|
-| Element access         | operator[]    |         2 |                             |
-| (VERIFICATION: TODO)   | at            |         2 |                             |
-|                        | front         |         2 |                             |
-|                        | back          |         2 |                             |
-|------------------------+---------------+-----------+-----------------------------|
-| Modifiers              | assign        |         3 |                             |
-| (VERIFICATION: TODO)   | push_back     |         2 |                             |
-|                        | push_front    |         2 |                             |
-|                        | pop_back      |         1 |                             |
-|                        | pop_front     |         1 |                             |
-|                        | insert        |         5 |                             |
-|                        | erase         |         2 |                             |
-|                        | swap          |         1 |                             |
-|                        | clear         |         1 |                             |
-|                        | emplace       |         1 |                             |
-|                        | emplace_front |         1 |                             |
-|                        | emplace_back  |         1 |                             |
-|------------------------+---------------+-----------+-----------------------------|
-| Allocators             | get_allocator |         1 |                             |
-|------------------------+---------------+-----------+-----------------------------|
-| Non-member             | '=='          |         1 |                             |
-| function               | '!='          |         1 |                             |
-| overloads (NMFOs)      | '<'           |         1 |                             |
-| (7 total... OK)        | '<='          |         1 |                             |
-|                        | '>'           |         1 |                             |
-|                        | '>='          |         1 |                             |
-|                        | swap          |         1 |                             |
-|------------------------+---------------+-----------+-----------------------------|
+|------------------------+-----------------+-----------+-----------------------------|
+| Category               | Method          | # Methods | Trace Location              |
+| (* if not traced )     |                 |           | (default: bits/stl_deque.h  |
+|------------------------+-----------------+-----------+-----------------------------|
+| Member Functions       | (constructor)   |         9 | 790, 803, 816, 842, 855,    |
+| (verified)             |                 |           | 871, 898 (no 4b, 5b in GCC) |
+|                        | (destructor)    |         1 | 917                         |
+|                        | operator=       |         3 | 927->deque.gcc:94, 939, 960 |
+|------------------------+-----------------+-----------+-----------------------------|
+| Iterators              | begin           |         2 | 1037, 1045                  |
+| (VERIFICATION: TODO)   | end             |         2 | 1054, 1063                  |
+|                        | rbegin          |         2 | 1072, 1081                  |
+|                        | rend            |         2 | 1090, 1099                  |
+|                        | cbegin          |         1 | 1108                        |
+|                        | cend            |         1 | 1117                        |
+|                        | crbegin         |         1 | 1126                        |
+|                        | crend           |         1 | 1135                        |
+|------------------------+-----------------+-----------+-----------------------------|
+| Iterator               | ctor            |         3 | 130, 133, 137               |
+| Methods                | operator*       |         1 | 145                         |
+| (VERIFICATION: TODO)   | operator->      |         1 | 149                         |
+|                        | operator++      |         2 | 153, 165                    |
+|                        | operator--      |         2 | 173, 185                    |
+|                        | operator+=      |         1 | 193                         |
+|                        | operator+       |         1 | 212                         |
+|                        | operator-=      |         1 | 219                         |
+|                        | operator-       |         1 | 223                         |
+|                        | operator[]      |         1 | 230                         |
+|------------------------+-----------------+-----------+-----------------------------|
+| Iterator               | operator==      |         2 | 253, 260                    |
+| Overloads              | operator!=      |         2 | 266, 273                    |
+| (VERIFICATION: TODO)   | operator<       |         2 | 279, 287                    |
+|                        | operator>       |         2 | 294, 301                    |
+|                        | operator<=      |         2 | 307, 314                    |
+|                        | operator>=      |         2 | 320, 327                    |
+|                        | operator-       |         2 | 327, 349                    |
+|                        | operator+       |         1 | 360                         |
+|------------------------+-----------------+-----------+-----------------------------|
+| Iterator               | copy-assignable |           |                             |
+| Other: TODO            | destructible    |           |                             |
+|                        | swappable       |           |                             |
+|------------------------+-----------------+-----------+-----------------------------|
+| Const Iterator         |                 |           |                             |
+| Methods: N/A           |                 |           |                             |
+| (subsumed by above)    |                 |           |                             |
+|------------------------+-----------------+-----------+-----------------------------|
+| reverse_iterator*      |                 |           |                             |
+| methods: TODO          |                 |           |                             |
+|------------------------+-----------------+-----------+-----------------------------|
+| Const Reverse Iterator |                 |           |                             |
+| Methods: N/A           |                 |           |                             |
+| (subsumed by above)    |                 |           |                             |
+|------------------------+-----------------+-----------+-----------------------------|
+| Capacity               | size            |         1 | 1142                        |
+| (VERIFICATION: TODO)   | max_size        |         1 | 1147                        |
+|                        | resize          |         2 | 1161, 1183                  |
+|                        | empty           |         1 | 1228                        |
+|                        | shrink_to_fit   |         1 | 1219                        |
+|------------------------+-----------------+-----------+-----------------------------|
+| Element access         | operator[]      |         2 | 1244, 1259                  |
+| (VERIFICATION: TODO)   | at              |         2 | 1287, 1305                  |
+|                        | front           |         2 | 1316, 1324                  |
+|                        | back            |         2 | 1332, 1344                  |
+|------------------------+-----------------+-----------+-----------------------------|
+| Modifiers              | assign          |         3 | 978, 997, 1022              |
+| (VERIFICATION: TODO)   | push_back       |         2 | 1393, 1407                  |
+|                        | push_front      |         2 | 1362, 1375                  |
+|                        | pop_back        |         1 |                             |
+|                        | pop_front       |         1 | 1424, 1445                  |
+|                        | insert          |         5 | 1480->deque.tcc:179, 1507,  |
+|                        |                 |           | 1520, 1536, 1573            |
+|                        | erase           |         2 | 1620, 1644                  |
+|                        | swap            |         1 | 1657                        |
+|                        | clear           |         1 | 1677                        |
+|                        | emplace         |         1 | 1468->deque.tcc:152         |
+|                        | emplace_front   |         1 | 1379->deque.tcc:117         |
+|                        | emplace_back    |         1 | 1411->deque.tcc:133         |
+|------------------------+-----------------+-----------+-----------------------------|
+| Allocators             | get_allocator   |         1 | 1028                        |
+|------------------------+-----------------+-----------+-----------------------------|
+| Non-member             | '=='            |         1 | 2025                        |
+| function               | '!='            |         1 | 2051                        |
+| overloads (NMFOs)      | '<'             |         1 | 2058                        |
+| (7 total... OK)        | '<='            |         1 | 2065                        |
+|                        | '>'             |         1 | 2043                        |
+|                        | '>='            |         1 | 2072                        |
+|                        | swap            |         1 | 2078                        |
+|------------------------+-----------------+-----------+-----------------------------|
 */
 
 #include <list>
@@ -141,12 +165,9 @@ void per_thread_test(int id)
     // test member functions (ctor, dtor, operator=)
     member_test(id);
 
-#if 0
-    // test assignment operators
-    assign_test(id);
-
     // test iterators
-    iterator_test(id);
+    iter_test(id);
+#if 0
     reverse_iterator_test(id);
     legacy_const_iterator_test(id);
     legacy_const_reverse_iterator_test(id);
