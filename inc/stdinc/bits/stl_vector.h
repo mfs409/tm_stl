@@ -248,7 +248,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       explicit
       vector(const allocator_type& __a = allocator_type()) _GLIBCXX_NOEXCEPT
-      : _Base(__a) { }
+	: _Base(__a) {TRACE("Basic constructor (1)"); }
 
 #if __cplusplus >= 201103L
       /**
@@ -262,7 +262,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       explicit
       vector(size_type __n, const allocator_type& __a = allocator_type())
       : _Base(__n, __a)
-      { _M_default_initialize(__n); }
+      { TRACE("Sized constructor with defaults (2)"); _M_default_initialize(__n); }
 
       /**
        *  @brief  Creates a %vector with copies of an exemplar element.
@@ -275,7 +275,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       vector(size_type __n, const value_type& __value,
 	     const allocator_type& __a = allocator_type())
       : _Base(__n, __a)
-      { _M_fill_initialize(__n, __value); }
+      { TRACE("Sized constructor (2)"); _M_fill_initialize(__n, __value); }
 #else
       /**
        *  @brief  Creates a %vector with copies of an exemplar element.
@@ -289,7 +289,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       vector(size_type __n, const value_type& __value = value_type(),
 	     const allocator_type& __a = allocator_type())
       : _Base(__n, __a)
-      { _M_fill_initialize(__n, __value); }
+      { TRACE("Unknown constructor (?)"); _M_fill_initialize(__n, __value); }
 #endif
 
       /**
@@ -304,7 +304,8 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       vector(const vector& __x)
       : _Base(__x.size(),
         _Alloc_traits::_S_select_on_copy(__x._M_get_Tp_allocator()))
-      { this->_M_impl._M_finish =
+      {  TRACE("Copy constructor (4)");
+         this->_M_impl._M_finish =
 	  std::__uninitialized_copy_a(__x.begin(), __x.end(),
 				      this->_M_impl._M_start,
 				      _M_get_Tp_allocator());
@@ -319,7 +320,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  The contents of @a __x are a valid, but unspecified %vector.
        */
       vector(vector&& __x) noexcept
-      : _Base(std::move(__x)) { }
+      : _Base(std::move(__x)) { TRACE("Move constructor (5)");}
 
       /// Copy constructor with alternative allocator
       vector(const vector& __x, const allocator_type& __a)
@@ -360,7 +361,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 	     const allocator_type& __a = allocator_type())
       : _Base(__a)
       {
-	_M_range_initialize(__l.begin(), __l.end(),
+	TRACE("Initializer constructor (6)"); _M_range_initialize(__l.begin(), __l.end(),
 			    random_access_iterator_tag());
       }
 #endif
@@ -387,7 +388,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
         vector(_InputIterator __first, _InputIterator __last,
 	       const allocator_type& __a = allocator_type())
 	: _Base(__a)
-        { _M_initialize_dispatch(__first, __last, __false_type()); }
+        { TRACE("Range constructor (3)"); _M_initialize_dispatch(__first, __last, __false_type()); }
 #else
       template<typename _InputIterator>
         vector(_InputIterator __first, _InputIterator __last,
@@ -655,6 +656,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  %vector's current size the %vector is truncated, otherwise
        *  default constructed elements are appended.
        */
+      //tm_safe
       void
       resize(size_type __new_size)
       {
@@ -677,6 +679,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  the %vector is extended and new elements are populated with
        *  given data.
        */
+      //tm_safe
       void
       resize(size_type __new_size, const value_type& __x)
       {
@@ -751,6 +754,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  %advance, and thus prevent a possible reallocation of memory
        *  and copying of %vector data.
        */
+      //tm_safe
       void
       reserve(size_type __n);
 
@@ -787,6 +791,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
     protected:
       /// Safety check used only from at().
+      //tm_safe
       void
       _M_range_check(size_type __n) const
       {
@@ -809,6 +814,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  is first checked that it is in the range of the vector.  The
        *  function throws out_of_range if the check fails.
        */
+      //tm_safe
       reference
       at(size_type __n)
       {
@@ -828,6 +834,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  is first checked that it is in the range of the vector.  The
        *  function throws out_of_range if the check fails.
        */
+      //tm_safe
       const_reference
       at(size_type __n) const
       {
@@ -975,6 +982,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  could be expensive for a %vector and if it is frequently
        *  used the user should consider using std::list.
        */
+      //tm_safe
       iterator
       insert(const_iterator __position, const value_type& __x);
 #else
@@ -1005,6 +1013,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  could be expensive for a %vector and if it is frequently
        *  used the user should consider using std::list.
        */
+      //tm_safe
       iterator
       insert(const_iterator __position, value_type&& __x)
       { TRACE("standard insert"); return emplace(__position, std::move(__x)); }
@@ -1042,6 +1051,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  %vector and if it is frequently used the user should
        *  consider using std::list.
        */
+      //tm_safe
       iterator
       insert(const_iterator __position, size_type __n, const value_type& __x)
       {
@@ -1383,6 +1393,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       // Called by insert(p,n,x), and the range insert when it turns out to be
       // the same thing.
+      //tm_safe
       void
       _M_fill_insert(iterator __pos, size_type __n, const value_type& __x);
 
@@ -1410,6 +1421,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #endif
 
       // Called by the latter.
+      //tm_safe
       size_type
       _M_check_len(size_type __n, const char* __s) const
       {
@@ -1483,6 +1495,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
    *  and if corresponding elements compare equal.
   */
   template<typename _Tp, typename _Alloc>
+    TM_SAFE_ATT
     inline bool
     operator==(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
     { TRACE("operator=="); return (__x.size() == __y.size()

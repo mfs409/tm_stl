@@ -796,7 +796,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
       return _OI(std::__fill_n_a(std::__niter_base(__first), __n, __value));
     }
-
+ 
   template<bool _BoolType>
     struct __equal
     {
@@ -1043,6 +1043,7 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
    *  ranges are equal.
   */
   template<typename _II1, typename _II2>
+    TM_SAFE_ATT
     inline bool
     equal(_II1 __first1, _II1 __last1, _II2 __first2)
     {

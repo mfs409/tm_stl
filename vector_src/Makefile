@@ -6,7 +6,7 @@
 #
 
 CXXFILES       = bench assign ctor iter \
-                 observers swap # TODO: modifier relational cap element
+                 observers swap modifier relational cap element
 
 LIBFILES       = functexcept snprintf_lite
 
