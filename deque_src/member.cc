@@ -4,7 +4,7 @@
 #include <cassert>
 #include "tests.h"
 
-/// The list we will use for our tests
+/// The deque we will use for our tests
 std::deque<int>* member_deque = NULL;
 
 /// clone the list to a local array represented by dsize, data[]

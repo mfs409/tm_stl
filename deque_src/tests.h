@@ -9,6 +9,9 @@
 // member function tests, from member.cc: ctor tests, dtor tests, and operator= tests
 void member_test(int id);
 
+// iterator tests, from iter.cc
+void iter_test(int id);
+
 #if 0
 // operator= tests, from assign.cc
 void assign_test(int id);
