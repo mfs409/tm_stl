@@ -11,6 +11,7 @@ void member_test(int id);
 
 // iterator tests, from iter.cc
 void iter_test(int id);
+void legacy_const_iter_test(int id);
 
 #if 0
 // operator= tests, from assign.cc

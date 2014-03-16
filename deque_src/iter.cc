@@ -84,6 +84,37 @@ void iter_test(int id)
 
 void legacy_const_iter_test(int id)
 {
+    global_barrier->arrive(id);
+
+    // a temporary array into which we can copy deque data
+    int data[256], dsize;
+
+    // the first test will simply ensure that we can call begin() and end()
+    // correctly
+    if (id == 0)
+        printf("Testing legacy const iterator functions: begin(1), end(1)\n");
+    global_barrier->arrive(id);
+    {
+    bool ok = false;
+    RESET_LOCAL(-2);
+    BEGIN_TX;
+    iter_deque_int = new std::deque<int>();
+    const std::deque<int>* cd = iter_deque_int;
+    std::deque<int>::const_iterator b = cd->begin();
+    std::deque<int>::const_iterator e = cd->end();
+    ok = (b == e);
+    delete(iter_deque_int);
+    iter_deque_int = NULL;
+    END_TX;
+    if (!ok)
+        printf(" [%d] iterator begin and end did not match for empty deque", id);
+    else if (id == 0)
+        printf(" [OK] %s\n", "basic iterator begin and end");
+    }
+}
+
+void const_iter_test(int id)
+{
 }
 
 void reverse_iter_test(int id)
@@ -91,10 +122,6 @@ void reverse_iter_test(int id)
 }
 
 void legacy_const_reverse_iter_test(int id)
-{
-}
-
-void const_iter_test(int id)
 {
 }
 
