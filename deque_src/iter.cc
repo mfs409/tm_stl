@@ -47,6 +47,26 @@ std::deque<Q>*   iter_deque_q   = NULL;
     else if (id == 0)                                                   \
         printf(" [OK::count+data] %s\n", test_name)
 
+void iter_create_tests(int id)
+{
+}
+
+void basic_iter_tests(int id)
+{
+}
+
+void const_iter_tests(int id)
+{
+}
+
+void rev_iter_tests(int id)
+{
+}
+
+void const_rev_iter_tests(int id)
+{
+}
+
 /**
  * Here is the test of basic iteration.  we test non-const begin() and end(),
  * and then make sure the resulting iterator's functions all work.  Note that

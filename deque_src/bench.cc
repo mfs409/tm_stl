@@ -147,35 +147,45 @@ std::mutex global_mutex;
 void usage()
 {
     cout << "Command-Line Options:" << endl
-         << "  -n <int>  : specify the number of threads" << endl
-         << "  -h        : display this message" << endl
-         << "  -t <name> : enable a test" << endl
-         << "               f: member functions" << endl
-         << "               i: iterators " << endl
-         << "               c: capacity" << endl
-         << "               e: element access " << endl
-         << "               m: modifiers" << endl
-         << "               a: allocators " << endl
-         << "               n: non-member function overleads " << endl
-         << "               *: all" << endl << endl;
+         << "  -n <int> : specify the number of threads" << endl
+         << "  -h       : display this message" << endl
+         << "  -T       : enable all tests" << endl
+         << "  -t <int> : enable a specific test" << endl
+         << "               1 constructors and destructors" << endl
+         << "               2 operator=" << endl
+         << "               3 iterator creation" << endl
+         << "               4 basic iterator use" << endl
+         << "               5 const iterator use" << endl
+         << "               6 reverse iterator use" << endl
+         << "               7 const reverse iterator use" << endl
+         << "               8 capacity methods" << endl
+         << "               9 element access methods" << endl
+         << "              10 modifier methods" << endl
+         << "              11 observer methods" << endl
+         << "              12 relational operator use" << endl
+         << "              13 swap use" << endl
+         << endl;
     exit(0);
 }
 
-bool tests[7] = {false};
+#define NUM_TESTS 13
+bool test_flags[NUM_TESTS] = {false};
 
-void enable_test(char which)
-{
-    switch (which) {
-      case 'f': tests[0] = true; break;
-      case 'i': tests[1] = true; break;
-      case 'c': tests[2] = true; break;
-      case 'e': tests[3] = true; break;
-      case 'm': tests[4] = true; break;
-      case 'a': tests[5] = true; break;
-      case 'n': tests[6] = true; break;
-      case '*': for (int i = 0; i < 7; ++i) tests[i] = true; break;
-    }
-}
+void (*test_names[NUM_TESTS])(int) = {
+    ctor_dtor_tests,                                    // member.cc
+    op_eq_tests,                                        // member.cc
+    iter_create_tests,                                  // iter.cc
+    basic_iter_tests,                                   // iter.cc
+    const_iter_tests,                                   // iter.cc
+    rev_iter_tests,                                     // iter.cc
+    const_rev_iter_tests,                               // iter.cc
+    cap_tests,                                          // cap.cc
+    element_tests,                                      // element.cc
+    modifier_tests,                                     // modifier.cc
+    observers_test,                                     // observer.cc
+    relational_operator_tests,                          // overloads.cc
+    swap_tests                                          // overloads.cc
+};
 
 /// Parse command line arguments using getopt()
 void parseargs(int argc, char** argv)
@@ -186,7 +196,8 @@ void parseargs(int argc, char** argv)
         switch (opt) {
           case 'n': num_threads = atoi(optarg); break;
           case 'h': usage();                    break;
-          case 't': enable_test(*optarg);  break;
+          case 't': test_flags[atoi(optarg)] = true; break;
+          case 'T': for (int i = 0; i < NUM_TESTS; ++i) test_flags[i] = true; break;
         }
     }
 }
@@ -198,43 +209,10 @@ void per_thread_test(int id)
     // wait for all threads to be ready
     global_barrier->arrive(id);
 
-    // test member functions (ctor, dtor, operator=)
-    if (tests[0])
-        member_test(id);
-
-    // test iterators
-    if (tests[1]) {
-        iter_test(id);
-        legacy_const_iter_test(id);
-    }
-
-#if 0
-    reverse_iterator_test(id);
-    legacy_const_iterator_test(id);
-    legacy_const_reverse_iterator_test(id);
-    const_reverse_iterator_test(id);
-
-    // test capacity
-    cap_test(id);
-
-    // test element access
-    element_test(id);
-
-    // test modifiers
-    modifier_test(id);
-
-    // test operations
-    operations_test(id);
-
-    // test observers
-    observers_test(id);
-
-    // test relational operators
-    relational_test(id);
-
-    // test swap
-    swap_test(id);
-#endif
+    // run the tests that were requested on the command line
+    for (int i = 0; i < NUM_TESTS; ++i)
+        if (test_flags[i])
+            test_names[i](id);
 }
 
 /// main() just parses arguments, makes a barrier, and starts threads

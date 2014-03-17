@@ -5,7 +5,7 @@
 # Makefile handle all rules and other global declarations
 #
 
-CXXFILES       = bench member iter
+CXXFILES       = bench member iter cap element modifier observer overloads
 
 LIBFILES       = functexcept snprintf_lite
 
