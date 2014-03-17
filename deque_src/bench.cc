@@ -67,9 +67,9 @@
 |                        | operator-       |     2 | 327, 349                    |        |
 |                        | operator+       |     1 | 360                         |        |
 |------------------------+-----------------+-------+-----------------------------+--------|
-| Iterator               | copy-assignable |       |                             |      0 |
-| Other                  | destructible    |       |                             |        |
-|                        | swappable       |       |                             |        |
+| Iterator               | copy-assignable |       |                             |      4 |
+| Other                  | destructible    |       |                             |      4 |
+|                        | swappable       |       |                             |      0 |
 |------------------------+-----------------+-------+-----------------------------+--------|
 | Const Iterator         |                 |       |                             |      0 |
 | Methods                |                 |       |                             |        |
