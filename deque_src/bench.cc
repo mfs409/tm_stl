@@ -38,14 +38,14 @@
 |                        | (destructor)    |     1 | 917                         |        |
 |                        | operator=       |     3 | 927->deque.gcc:94, 939, 960 |        |
 |------------------------+-----------------+-------+-----------------------------+--------|
-| Iterators              | begin           |     2 | 1037, 1045                  |      3 |
-|                        | end             |     2 | 1054, 1063                  |      3 |
-|                        | rbegin          |     2 | 1072, 1081                  |      2 |
-|                        | rend            |     2 | 1090, 1099                  |      2 |
-|                        | cbegin          |     1 | 1108                        |      2 |
-|                        | cend            |     1 | 1117                        |      2 |
-|                        | crbegin         |     1 | 1126                        |      2 |
-|                        | crend           |     1 | 1135                        |      2 |
+| Iterators              | begin           |     2 | 1037, 1045                  |      4 |
+|                        | end             |     2 | 1054, 1063                  |        |
+|                        | rbegin          |     2 | 1072, 1081                  |        |
+|                        | rend            |     2 | 1090, 1099                  |        |
+|                        | cbegin          |     1 | 1108                        |        |
+|                        | cend            |     1 | 1117                        |        |
+|                        | crbegin         |     1 | 1126                        |        |
+|                        | crend           |     1 | 1135                        |        |
 |------------------------+-----------------+-------+-----------------------------+--------|
 | Iterator               | ctor            |     3 | 130, 133, 137               |      2 |
 | Methods                | operator*       |     1 | 145                         |        |
@@ -168,10 +168,11 @@ void usage()
     exit(0);
 }
 
-#define NUM_TESTS 13
+#define NUM_TESTS 14
 bool test_flags[NUM_TESTS] = {false};
 
 void (*test_names[NUM_TESTS])(int) = {
+    NULL,
     ctor_dtor_tests,                                    // member.cc
     op_eq_tests,                                        // member.cc
     iter_create_tests,                                  // iter.cc

@@ -49,6 +49,133 @@ std::deque<Q>*   iter_deque_q   = NULL;
 
 void iter_create_tests(int id)
 {
+    global_barrier->arrive(id);
+
+    // a temporary array into which we can copy deque data
+    int data[256], dsize;
+
+    if (id == 0)
+        printf("Testing iterator functions: begin(2), end(2), rbegin(2), rend(2), cbegin, cend, crbegin, crend\n");
+
+    // the first test will simply ensure that we can call begin() and end()
+    // correctly
+    global_barrier->arrive(id);
+    {
+        bool ok = false;
+        RESET_LOCAL(-2);
+        BEGIN_TX;
+        iter_deque_int = new std::deque<int>();
+        std::deque<int>::iterator b = iter_deque_int->begin();
+        std::deque<int>::iterator e = iter_deque_int->end();
+        ok = (b == e);
+        delete(iter_deque_int);
+        iter_deque_int = NULL;
+        END_TX;
+        if (!ok)
+            printf(" [%d] iterator begin and end did not match for empty deque", id);
+        else if (id == 0)
+            printf(" [OK] %s\n", "basic iterator begin and end");
+    }
+
+    // now test the legacy const begin() and end() calls
+    global_barrier->arrive(id);
+    {
+        bool ok = false;
+        RESET_LOCAL(-2);
+        BEGIN_TX;
+        iter_deque_int = new std::deque<int>();
+        const std::deque<int>* cd = iter_deque_int;
+        std::deque<int>::const_iterator b = cd->begin();
+        std::deque<int>::const_iterator e = cd->end();
+        ok = (b == e);
+        delete(iter_deque_int);
+        iter_deque_int = NULL;
+        END_TX;
+        if (!ok)
+            printf(" [%d] iterator begin and end did not match for empty deque", id);
+        else if (id == 0)
+            printf(" [OK] %s\n", "legacy const iterator begin and end");
+    }
+
+    // the first test will simply ensurec that we can call begin() and end()
+    // correctly
+    global_barrier->arrive(id);
+    {
+        bool ok = false;
+        RESET_LOCAL(-2);
+        BEGIN_TX;
+        iter_deque_int = new std::deque<int>();
+        std::deque<int>::reverse_iterator b = iter_deque_int->rbegin();
+        std::deque<int>::reverse_iterator e = iter_deque_int->rend();
+        ok = (b == e);
+        delete(iter_deque_int);
+        iter_deque_int = NULL;
+        END_TX;
+        if (!ok)
+            printf(" [%d] iterator rbegin and rend did not match for empty deque", id);
+        else if (id == 0)
+            printf(" [OK] %s\n", "basic reverse iterator rbegin and rend");
+    }
+
+    // now test the legacy const rbegin() and rend() calls
+    global_barrier->arrive(id);
+    {
+        bool ok = false;
+        RESET_LOCAL(-2);
+        BEGIN_TX;
+        iter_deque_int = new std::deque<int>();
+        const std::deque<int>* cd = iter_deque_int;
+        std::deque<int>::const_reverse_iterator b = cd->rbegin();
+        std::deque<int>::const_reverse_iterator e = cd->rend();
+        ok = (b == e);
+        delete(iter_deque_int);
+        iter_deque_int = NULL;
+        END_TX;
+        if (!ok)
+            printf(" [%d] iterator rbegin and rend did not match for empty deque", id);
+        else if (id == 0)
+            printf(" [OK] %s\n", "legacy const reverse iterator rbegin and rend");
+    }
+
+    // now test the c++11 const begin() and end() calls
+    global_barrier->arrive(id);
+    {
+        bool ok = false;
+        RESET_LOCAL(-2);
+        BEGIN_TX;
+        iter_deque_int = new std::deque<int>();
+        const std::deque<int>* cd = iter_deque_int;
+        std::deque<int>::const_iterator b = cd->cbegin();
+        std::deque<int>::const_iterator e = cd->cend();
+        ok = (b == e);
+        delete(iter_deque_int);
+        iter_deque_int = NULL;
+        END_TX;
+        if (!ok)
+            printf(" [%d] iterator cbegin and cend did not match for empty deque", id);
+        else if (id == 0)
+            printf(" [OK] %s\n", "c++11 cbegin and cend");
+    }
+
+    // now test the c++11 crbegin() and crend() calls
+    global_barrier->arrive(id);
+    {
+        bool ok = false;
+        RESET_LOCAL(-2);
+        BEGIN_TX;
+        iter_deque_int = new std::deque<int>();
+        const std::deque<int>* cd = iter_deque_int;
+        std::deque<int>::const_reverse_iterator b = cd->crbegin();
+        std::deque<int>::const_reverse_iterator e = cd->crend();
+        ok = (b == e);
+        delete(iter_deque_int);
+        iter_deque_int = NULL;
+        END_TX;
+        if (!ok)
+            printf(" [%d] iterator crbegin and crend did not match for empty deque", id);
+        else if (id == 0)
+            printf(" [OK] %s\n", "c++11 crbegin and crend");
+    }
 }
 
 void basic_iter_tests(int id)
