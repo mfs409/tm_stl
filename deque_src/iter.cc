@@ -180,6 +180,191 @@ void iter_create_tests(int id)
 
 void basic_iter_tests(int id)
 {
+    global_barrier->arrive(id);
+
+    // a temporary array into which we can copy deque data
+    int data[256], dsize;
+
+    if (id == 0)
+        printf("Testing functions on std::deque::iterator\n");
+
+    // test copy-assignable, copy constructable, and destructable
+    global_barrier->arrive(id);
+    {
+        RESET_LOCAL(-2);
+        BEGIN_TX;
+        iter_deque_int = new std::deque<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+        // iterators should be default constructable
+        std::deque<int>::iterator i = std::deque<int>::iterator();
+        // iterators should be copy constructable
+        std::deque<int>::iterator b(iter_deque_int->begin());
+        // iterators should be copy assignable
+        std::deque<int>::iterator e = iter_deque_int->end();
+        std::deque<int>::iterator* pe = new std::deque<int>::iterator(e);
+        // manually copy the vector, so we can be sure to use i, b, and
+        // pe... otherwise this might get optimized out
+        dsize = 0;
+        for (i = b; i != *pe; ++i) {
+            data[dsize++] = *i;
+        }
+        // iterators should be destructable
+        delete pe;
+        END_TX;
+        CHECK("ctors, dtors, and assignment", 10, 10, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    }
+
+    // iterators should be swappable
+    global_barrier->arrive(id);
+    {
+        RESET_LOCAL(-2);
+        BEGIN_TX;
+        iter_deque_int = new std::deque<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+        std::deque<int>::iterator b = iter_deque_int->begin();
+        std::deque<int>::iterator e = iter_deque_int->end();
+        std::swap(b, e);
+        // manually copy the vector, so we can be sure to use b, e
+        dsize = 0;
+        for (std::deque<int>::iterator i = e; i != b; ++i) {
+            data[dsize++] = *i;
+        }
+        END_TX;
+        CHECK("swap iterators", 10, 10, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    }
+
+    // test comparability of iterators
+    global_barrier->arrive(id);
+    {
+        RESET_LOCAL(-2);
+        bool ok = true;
+        BEGIN_TX;
+        iter_deque_int = new std::deque<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+        std::deque<int>::iterator b = iter_deque_int->begin();
+        std::deque<int>::iterator e = iter_deque_int->end();
+        std::deque<int>::const_iterator ce = iter_deque_int->cend();
+        ok &= b != e;
+        ok &= b != ce;
+        ok &= !(b == e);
+        ok &= !(b == ce);
+        END_TX;
+        if (!ok)
+            printf(" [%d] error with operator== and operator!=", id);
+        else if (id == 0)
+            printf(" [OK] %s\n", "iterator comparability checks passed\n");
+    }
+
+#if 0
+    // iterators should be comparable with == (5) and != (6)
+    global_barrier->arrive(id);
+    std::vector<int>::iterator e;
+    if (id == 0) {
+        iter_vector = new std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    }
+    global_barrier->arrive(id);
+    e = iter_vector->end();
+    bool eq, neq;
+    BEGIN_TX;
+    eq = (e == iter_vector->end());
+    neq = (e != iter_vector->begin());
+    END_TX;
+    if (!eq || !neq)
+        std::cout << "["<<id<<"] did not observe correct equality results" << std::endl;
+    else if (id == 0)
+        std::cout << " [OK] != and ==" << std::endl;
+
+    // test operator* and operator->
+    global_barrier->arrive(id);
+    if (id == 0) {
+        foo.emplace(foo.begin());
+        CLEAR_VECTOR;
+    }
+    global_barrier->arrive(id);
+    int val1, val2, val3, val4;
+    BEGIN_TX;
+    iter_vector = new std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    std::vector<int>::iterator b = iter_vector->begin();
+    // iterators can be dereferenced as an rvalue if in a dereferenceable
+    // state (7)
+    val1 = *b;
+    // iterators can be dereferenced as an lvalue (8)
+    *b = -6;
+    val2 = *iter_vector->begin();
+    // iterator access with ->
+    std::vector<Q>::iterator x = foo.begin();
+    val3 = x->a;
+    val4 = x->b;
+    CLEAR_VECTOR;
+    END_TX;
+    bool ok = (val1 == 1) && (val2 == -6) && (val3 == 1) && (val4 == 2);
+    if (!ok)
+        std::cout << "["<<id<<"] errors on * or ->" << std::endl;
+    else if (id == 0)
+        std::cout << " [OK] operators * and ->" << std::endl;
+    global_barrier->arrive(id);
+    if (id == 0) {
+        foo.clear();
+    }
+
+    // test ++
+    global_barrier->arrive(id);
+    val1 = val2 = val3 = val4 = -8;
+    int t1, t2, t3, t4;
+    ok = true;
+    BEGIN_TX;
+    iter_vector = new std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    std::vector<int>::iterator i = iter_vector->begin();
+    // iterators can be incremented (9)
+    i++;
+    val1 = *i;
+    // iterators can be incremented (10)
+    ++i;
+    val2 = *i;
+    // iterators can be incremented (11)
+    val3 = *i++;
+    val4 = *i;
+    // two iterators that compare equal remain equal after being increased
+    // (12)
+    std::vector<int>::iterator a1(iter_vector->begin());
+    std::vector<int>::iterator a2(iter_vector->begin());
+    t1 = *a1;
+    t2 = *a2;
+    ok  &= (a1 == a2) && (t1 == 1) && (t2 == 1);
+    a1++;
+    a2++;
+    t3 = *a1;
+    t4 = *a2;
+    ok &= (a1 == a2) && (t3 == 2) && (t4 == 2);
+    CLEAR_VECTOR;
+    END_TX;
+    ok &= (val1 == 2) && (val2 == 3) && (val3 == 3) && (val4 == 4);
+    if (!ok)
+        std::cout << "["<<id<<"] errors on ++ tests" << std::endl;
+    else if (id == 0)
+        std::cout << " [OK] operator ++" << std::endl;
+
+    // test operator --
+    global_barrier->arrive(id);
+    BEGIN_TX;
+    iter_vector = new std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    std::vector<int>::iterator i = iter_vector->end();
+    // can be decremented (13)
+    --i;
+    val1 = *i;
+    // can be decremented (14)
+    i--;
+    val2 = *i;
+    // can be decremented (15)
+    val3 = *i--;
+    val4 = *i;
+    CLEAR_VECTOR;
+    END_TX;
+    ok = (val1 == 10) && (val2 == 9) && (val3 == 9) && (val4 == 8);
+    if (!ok)
+        std::cout << "["<<id<<"] errors on -- tests" << std::endl;
+    else if (id == 0)
+        std::cout << " [OK] operator --" << std::endl;
+
+
+#endif
 }
 
 void const_iter_tests(int id)

@@ -58,17 +58,17 @@
 |                        | operator-       |     1 | 223                         |        |
 |                        | operator[]      |     1 | 230                         |        |
 |------------------------+-----------------+-------+-----------------------------+--------|
-| Iterator               | operator==      |     2 | 253, 260                    |      2 |
-| Overloads              | operator!=      |     2 | 266, 273                    |        |
-|                        | operator<       |     2 | 279, 287                    |        |
-|                        | operator>       |     2 | 294, 301                    |        |
-|                        | operator<=      |     2 | 307, 314                    |        |
-|                        | operator>=      |     2 | 320, 327                    |        |
-|                        | operator-       |     2 | 327, 349                    |        |
-|                        | operator+       |     1 | 360                         |        |
+| Iterator               | operator==      |     2 | 253, 260                    |      4 |
+| Overloads              | operator!=      |     2 | 266, 273                    |      4 |
+|                        | operator<       |     2 | 279, 287                    |      2 |
+|                        | operator>       |     2 | 294, 301                    |      2 |
+|                        | operator<=      |     2 | 307, 314                    |      2 |
+|                        | operator>=      |     2 | 320, 327                    |      2 |
+|                        | operator-       |     2 | 327, 349                    |      2 |
+|                        | operator+       |     1 | 360                         |      2 |
 |------------------------+-----------------+-------+-----------------------------+--------|
-| Iterator               | copy-assignable |       |                             |      4 |
-| Other                  | destructible    |       |                             |      4 |
+| Iterator               | copy-assignable |       |                             |      2 |
+| Other                  | destructible    |       |                             |      2 |
 |                        | swappable       |       |                             |      0 |
 |------------------------+-----------------+-------+-----------------------------+--------|
 | Const Iterator         |                 |       |                             |      0 |
