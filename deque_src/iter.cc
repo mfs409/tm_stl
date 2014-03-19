@@ -47,6 +47,10 @@ std::deque<Q>*   iter_deque_q   = NULL;
     else if (id == 0)                                                   \
         printf(" [OK::count+data] %s\n", test_name)
 
+/**
+ * Ensure that all of the begin/end methods for getting an iterator from
+ * std::deque work
+ */
 void iter_create_tests(int id)
 {
     global_barrier->arrive(id);
@@ -178,6 +182,11 @@ void iter_create_tests(int id)
     }
 }
 
+/**
+ *  Make sure that std::deque's random access iterator
+ *  (http://www.cplusplus.com/reference/iterator/RandomAccessIterator/) does
+ *  everything it should
+ */
 void basic_iter_tests(int id)
 {
     global_barrier->arrive(id);
@@ -189,6 +198,8 @@ void basic_iter_tests(int id)
         printf("Testing functions on std::deque::iterator\n");
 
     // test copy-assignable, copy constructable, and destructable
+    //
+    // NB: the implementation has 3 ctors, this only manages to get two of them to run
     global_barrier->arrive(id);
     {
         RESET_LOCAL(-2);
@@ -214,6 +225,8 @@ void basic_iter_tests(int id)
     }
 
     // iterators should be swappable
+    //
+    // NB: not sure how to get this to show
     global_barrier->arrive(id);
     {
         RESET_LOCAL(-2);

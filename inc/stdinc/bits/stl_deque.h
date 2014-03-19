@@ -127,14 +127,14 @@ namespace std _GLIBCXX_VISIBILITY(default)
 
     _Deque_iterator(_Tp* __x, _Map_pointer __y) _GLIBCXX_NOEXCEPT
     : _M_cur(__x), _M_first(*__y),
-        _M_last(*__y + _S_buffer_size()), _M_node(__y) { TRACE("iter::ctor(1)"); }
+        _M_last(*__y + _S_buffer_size()), _M_node(__y) { TRACE("deque::iter::ctor(1)"); }
 
     _Deque_iterator() _GLIBCXX_NOEXCEPT
-    : _M_cur(0), _M_first(0), _M_last(0), _M_node(0) { TRACE("iter::ctor(2)"); }
+    : _M_cur(0), _M_first(0), _M_last(0), _M_node(0) { TRACE("deque::iter::ctor(2)"); }
 
     _Deque_iterator(const iterator& __x) _GLIBCXX_NOEXCEPT
     : _M_cur(__x._M_cur), _M_first(__x._M_first),
-      _M_last(__x._M_last), _M_node(__x._M_node) { TRACE("iter::ctor(3)"); }
+      _M_last(__x._M_last), _M_node(__x._M_node) { TRACE("deque::iter::ctor(3)"); }
 
     iterator
     _M_const_cast() const _GLIBCXX_NOEXCEPT
@@ -142,15 +142,15 @@ namespace std _GLIBCXX_VISIBILITY(default)
 
     reference
     operator*() const _GLIBCXX_NOEXCEPT
-    { TRACE("iter::operator*(1)"); return *_M_cur; }
+    { TRACE("deque::iter::operator*(1)"); return *_M_cur; }
 
     pointer
     operator->() const _GLIBCXX_NOEXCEPT
-    { TRACE("iter::operator->(1)"); return _M_cur; }
+    { TRACE("deque::iter::operator->(1)"); return _M_cur; }
 
     _Self&
     operator++() _GLIBCXX_NOEXCEPT
-    { TRACE("iter::operator++(1)");
+    { TRACE("deque::iter::operator++(1)");
       ++_M_cur;
       if (_M_cur == _M_last)
     {
@@ -162,7 +162,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
 
     _Self
     operator++(int) _GLIBCXX_NOEXCEPT
-    { TRACE("iter::operator++(2)");
+    { TRACE("deque::iter::operator++(2)");
       _Self __tmp = *this;
       ++*this;
       return __tmp;
@@ -170,7 +170,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
 
     _Self&
     operator--() _GLIBCXX_NOEXCEPT
-    { TRACE("iter::operator--(1)");
+    { TRACE("deque::iter::operator--(1)");
       if (_M_cur == _M_first)
     {
       _M_set_node(_M_node - 1);
@@ -182,7 +182,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
 
     _Self
     operator--(int) _GLIBCXX_NOEXCEPT
-    { TRACE("iter::operator--(2)");
+    { TRACE("deque::iter::operator--(2)");
       _Self __tmp = *this;
       --*this;
       return __tmp;
@@ -190,7 +190,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
 
     _Self&
     operator+=(difference_type __n) _GLIBCXX_NOEXCEPT
-    { TRACE("iter::operator+=(1)");
+    { TRACE("deque::iter::operator+=(1)");
       const difference_type __offset = __n + (_M_cur - _M_first);
       if (__offset >= 0 && __offset < difference_type(_S_buffer_size()))
     _M_cur += __n;
@@ -209,25 +209,25 @@ namespace std _GLIBCXX_VISIBILITY(default)
 
     _Self
     operator+(difference_type __n) const _GLIBCXX_NOEXCEPT
-    { TRACE("iter::operator+(1)");
+    { TRACE("deque::iter::operator+(1)");
       _Self __tmp = *this;
       return __tmp += __n;
     }
 
     _Self&
     operator-=(difference_type __n) _GLIBCXX_NOEXCEPT
-    { TRACE("iter::operator-=(1)"); return *this += -__n; }
+    { TRACE("deque::iter::operator-=(1)"); return *this += -__n; }
 
     _Self
     operator-(difference_type __n) const _GLIBCXX_NOEXCEPT
-    { TRACE("iter::operator-(1)");
+    { TRACE("deque::iter::operator-(1)");
       _Self __tmp = *this;
       return __tmp -= __n;
     }
 
     reference
     operator[](difference_type __n) const _GLIBCXX_NOEXCEPT
-    { TRACE("iter::operator[](1)"); return *(*this + __n); }
+    { TRACE("deque::iter::operator[](1)"); return *(*this + __n); }
 
     /**
      *  Prepares to traverse new_node.  Sets everything except
@@ -250,33 +250,33 @@ namespace std _GLIBCXX_VISIBILITY(default)
     inline bool
     operator==(const _Deque_iterator<_Tp, _Ref, _Ptr>& __x,
            const _Deque_iterator<_Tp, _Ref, _Ptr>& __y) _GLIBCXX_NOEXCEPT
-  { TRACE("iter::operator==(1)"); return __x._M_cur == __y._M_cur; }
+  { TRACE("std::operator==(deque-iter)(1)"); return __x._M_cur == __y._M_cur; }
 
   template<typename _Tp, typename _RefL, typename _PtrL,
        typename _RefR, typename _PtrR>
     inline bool
     operator==(const _Deque_iterator<_Tp, _RefL, _PtrL>& __x,
            const _Deque_iterator<_Tp, _RefR, _PtrR>& __y) _GLIBCXX_NOEXCEPT
-  { TRACE("iter::operator==(2)"); return __x._M_cur == __y._M_cur; }
+  { TRACE("std::operator==(deque-iter)(2)"); return __x._M_cur == __y._M_cur; }
 
   template<typename _Tp, typename _Ref, typename _Ptr>
     inline bool
     operator!=(const _Deque_iterator<_Tp, _Ref, _Ptr>& __x,
            const _Deque_iterator<_Tp, _Ref, _Ptr>& __y) _GLIBCXX_NOEXCEPT
-  { TRACE("iter::operator!=(1)"); return !(__x == __y); }
+  { TRACE("std::operator!=(deque-iter)(1)"); return !(__x == __y); }
 
   template<typename _Tp, typename _RefL, typename _PtrL,
        typename _RefR, typename _PtrR>
     inline bool
     operator!=(const _Deque_iterator<_Tp, _RefL, _PtrL>& __x,
            const _Deque_iterator<_Tp, _RefR, _PtrR>& __y) _GLIBCXX_NOEXCEPT
-  { TRACE("iter::operator!=(2)"); return !(__x == __y); }
+  { TRACE("std::operator!=(deque-iter)(2)"); return !(__x == __y); }
 
   template<typename _Tp, typename _Ref, typename _Ptr>
     inline bool
     operator<(const _Deque_iterator<_Tp, _Ref, _Ptr>& __x,
           const _Deque_iterator<_Tp, _Ref, _Ptr>& __y) _GLIBCXX_NOEXCEPT
-  { TRACE("iter::operator<(1)"); return (__x._M_node == __y._M_node) ? (__x._M_cur < __y._M_cur)
+  { TRACE("std::operator<(deque-iter)(1)"); return (__x._M_node == __y._M_node) ? (__x._M_cur < __y._M_cur)
       : (__x._M_node < __y._M_node); }
 
   template<typename _Tp, typename _RefL, typename _PtrL,
@@ -284,47 +284,47 @@ namespace std _GLIBCXX_VISIBILITY(default)
     inline bool
     operator<(const _Deque_iterator<_Tp, _RefL, _PtrL>& __x,
           const _Deque_iterator<_Tp, _RefR, _PtrR>& __y) _GLIBCXX_NOEXCEPT
-  { TRACE("iter::operator<(2)"); return (__x._M_node == __y._M_node) ? (__x._M_cur < __y._M_cur)
+  { TRACE("std::operator<(deque-iter)(2)"); return (__x._M_node == __y._M_node) ? (__x._M_cur < __y._M_cur)
       : (__x._M_node < __y._M_node); }
 
   template<typename _Tp, typename _Ref, typename _Ptr>
     inline bool
     operator>(const _Deque_iterator<_Tp, _Ref, _Ptr>& __x,
           const _Deque_iterator<_Tp, _Ref, _Ptr>& __y) _GLIBCXX_NOEXCEPT
-  { TRACE("iter::operator>(1)"); return __y < __x; }
+  { TRACE("std::operator>(deque-iter)(1)"); return __y < __x; }
 
   template<typename _Tp, typename _RefL, typename _PtrL,
        typename _RefR, typename _PtrR>
     inline bool
     operator>(const _Deque_iterator<_Tp, _RefL, _PtrL>& __x,
           const _Deque_iterator<_Tp, _RefR, _PtrR>& __y) _GLIBCXX_NOEXCEPT
-  { TRACE("iter::operator>(2)"); return __y < __x; }
+  { TRACE("std::operator>(deque-iter)(2)"); return __y < __x; }
 
   template<typename _Tp, typename _Ref, typename _Ptr>
     inline bool
     operator<=(const _Deque_iterator<_Tp, _Ref, _Ptr>& __x,
            const _Deque_iterator<_Tp, _Ref, _Ptr>& __y) _GLIBCXX_NOEXCEPT
-  { TRACE("iter::operator<=(1)"); return !(__y < __x); }
+  { TRACE("std::operator<=(deque-iter)(1)"); return !(__y < __x); }
 
   template<typename _Tp, typename _RefL, typename _PtrL,
        typename _RefR, typename _PtrR>
     inline bool
     operator<=(const _Deque_iterator<_Tp, _RefL, _PtrL>& __x,
            const _Deque_iterator<_Tp, _RefR, _PtrR>& __y) _GLIBCXX_NOEXCEPT
-  { TRACE("iter::operator<=(2)"); return !(__y < __x); }
+  { TRACE("std::operator<=(deque-iter)(2)"); return !(__y < __x); }
 
   template<typename _Tp, typename _Ref, typename _Ptr>
     inline bool
     operator>=(const _Deque_iterator<_Tp, _Ref, _Ptr>& __x,
            const _Deque_iterator<_Tp, _Ref, _Ptr>& __y) _GLIBCXX_NOEXCEPT
-  { TRACE("iter::operator>=(1)"); return !(__x < __y); }
+  { TRACE("std::operator>=(deque-iter)(1)"); return !(__x < __y); }
 
   template<typename _Tp, typename _RefL, typename _PtrL,
        typename _RefR, typename _PtrR>
     inline bool
     operator>=(const _Deque_iterator<_Tp, _RefL, _PtrL>& __x,
            const _Deque_iterator<_Tp, _RefR, _PtrR>& __y) _GLIBCXX_NOEXCEPT
-  { TRACE("iter::operator>=(1)"); return !(__x < __y); }
+  { TRACE("std::operator>=(deque-iter)(1)"); return !(__x < __y); }
 
   // _GLIBCXX_RESOLVE_LIB_DEFECTS
   // According to the resolution of DR179 not only the various comparison
@@ -334,7 +334,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
     inline typename _Deque_iterator<_Tp, _Ref, _Ptr>::difference_type
     operator-(const _Deque_iterator<_Tp, _Ref, _Ptr>& __x,
           const _Deque_iterator<_Tp, _Ref, _Ptr>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("iter::operator-(1)");
+    { TRACE("std::operator-(deque-iter)(1)");
       return typename _Deque_iterator<_Tp, _Ref, _Ptr>::difference_type
     (_Deque_iterator<_Tp, _Ref, _Ptr>::_S_buffer_size())
     * (__x._M_node - __y._M_node - 1) + (__x._M_cur - __x._M_first)
@@ -346,7 +346,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
     inline typename _Deque_iterator<_Tp, _RefL, _PtrL>::difference_type
     operator-(const _Deque_iterator<_Tp, _RefL, _PtrL>& __x,
           const _Deque_iterator<_Tp, _RefR, _PtrR>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("iter::operator-(2)");
+    { TRACE("std::operator-(deque-iter)(2)");
       return typename _Deque_iterator<_Tp, _RefL, _PtrL>::difference_type
     (_Deque_iterator<_Tp, _RefL, _PtrL>::_S_buffer_size())
     * (__x._M_node - __y._M_node - 1) + (__x._M_cur - __x._M_first)
@@ -357,7 +357,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
     inline _Deque_iterator<_Tp, _Ref, _Ptr>
     operator+(ptrdiff_t __n, const _Deque_iterator<_Tp, _Ref, _Ptr>& __x)
     _GLIBCXX_NOEXCEPT
-    { TRACE("iter::operator+(1)"); return __x + __n; }
+    { TRACE("std::operator+(deque-iter)(1)"); return __x + __n; }
 
   template<typename _Tp>
     void
@@ -787,7 +787,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     explicit
     deque(const allocator_type& __a = allocator_type())
-      : _Base(__a) { TRACE("ctor(1)"); }
+      : _Base(__a) { TRACE("deque::ctor(1)"); }
 
 #if __cplusplus >= 201103L
     /**
@@ -800,7 +800,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
     explicit
     deque(size_type __n)
       : _Base(__n)
-    { TRACE("ctor(2a)"); _M_default_initialize(); }
+    { TRACE("deque::ctor(2a)"); _M_default_initialize(); }
 
     /**
      *  @brief  Creates a %deque with copies of an exemplar element.
@@ -813,7 +813,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
     deque(size_type __n, const value_type& __value,
       const allocator_type& __a = allocator_type())
       : _Base(__a, __n)
-    { TRACE("ctor(2b)"); _M_fill_initialize(__value); }
+    { TRACE("deque::ctor(2b)"); _M_fill_initialize(__value); }
 #else
     /**
      *  @brief  Creates a %deque with copies of an exemplar element.
@@ -839,7 +839,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     deque(const deque& __x)
       : _Base(__x._M_get_Tp_allocator(), __x.size())
-    { TRACE("ctor(4a)"); std::__uninitialized_copy_a(__x.begin(), __x.end(),
+    { TRACE("deque::ctor(4a)"); std::__uninitialized_copy_a(__x.begin(), __x.end(),
                              this->_M_impl._M_start,
                              _M_get_Tp_allocator()); }
 
@@ -852,7 +852,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      *  The contents of @a __x are a valid, but unspecified %deque.
      */
     deque(deque&& __x)
-      : _Base(std::move(__x)) { TRACE("ctor(5a)");}
+      : _Base(std::move(__x)) { TRACE("deque::ctor(5a)");}
 
     /**
      *  @brief  Builds a %deque from an initializer list.
@@ -868,7 +868,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
     deque(initializer_list<value_type> __l,
       const allocator_type& __a = allocator_type())
       : _Base(__a)
-    { TRACE("ctor(6)");
+    { TRACE("deque::ctor(6)");
       _M_range_initialize(__l.begin(), __l.end(),
               random_access_iterator_tag());
     }
@@ -895,7 +895,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
       deque(_InputIterator __first, _InputIterator __last,
         const allocator_type& __a = allocator_type())
       : _Base(__a)
-    { TRACE("ctor(3)"); _M_initialize_dispatch(__first, __last, __false_type()); }
+    { TRACE("deque::ctor(3)"); _M_initialize_dispatch(__first, __last, __false_type()); }
 #else
     template<typename _InputIterator>
     deque(_InputIterator __first, _InputIterator __last,
@@ -914,7 +914,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      *  way.  Managing the pointer is the user's responsibility.
      */
     ~deque() _GLIBCXX_NOEXCEPT
-    { TRACE("dtor(1)"); _M_destroy_data(begin(), end(), _M_get_Tp_allocator()); }
+    { TRACE("deque::dtor(1)"); _M_destroy_data(begin(), end(), _M_get_Tp_allocator()); }
 
     /**
      *  @brief  %Deque assignment operator.
@@ -936,7 +936,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     deque&
     operator=(deque&& __x) noexcept
-    { TRACE("operator=(2)");
+    { TRACE("deque::operator=(2)");
       // NB: DR 1204.
       // NB: DR 675.
       this->clear();
@@ -957,7 +957,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     deque&
     operator=(initializer_list<value_type> __l)
-    { TRACE("operator=(3)");
+    { TRACE("deque::operator=(3)");
       this->assign(__l.begin(), __l.end());
       return *this;
     }
@@ -975,7 +975,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     void
     assign(size_type __n, const value_type& __val)
-    { TRACE("assign(2)"); _M_fill_assign(__n, __val); }
+    { TRACE("deque::assign(2)"); _M_fill_assign(__n, __val); }
 
     /**
      *  @brief  Assigns a range to a %deque.
@@ -994,7 +994,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
          typename = std::_RequireInputIter<_InputIterator>>
       void
       assign(_InputIterator __first, _InputIterator __last)
-    { TRACE("assign(1)"); _M_assign_dispatch(__first, __last, __false_type()); }
+    { TRACE("deque::assign(1)"); _M_assign_dispatch(__first, __last, __false_type()); }
 #else
     template<typename _InputIterator>
     void
@@ -1019,13 +1019,13 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     void
     assign(initializer_list<value_type> __l)
-    { TRACE("assign(3)"); this->assign(__l.begin(), __l.end()); }
+    { TRACE("deque::assign(3)"); this->assign(__l.begin(), __l.end()); }
 #endif
 
     /// Get a copy of the memory allocation object.
     allocator_type
     get_allocator() const _GLIBCXX_NOEXCEPT
-    { TRACE("get_allocator(1)"); return _Base::get_allocator(); }
+    { TRACE("deque::get_allocator(1)"); return _Base::get_allocator(); }
 
     // iterators
     /**
@@ -1034,7 +1034,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     iterator
     begin() _GLIBCXX_NOEXCEPT
-    { TRACE("begin(1)"); return this->_M_impl._M_start; }
+    { TRACE("deque::begin(1)"); return this->_M_impl._M_start; }
 
     /**
      *  Returns a read-only (constant) iterator that points to the first
@@ -1042,7 +1042,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     const_iterator
     begin() const _GLIBCXX_NOEXCEPT
-    { TRACE("begin(2)"); return this->_M_impl._M_start; }
+    { TRACE("deque::begin(2)"); return this->_M_impl._M_start; }
 
     /**
      *  Returns a read/write iterator that points one past the last
@@ -1051,7 +1051,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     iterator
     end() _GLIBCXX_NOEXCEPT
-    { TRACE("end(1)"); return this->_M_impl._M_finish; }
+    { TRACE("deque::end(1)"); return this->_M_impl._M_finish; }
 
     /**
      *  Returns a read-only (constant) iterator that points one past
@@ -1060,7 +1060,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     const_iterator
     end() const _GLIBCXX_NOEXCEPT
-    { TRACE("end(2)"); return this->_M_impl._M_finish; }
+    { TRACE("deque::end(2)"); return this->_M_impl._M_finish; }
 
     /**
      *  Returns a read/write reverse iterator that points to the
@@ -1069,7 +1069,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     reverse_iterator
     rbegin() _GLIBCXX_NOEXCEPT
-    { TRACE("rbegin(1)"); return reverse_iterator(this->_M_impl._M_finish); }
+    { TRACE("deque::rbegin(1)"); return reverse_iterator(this->_M_impl._M_finish); }
 
     /**
      *  Returns a read-only (constant) reverse iterator that points
@@ -1078,7 +1078,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     const_reverse_iterator
     rbegin() const _GLIBCXX_NOEXCEPT
-    { TRACE("rbegin(2)"); return const_reverse_iterator(this->_M_impl._M_finish); }
+    { TRACE("deque::rbegin(2)"); return const_reverse_iterator(this->_M_impl._M_finish); }
 
     /**
      *  Returns a read/write reverse iterator that points to one
@@ -1087,7 +1087,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     reverse_iterator
     rend() _GLIBCXX_NOEXCEPT
-    { TRACE("rend(1)"); return reverse_iterator(this->_M_impl._M_start); }
+    { TRACE("deque::rend(1)"); return reverse_iterator(this->_M_impl._M_start); }
 
     /**
      *  Returns a read-only (constant) reverse iterator that points
@@ -1096,7 +1096,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     const_reverse_iterator
     rend() const _GLIBCXX_NOEXCEPT
-    { TRACE("rend(2)"); return const_reverse_iterator(this->_M_impl._M_start); }
+    { TRACE("deque::rend(2)"); return const_reverse_iterator(this->_M_impl._M_start); }
 
 #if __cplusplus >= 201103L
     /**
@@ -1105,7 +1105,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     const_iterator
     cbegin() const noexcept
-    { TRACE("cbegin(1)"); return this->_M_impl._M_start; }
+    { TRACE("deque::cbegin(1)"); return this->_M_impl._M_start; }
 
     /**
      *  Returns a read-only (constant) iterator that points one past
@@ -1114,7 +1114,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     const_iterator
     cend() const noexcept
-    { TRACE("cend(1)"); return this->_M_impl._M_finish; }
+    { TRACE("deque::cend(1)"); return this->_M_impl._M_finish; }
 
     /**
      *  Returns a read-only (constant) reverse iterator that points
@@ -1123,7 +1123,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     const_reverse_iterator
     crbegin() const noexcept
-    { TRACE("crbegin(1)"); return const_reverse_iterator(this->_M_impl._M_finish); }
+    { TRACE("deque::crbegin(1)"); return const_reverse_iterator(this->_M_impl._M_finish); }
 
     /**
      *  Returns a read-only (constant) reverse iterator that points
@@ -1132,19 +1132,19 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     const_reverse_iterator
     crend() const noexcept
-    { TRACE("crend(1)"); return const_reverse_iterator(this->_M_impl._M_start); }
+    { TRACE("deque::crend(1)"); return const_reverse_iterator(this->_M_impl._M_start); }
 #endif
 
     // [23.2.1.2] capacity
     /**  Returns the number of elements in the %deque.  */
     size_type
     size() const _GLIBCXX_NOEXCEPT
-    { TRACE("size(1)"); return this->_M_impl._M_finish - this->_M_impl._M_start; }
+    { TRACE("deque::size(1)"); return this->_M_impl._M_finish - this->_M_impl._M_start; }
 
     /**  Returns the size() of the largest possible %deque.  */
     size_type
     max_size() const _GLIBCXX_NOEXCEPT
-    { TRACE("max_size(1)"); return _M_get_Tp_allocator().max_size(); }
+    { TRACE("deque::max_size(1)"); return _M_get_Tp_allocator().max_size(); }
 
 #if __cplusplus >= 201103L
     /**
@@ -1158,7 +1158,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     void
     resize(size_type __new_size)
-    { TRACE("resize(1)");
+    { TRACE("deque::resize(1)");
       const size_type __len = size();
       if (__new_size > __len)
     _M_default_append(__new_size - __len);
@@ -1180,7 +1180,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     void
     resize(size_type __new_size, const value_type& __x)
-    { TRACE("resize(2)");
+    { TRACE("deque::resize(2)");
       const size_type __len = size();
       if (__new_size > __len)
     insert(this->_M_impl._M_finish, __new_size - __len, __x);
@@ -1216,7 +1216,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
     /**  A non-binding request to reduce memory use.  */
     void
     shrink_to_fit() noexcept
-    { TRACE("shrink_to_fit(1)"); _M_shrink_to_fit(); }
+    { TRACE("deque::shrink_to_fit(1)"); _M_shrink_to_fit(); }
 #endif
 
     /**
@@ -1225,7 +1225,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     bool
     empty() const _GLIBCXX_NOEXCEPT
-    { TRACE("empty(1)"); return this->_M_impl._M_finish == this->_M_impl._M_start; }
+    { TRACE("deque::empty(1)"); return this->_M_impl._M_finish == this->_M_impl._M_start; }
 
     // element access
     /**
@@ -1241,7 +1241,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     reference
     operator[](size_type __n) _GLIBCXX_NOEXCEPT
-    { TRACE("operator[](1)"); return this->_M_impl._M_start[difference_type(__n)]; }
+    { TRACE("deque::operator[](1)"); return this->_M_impl._M_start[difference_type(__n)]; }
 
     /**
      *  @brief Subscript access to the data contained in the %deque.
@@ -1256,7 +1256,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     const_reference
     operator[](size_type __n) const _GLIBCXX_NOEXCEPT
-    { TRACE("operator[](2)"); return this->_M_impl._M_start[difference_type(__n)]; }
+    { TRACE("deque::operator[](2)"); return this->_M_impl._M_start[difference_type(__n)]; }
 
   protected:
     /// Safety check used only from at().
@@ -1284,7 +1284,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     reference
     at(size_type __n)
-    { TRACE("at(1)");
+    { TRACE("deque::at(1)");
       _M_range_check(__n);
       return (*this)[__n];
     }
@@ -1302,7 +1302,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     const_reference
     at(size_type __n) const
-    { TRACE("at(2)");
+    { TRACE("deque::at(2)");
       _M_range_check(__n);
       return (*this)[__n];
     }
@@ -1313,7 +1313,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     reference
     front() _GLIBCXX_NOEXCEPT
-    { TRACE("front(1)"); return *begin(); }
+    { TRACE("deque::front(1)"); return *begin(); }
 
     /**
      *  Returns a read-only (constant) reference to the data at the first
@@ -1321,7 +1321,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     const_reference
     front() const _GLIBCXX_NOEXCEPT
-    { TRACE("front(2)"); return *begin(); }
+    { TRACE("deque::front(2)"); return *begin(); }
 
     /**
      *  Returns a read/write reference to the data at the last element of the
@@ -1329,7 +1329,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     reference
     back() _GLIBCXX_NOEXCEPT
-    { TRACE("back(1)");
+    { TRACE("deque::back(1)");
       iterator __tmp = end();
       --__tmp;
       return *__tmp;
@@ -1341,7 +1341,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     const_reference
     back() const _GLIBCXX_NOEXCEPT
-    { TRACE("back(2)");
+    { TRACE("deque::back(2)");
       const_iterator __tmp = end();
       --__tmp;
       return *__tmp;
@@ -1359,7 +1359,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     void
     push_front(const value_type& __x)
-    { TRACE("push_front(1)");
+    { TRACE("deque::push_front(1)");
       if (this->_M_impl._M_start._M_cur != this->_M_impl._M_start._M_first)
     {
       this->_M_impl.construct(this->_M_impl._M_start._M_cur - 1, __x);
@@ -1372,7 +1372,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
 #if __cplusplus >= 201103L
     void
     push_front(value_type&& __x)
-    { TRACE("push_front(2)"); emplace_front(std::move(__x)); }
+    { TRACE("deque::push_front(2)"); emplace_front(std::move(__x)); }
 
     template<typename... _Args>
     void
@@ -1390,7 +1390,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     void
     push_back(const value_type& __x)
-    { TRACE("push_back(1)");
+    { TRACE("deque::push_back(1)");
       if (this->_M_impl._M_finish._M_cur
       != this->_M_impl._M_finish._M_last - 1)
     {
@@ -1404,7 +1404,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
 #if __cplusplus >= 201103L
     void
     push_back(value_type&& __x)
-    { TRACE("push_back(2)"); emplace_back(std::move(__x)); }
+    { TRACE("deque::push_back(2)"); emplace_back(std::move(__x)); }
 
     template<typename... _Args>
     void
@@ -1421,7 +1421,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     void
     pop_front() _GLIBCXX_NOEXCEPT
-    { TRACE("pop_front(1)");
+    { TRACE("deque::pop_front(1)");
       if (this->_M_impl._M_start._M_cur
       != this->_M_impl._M_start._M_last - 1)
     {
@@ -1442,7 +1442,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     void
     pop_back() _GLIBCXX_NOEXCEPT
-    { TRACE("pop_back(1)");
+    { TRACE("deque::pop_back(1)");
       if (this->_M_impl._M_finish._M_cur
       != this->_M_impl._M_finish._M_first)
     {
@@ -1504,7 +1504,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     iterator
     insert(const_iterator __position, value_type&& __x)
-    { TRACE("insert(4)"); return emplace(__position, std::move(__x)); }
+    { TRACE("deque::insert(4)"); return emplace(__position, std::move(__x)); }
 
     /**
      *  @brief  Inserts an initializer list into the %deque.
@@ -1517,7 +1517,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     iterator
     insert(const_iterator __p, initializer_list<value_type> __l)
-    { TRACE("insert(5)"); return this->insert(__p, __l.begin(), __l.end()); }
+    { TRACE("deque::insert(5)"); return this->insert(__p, __l.begin(), __l.end()); }
 #endif
 
 #if __cplusplus >= 201103L
@@ -1533,7 +1533,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     iterator
     insert(const_iterator __position, size_type __n, const value_type& __x)
-    { TRACE("insert(2)");
+    { TRACE("deque::insert(2)");
       difference_type __offset = __position - cbegin();
       _M_fill_insert(__position._M_const_cast(), __n, __x);
       return begin() + __offset;
@@ -1570,7 +1570,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
       iterator
       insert(const_iterator __position, _InputIterator __first,
          _InputIterator __last)
-    { TRACE("insert(3)");
+    { TRACE("deque::insert(3)");
       difference_type __offset = __position - cbegin();
       _M_insert_dispatch(__position._M_const_cast(),
              __first, __last, __false_type());
@@ -1617,7 +1617,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
 #else
       erase(iterator __position)
 #endif
-    { TRACE("erase(1)"); return _M_erase(__position._M_const_cast()); }
+    { TRACE("deque::erase(1)"); return _M_erase(__position._M_const_cast()); }
 
     /**
      *  @brief  Remove a range of elements.
@@ -1641,7 +1641,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
 #else
       erase(iterator __first, iterator __last)
 #endif
-    { TRACE("erase(2)"); return _M_erase(__first._M_const_cast(), __last._M_const_cast()); }
+    { TRACE("deque::erase(2)"); return _M_erase(__first._M_const_cast(), __last._M_const_cast()); }
 
     /**
      *  @brief  Swaps data with another %deque.
@@ -1654,7 +1654,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     void
     swap(deque& __x) _GLIBCXX_NOEXCEPT
-    { TRACE("swap(1)");
+    { TRACE("deque::swap(1)");
       std::swap(this->_M_impl._M_start, __x._M_impl._M_start);
       std::swap(this->_M_impl._M_finish, __x._M_impl._M_finish);
       std::swap(this->_M_impl._M_map, __x._M_impl._M_map);
@@ -1674,7 +1674,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
      */
     void
     clear() _GLIBCXX_NOEXCEPT
-    { TRACE("clear(1)"); _M_erase_at_end(begin()); }
+    { TRACE("deque::clear(1)"); _M_erase_at_end(begin()); }
 
   protected:
     // Internal constructor functions follow.
@@ -2022,7 +2022,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
     inline bool
     operator==(const deque<_Tp, _Alloc>& __x,
            const deque<_Tp, _Alloc>& __y)
-  { TRACE("operator==(1)"); return __x.size() == __y.size()
+  { TRACE("std::operator==(deque)(1)"); return __x.size() == __y.size()
       && std::equal(__x.begin(), __x.end(), __y.begin()); }
 
   /**
@@ -2040,7 +2040,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
     inline bool
     operator<(const deque<_Tp, _Alloc>& __x,
           const deque<_Tp, _Alloc>& __y)
-  { TRACE("operator<(1)"); return std::lexicographical_compare(__x.begin(), __x.end(),
+  { TRACE("std::operator<(deque)(1)"); return std::lexicographical_compare(__x.begin(), __x.end(),
                     __y.begin(), __y.end()); }
 
   /// Based on operator==
@@ -2048,28 +2048,28 @@ namespace std _GLIBCXX_VISIBILITY(default)
          inline bool
          operator!=(const deque<_Tp, _Alloc>& __x,
             const deque<_Tp, _Alloc>& __y)
-  { TRACE("operator!=(1)"); return !(__x == __y); }
+  { TRACE("std::operator!=(deque)(1)"); return !(__x == __y); }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
          inline bool
          operator>(const deque<_Tp, _Alloc>& __x,
                const deque<_Tp, _Alloc>& __y)
-  { TRACE("operator>(1)"); return __y < __x; }
+  { TRACE("std::operator>(deque)(1)"); return __y < __x; }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
     inline bool
     operator<=(const deque<_Tp, _Alloc>& __x,
            const deque<_Tp, _Alloc>& __y)
-  { TRACE("operator<=(1)"); return !(__y < __x); }
+  { TRACE("std::operator<=(deque)(1)"); return !(__y < __x); }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
     inline bool
     operator>=(const deque<_Tp, _Alloc>& __x,
            const deque<_Tp, _Alloc>& __y)
-  { TRACE("opreator>=(1)"); return !(__x < __y); }
+  { TRACE("std::operator>=(deque)(1)"); return !(__x < __y); }
 
   /// See std::deque::swap().
   template<typename _Tp, typename _Alloc>
