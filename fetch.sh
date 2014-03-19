@@ -32,7 +32,7 @@ do
 done
 
 # copy from stdinc
-for f in array atomic cassert cctype cerrno chrono clocale condition_variable cstdint cstdio cstdlib ctime cwchar cwctype exception functional future initializer_list ios iosfwd iostream istream limits list memory mutex new ostream ratio stdexcept streambuf string system_error thread tuple typeinfo type_traits utility
+for f in array atomic cassert cctype cerrno chrono clocale condition_variable cstdint cstdio cstdlib ctime cwchar cwctype exception functional future initializer_list ios iosfwd iostream istream limits list memory mutex new ostream ratio stdexcept streambuf string system_error thread tuple typeinfo type_traits utility map
 do
     cp $stdinc/$f inc/stdinc/
 done
@@ -44,7 +44,7 @@ do
 done
 
 # copy from stdinc/bits
-for f in allocator.h alloc_traits.h atomic_base.h atomic_lockfree_defines.h basic_ios.h basic_ios.tcc basic_string.h basic_string.tcc char_traits.h concept_check.h cpp_type_traits.h cxxabi_forced.h exception_defines.h exception_ptr.h functexcept.h functional_hash.h hash_bytes.h ios_base.h istream.tcc list.tcc locale_classes.h locale_classes.tcc locale_facets.h locale_facets.tcc localefwd.h memoryfwd.h move.h nested_exception.h ostream_insert.h ostream.tcc parse_numbers.h postypes.h predefined_ops.h ptr_traits.h range_access.h regex_error.h shared_ptr_base.h shared_ptr.h stl_algobase.h stl_construct.h stl_function.h stl_iterator_base_funcs.h stl_iterator_base_types.h stl_iterator.h stl_pair.h stl_raw_storage_iter.h stl_relops.h stl_tempbuf.h stl_uninitialized.h streambuf_iterator.h streambuf.tcc stringfwd.h unique_ptr.h uses_allocator.h
+for f in allocator.h alloc_traits.h atomic_base.h atomic_lockfree_defines.h basic_ios.h basic_ios.tcc basic_string.h basic_string.tcc char_traits.h concept_check.h cpp_type_traits.h cxxabi_forced.h exception_defines.h exception_ptr.h functexcept.h functional_hash.h hash_bytes.h ios_base.h istream.tcc list.tcc locale_classes.h locale_classes.tcc locale_facets.h locale_facets.tcc localefwd.h memoryfwd.h move.h nested_exception.h ostream_insert.h ostream.tcc parse_numbers.h postypes.h predefined_ops.h ptr_traits.h range_access.h regex_error.h shared_ptr_base.h shared_ptr.h stl_algobase.h stl_construct.h stl_function.h stl_iterator_base_funcs.h stl_iterator_base_types.h stl_iterator.h stl_pair.h stl_raw_storage_iter.h stl_relops.h stl_tempbuf.h stl_uninitialized.h streambuf_iterator.h streambuf.tcc stringfwd.h unique_ptr.h uses_allocator.h stl_map.h stl_multimap.h stl_tree.h
 do
     cp $stdinc/bits/$f inc/stdinc/bits/
 done

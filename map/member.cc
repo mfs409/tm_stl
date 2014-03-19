@@ -1,3 +1,5 @@
+#include <map>
+
 void ctor_dtor_tests(int id)
 {
 }
