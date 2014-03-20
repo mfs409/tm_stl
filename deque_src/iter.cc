@@ -226,7 +226,7 @@ void basic_iter_tests(int id)
 
     // iterators should be swappable
     //
-    // NB: not sure how to get this to show
+    // NB: not sure how to get this to TRACE
     global_barrier->arrive(id);
     {
         RESET_LOCAL(-2);
