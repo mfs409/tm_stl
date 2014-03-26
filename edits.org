@@ -81,6 +81,12 @@ inc/stdinc/bits/basic_string.tcc:      __attribute__((transaction_safe))
 inc/stdinc/bits/basic_string.tcc:      __attribute__((transaction_safe))
 
 * Edits discovered when working on std::vector
-** TODO these two edits need explanation / documentation
-inc/stdinc/bits/stl_algobase.h:    TM_SAFE_ATT
-inc/stdinc/bits/stl_vector.h:    TM_SAFE_ATT
+** Addition of TM_SAFE_ATT
+*** Files affected
+inc/stdinc/bits/stl_algobase.h
+inc/stdinc/bits/stl_vector.h
+inc/stdinc/bits/functexcept.h
+*** Rationale
+ A number of functions are currently unsafe for TM.  Some simply cannot be marked as TM pure.  TM_SAFE_ATT solves this problem for testing purposes.  Namely, it is a wrapper macro that evaluates to the TM safe attribute when a NO_TM flag is *not* defined.  This allows us to ensure tests are properly working with TM disabled.
+*** Open Issues
+This is a hack--it doesn't actually add TM support.  It merely insures our tests work. The right answer is to fix the underlying function.
