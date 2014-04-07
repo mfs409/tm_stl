@@ -160,7 +160,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  @brief  Default constructor creates no elements.
        */
       map()
-      : _M_t() { }
+	: _M_t() { TRACE("empty ctor (1)"); }
 
       /**
        *  @brief  Creates a %map with no elements.
@@ -180,7 +180,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  used by @a __x.
        */
       map(const map& __x)
-      : _M_t(__x._M_t) { }
+      : _M_t(__x._M_t) { TRACE("copy ctor (3)"); }
 
 #if __cplusplus >= 201103L
       /**
@@ -192,7 +192,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       map(map&& __x)
       noexcept(is_nothrow_copy_constructible<_Compare>::value)
-      : _M_t(std::move(__x._M_t)) { }
+      : _M_t(std::move(__x._M_t)) { TRACE("move ctor (4)"); }
 
       /**
        *  @brief  Builds a %map from an initializer_list.
@@ -209,7 +209,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 	  const _Compare& __comp = _Compare(),
 	  const allocator_type& __a = allocator_type())
       : _M_t(__comp, _Pair_alloc_type(__a))
-      { _M_t._M_insert_unique(__l.begin(), __l.end()); }
+      { _M_t._M_insert_unique(__l.begin(), __l.end()); TRACE("ilist ctor (5)"); }
 
       /// Allocator-extended default constructor.
       explicit
@@ -252,7 +252,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       template<typename _InputIterator>
         map(_InputIterator __first, _InputIterator __last)
 	: _M_t()
-        { _M_t._M_insert_unique(__first, __last); }
+        { _M_t._M_insert_unique(__first, __last); TRACE("range ctor (2)");}
 
       /**
        *  @brief  Builds a %map from a range.
@@ -292,6 +292,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       map&
       operator=(const map& __x)
       {
+	TRACE("copy assign (1)");
 	_M_t = __x._M_t;
 	return *this;
       }
@@ -308,6 +309,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       map&
       operator=(map&& __x) noexcept(_Alloc_traits::_S_nothrow_move())
       {
+	TRACE("move assign (2)");
 	if (!_M_t._M_move_assign(__x._M_t))
 	  {
 	    // The rvalue's allocator cannot be moved and is not equal,
@@ -334,6 +336,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       map&
       operator=(initializer_list<value_type> __l)
       {
+	TRACE("ilist assign (3)");
 	this->clear();
 	this->insert(__l.begin(), __l.end());
 	return *this;
