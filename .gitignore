@@ -20,3 +20,6 @@ obj/
 
 # scratch stuff
 scratch/
+
+# configuration makefile
+config.mk
