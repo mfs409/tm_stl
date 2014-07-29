@@ -19,15 +19,15 @@ CXX=gcc
 #
 # All paths and flags
 #
-LFLAGS64=-L/lib/x86_64-linux-gnu -L/lib/../lib64 -L/usr/lib/x86_64-linux-gnu
-LFLAGS32= -L/lib32 -L/usr/lib32
+LFLAGS64=-L/lib/x86_64-linux-gnu -L/lib/../lib64 -L/usr/lib/x86_64-linux-gnu -fgnu-tm
+LFLAGS32= -L/lib32 -L/usr/lib32 -fgnu-tm
 
 IFLAGS1=-I../../libgcc -I../include/x86_64-unknown-linux-gnu -I../include -I../libsupc++
 IFLAGS2=-I../include/backward
 
-CFLAGS1=-fno-implicit-templates -Wall -Wextra -Wwrite-strings -Wcast-qual -Wabi -fdiagnostics-show-location=once -ffunction-sections -fdata-sections
-CFLAGS2=-g -O2 -D_GNU_SOURCE
-CFLAGS3=-fPIC -DPIC -D_GLIBCXX_SHARED
+CFLAGS1=-fno-implicit-templates -Wall -Wextra -Wwrite-strings -Wcast-qual -Wabi -fdiagnostics-show-location=once -ffunction-sections -fdata-sections -fgnu-tm
+CFLAGS2=-g -O2 -D_GNU_SOURCE -fgnu-tm
+CFLAGS3=-fPIC -DPIC -D_GLIBCXX_SHARED -fgnu-tm
 
 #
 # Path to special crt*.o files

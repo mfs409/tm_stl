@@ -17,6 +17,8 @@
 
 # output folders
 obj/
+obj32/
+obj64/
 
 # scratch stuff
 scratch/

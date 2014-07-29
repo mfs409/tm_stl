@@ -134,11 +134,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       typedef _Tp&                               reference;
 
       _List_iterator() _GLIBCXX_NOEXCEPT
-      : _M_node() { }
+      : _M_node() { TRACE("iterator: default_constructable (1/2)"); }
 
       explicit
       _List_iterator(__detail::_List_node_base* __x) _GLIBCXX_NOEXCEPT
-      : _M_node(__x) { }
+      : _M_node(__x) { TRACE("iterator: copy_constructable (2/2)"); }
 
       _Self
       _M_const_cast() const _GLIBCXX_NOEXCEPT
@@ -147,22 +147,22 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       // Must downcast from _List_node_base to _List_node to get to _M_data.
       reference
       operator*() const _GLIBCXX_NOEXCEPT
-      { return static_cast<_Node*>(_M_node)->_M_data; }
+      { TRACE("iterator: operator* (1)"); return static_cast<_Node*>(_M_node)->_M_data; }
 
       pointer
       operator->() const _GLIBCXX_NOEXCEPT
-      { return std::__addressof(static_cast<_Node*>(_M_node)->_M_data); }
+      { TRACE("iterator: operator-> (1)"); return std::__addressof(static_cast<_Node*>(_M_node)->_M_data); }
 
       _Self&
       operator++() _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("iterator: operator++ (1/2)");
 	_M_node = _M_node->_M_next;
 	return *this;
       }
 
       _Self
       operator++(int) _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("iterator: operator++ (2/2)");
 	_Self __tmp = *this;
 	_M_node = _M_node->_M_next;
 	return __tmp;
@@ -170,14 +170,14 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       _Self&
       operator--() _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("iterator: operator-- (1/2)");
 	_M_node = _M_node->_M_prev;
 	return *this;
       }
 
       _Self
       operator--(int) _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("iterator: operator-- (2/2)");
 	_Self __tmp = *this;
 	_M_node = _M_node->_M_prev;
 	return __tmp;
@@ -185,11 +185,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       bool
       operator==(const _Self& __x) const _GLIBCXX_NOEXCEPT
-      { return _M_node == __x._M_node; }
+      { TRACE("iterator: operator== (1)"); return _M_node == __x._M_node; }
 
       bool
       operator!=(const _Self& __x) const _GLIBCXX_NOEXCEPT
-      { return _M_node != __x._M_node; }
+      { TRACE("iterator: operator!= (1)"); return _M_node != __x._M_node; }
 
       // The only member points to the %list element.
       __detail::_List_node_base* _M_node;
@@ -214,15 +214,15 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       typedef const _Tp&                         reference;
 
       _List_const_iterator() _GLIBCXX_NOEXCEPT
-      : _M_node() { }
+      : _M_node() { TRACE("const iterator: default_constructable (1/3)"); }
 
       explicit
       _List_const_iterator(const __detail::_List_node_base* __x)
       _GLIBCXX_NOEXCEPT
-      : _M_node(__x) { }
+      : _M_node(__x) { TRACE("const iterator: default_constructable (2/3)"); }
 
       _List_const_iterator(const iterator& __x) _GLIBCXX_NOEXCEPT
-      : _M_node(__x._M_node) { }
+      : _M_node(__x._M_node) { TRACE("const iterator: copy_constructable (3/3)"); }
 
       iterator
       _M_const_cast() const _GLIBCXX_NOEXCEPT
@@ -232,22 +232,22 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       // _M_data.
       reference
       operator*() const _GLIBCXX_NOEXCEPT
-      { return static_cast<_Node*>(_M_node)->_M_data; }
+      { TRACE("const iterator: operator* (1)"); return static_cast<_Node*>(_M_node)->_M_data; }
 
       pointer
       operator->() const _GLIBCXX_NOEXCEPT
-      { return std::__addressof(static_cast<_Node*>(_M_node)->_M_data); }
+      { TRACE("const iterator: operator-> (1)"); return std::__addressof(static_cast<_Node*>(_M_node)->_M_data); }
 
       _Self&
       operator++() _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("const iterator: operator++ (1/2)"); 
 	_M_node = _M_node->_M_next;
 	return *this;
       }
 
       _Self
       operator++(int) _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("const iterator: operator++ (2/2)"); 
 	_Self __tmp = *this;
 	_M_node = _M_node->_M_next;
 	return __tmp;
@@ -255,14 +255,14 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       _Self&
       operator--() _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("const iterator: operator-- (1/2)"); 
 	_M_node = _M_node->_M_prev;
 	return *this;
       }
 
       _Self
       operator--(int) _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("const iterator: operator-- (2/2)");
 	_Self __tmp = *this;
 	_M_node = _M_node->_M_prev;
 	return __tmp;
@@ -270,11 +270,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       bool
       operator==(const _Self& __x) const _GLIBCXX_NOEXCEPT
-      { return _M_node == __x._M_node; }
+      { TRACE("const iterator: operator== (1)"); return _M_node == __x._M_node; }
 
       bool
       operator!=(const _Self& __x) const _GLIBCXX_NOEXCEPT
-      { return _M_node != __x._M_node; }
+      { TRACE("const iterator: operator!= (1)"); return _M_node != __x._M_node; }
 
       // The only member points to the %list element.
       const __detail::_List_node_base* _M_node;
@@ -284,13 +284,13 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     inline bool
     operator==(const _List_iterator<_Val>& __x,
 	       const _List_const_iterator<_Val>& __y) _GLIBCXX_NOEXCEPT
-    { return __x._M_node == __y._M_node; }
+    { TRACE("iterator: operator== for const/nonconst (1)"); return __x._M_node == __y._M_node; }
 
   template<typename _Val>
     inline bool
     operator!=(const _List_iterator<_Val>& __x,
                const _List_const_iterator<_Val>& __y) _GLIBCXX_NOEXCEPT
-    { return __x._M_node != __y._M_node; }
+    { TRACE("iterator: operator!= for const/nonconst (1)"); return __x._M_node != __y._M_node; }
 
 
   /// See bits/stl_deque.h's _Deque_base for an explanation.
@@ -384,7 +384,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       // This is what actually destroys the list.
       ~_List_base() _GLIBCXX_NOEXCEPT
-      { _M_clear(); }
+      { TRACE("dtor (1)"); _M_clear(); }
 
       void
       _M_clear() _GLIBCXX_NOEXCEPT;
@@ -534,7 +534,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #if __cplusplus >= 201103L
       noexcept(is_nothrow_default_constructible<_Node_alloc_type>::value)
 #endif
-      : _Base() { }
+      : _Base() { TRACE("ctor: default (0)"); }
 
       /**
        *  @brief  Creates a %list with no elements.
@@ -542,7 +542,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       explicit
       list(const allocator_type& __a) _GLIBCXX_NOEXCEPT
-      : _Base(_Node_alloc_type(__a)) { }
+      : _Base(_Node_alloc_type(__a)) { TRACE("ctor: default (1)"); }
 
 #if __cplusplus >= 201103L
       /**
@@ -555,7 +555,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       explicit
       list(size_type __n)
       : _Base()
-      { _M_default_initialize(__n); }
+      { TRACE("ctor: fill (2a)"); _M_default_initialize(__n); }
 
       /**
        *  @brief  Creates a %list with copies of an exemplar element.
@@ -568,7 +568,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       list(size_type __n, const value_type& __value,
 	   const allocator_type& __a = allocator_type())
       : _Base(_Node_alloc_type(__a))
-      { _M_fill_initialize(__n, __value); }
+      { TRACE("ctor: fill (2b)"); _M_fill_initialize(__n, __value); }
 #else
       /**
        *  @brief  Creates a %list with copies of an exemplar element.
@@ -594,7 +594,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       list(const list& __x)
       : _Base(__x._M_get_Node_allocator())
-      { _M_initialize_dispatch(__x.begin(), __x.end(), __false_type()); }
+      { TRACE("ctor: copy (4)"); _M_initialize_dispatch(__x.begin(), __x.end(), __false_type()); }
 
 #if __cplusplus >= 201103L
       /**
@@ -605,7 +605,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  The contents of @a __x are a valid, but unspecified %list.
        */
       list(list&& __x) noexcept
-      : _Base(std::move(__x)) { }
+      : _Base(std::move(__x)) { TRACE("ctor: move (5)"); }
 
       /**
        *  @brief  Builds a %list from an initializer_list
@@ -618,7 +618,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       list(initializer_list<value_type> __l,
            const allocator_type& __a = allocator_type())
       : _Base(_Node_alloc_type(__a))
-      { _M_initialize_dispatch(__l.begin(), __l.end(), __false_type()); }
+      { TRACE("ctor: initializer list (6)"); _M_initialize_dispatch(__l.begin(), __l.end(), __false_type()); }
 #endif
 
       /**
@@ -637,13 +637,13 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
         list(_InputIterator __first, _InputIterator __last,
 	     const allocator_type& __a = allocator_type())
 	: _Base(_Node_alloc_type(__a))
-        { _M_initialize_dispatch(__first, __last, __false_type()); }
+        { TRACE("ctor: range (3)"); _M_initialize_dispatch(__first, __last, __false_type()); }
 #else
       template<typename _InputIterator>
         list(_InputIterator __first, _InputIterator __last,
 	     const allocator_type& __a = allocator_type())
 	: _Base(_Node_alloc_type(__a))
-        { 
+        { TRACE("ctor: range (c++98) (3)");
 	  // Check whether it's an integral type.  If so, it's not an iterator.
 	  typedef typename std::__is_integer<_InputIterator>::__type _Integral;
 	  _M_initialize_dispatch(__first, __last, _Integral());
@@ -678,7 +678,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       list&
       operator=(list&& __x)
-      {
+      { TRACE("operator=: move (2/3)");
 	// NB: DR 1204.
 	// NB: DR 675.
 	this->clear();
@@ -695,7 +695,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       list&
       operator=(initializer_list<value_type> __l)
-      {
+      { TRACE("operator=: initializer list (3/3)");
 	this->assign(__l.begin(), __l.end());
 	return *this;
       }
@@ -713,7 +713,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       assign(size_type __n, const value_type& __val)
-      { _M_fill_assign(__n, __val); }
+      { TRACE("modifiers: assign (1/3)"); _M_fill_assign(__n, __val); }
 
       /**
        *  @brief  Assigns a range to a %list.
@@ -732,7 +732,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 	       typename = std::_RequireInputIter<_InputIterator>>
         void
         assign(_InputIterator __first, _InputIterator __last)
-        { _M_assign_dispatch(__first, __last, __false_type()); }
+        { TRACE("modifiers: assign (2/3)"); _M_assign_dispatch(__first, __last, __false_type()); }
 #else
       template<typename _InputIterator>
         void
@@ -754,13 +754,13 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       assign(initializer_list<value_type> __l)
-      { this->assign(__l.begin(), __l.end()); }
+      { TRACE("modifiers: assign (3/3)"); this->assign(__l.begin(), __l.end()); }
 #endif
 
       /// Get a copy of the memory allocation object.
       allocator_type
       get_allocator() const _GLIBCXX_NOEXCEPT
-      { return _Base::get_allocator(); }
+      { TRACE("observers: get_allocator (1)"); return _Base::get_allocator(); }
 
       // iterators
       /**
@@ -769,7 +769,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       begin() _GLIBCXX_NOEXCEPT
-      { return iterator(this->_M_impl._M_node._M_next); }
+      { TRACE("iterator: begin (1/2)"); return iterator(this->_M_impl._M_node._M_next); }
 
       /**
        *  Returns a read-only (constant) iterator that points to the
@@ -778,7 +778,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       begin() const _GLIBCXX_NOEXCEPT
-      { return const_iterator(this->_M_impl._M_node._M_next); }
+      { TRACE("iterator: begin (2/2)"); return const_iterator(this->_M_impl._M_node._M_next); }
 
       /**
        *  Returns a read/write iterator that points one past the last
@@ -787,7 +787,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       end() _GLIBCXX_NOEXCEPT
-      { return iterator(&this->_M_impl._M_node); }
+      { TRACE("iterator: end (1/2)"); return iterator(&this->_M_impl._M_node); }
 
       /**
        *  Returns a read-only (constant) iterator that points one past
@@ -796,7 +796,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       end() const _GLIBCXX_NOEXCEPT
-      { return const_iterator(&this->_M_impl._M_node); }
+      { TRACE("iterator: end (2/2)"); return const_iterator(&this->_M_impl._M_node); }
 
       /**
        *  Returns a read/write reverse iterator that points to the last
@@ -805,7 +805,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reverse_iterator
       rbegin() _GLIBCXX_NOEXCEPT
-      { return reverse_iterator(end()); }
+      { TRACE("iterator: rbegin (1/2)"); return reverse_iterator(end()); }
 
       /**
        *  Returns a read-only (constant) reverse iterator that points to
@@ -814,7 +814,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reverse_iterator
       rbegin() const _GLIBCXX_NOEXCEPT
-      { return const_reverse_iterator(end()); }
+      { TRACE("iterator: rbegin (2/2)"); return const_reverse_iterator(end()); }
 
       /**
        *  Returns a read/write reverse iterator that points to one
@@ -823,7 +823,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reverse_iterator
       rend() _GLIBCXX_NOEXCEPT
-      { return reverse_iterator(begin()); }
+      { TRACE("iterator: rend (1/2)"); return reverse_iterator(begin()); }
 
       /**
        *  Returns a read-only (constant) reverse iterator that points to one
@@ -832,7 +832,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reverse_iterator
       rend() const _GLIBCXX_NOEXCEPT
-      { return const_reverse_iterator(begin()); }
+      { TRACE("iterator: rend (2/2)"); return const_reverse_iterator(begin()); }
 
 #if __cplusplus >= 201103L
       /**
@@ -842,7 +842,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       cbegin() const noexcept
-      { return const_iterator(this->_M_impl._M_node._M_next); }
+      { TRACE("iterator: cbegin (1)"); return const_iterator(this->_M_impl._M_node._M_next); }
 
       /**
        *  Returns a read-only (constant) iterator that points one past
@@ -851,7 +851,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       cend() const noexcept
-      { return const_iterator(&this->_M_impl._M_node); }
+      { TRACE("iterator: cend (1)"); return const_iterator(&this->_M_impl._M_node); }
 
       /**
        *  Returns a read-only (constant) reverse iterator that points to
@@ -860,7 +860,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reverse_iterator
       crbegin() const noexcept
-      { return const_reverse_iterator(end()); }
+      { TRACE("iterator: crbegin (1)"); return const_reverse_iterator(end()); }
 
       /**
        *  Returns a read-only (constant) reverse iterator that points to one
@@ -869,7 +869,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reverse_iterator
       crend() const noexcept
-      { return const_reverse_iterator(begin()); }
+      { TRACE("iterator: crend (1)"); return const_reverse_iterator(begin()); }
 #endif
 
       // [23.2.2.2] capacity
@@ -879,17 +879,17 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       bool
       empty() const _GLIBCXX_NOEXCEPT
-      { return this->_M_impl._M_node._M_next == &this->_M_impl._M_node; }
+      { TRACE("capacity: empty (1)"); return this->_M_impl._M_node._M_next == &this->_M_impl._M_node; }
 
       /**  Returns the number of elements in the %list.  */
       size_type
       size() const _GLIBCXX_NOEXCEPT
-      { return std::distance(begin(), end()); }
+      { TRACE("capacity: size (1)"); return std::distance(begin(), end()); }
 
       /**  Returns the size() of the largest possible %list.  */
       size_type
       max_size() const _GLIBCXX_NOEXCEPT
-      { return _M_get_Node_allocator().max_size(); }
+      { TRACE("capacity: max_size (1)"); return _M_get_Node_allocator().max_size(); }
 
 #if __cplusplus >= 201103L
       /**
@@ -938,7 +938,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reference
       front() _GLIBCXX_NOEXCEPT
-      { return *begin(); }
+      { TRACE("access: front (1/2)"); return *begin(); }
 
       /**
        *  Returns a read-only (constant) reference to the data at the first
@@ -946,7 +946,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reference
       front() const _GLIBCXX_NOEXCEPT
-      { return *begin(); }
+      { TRACE("access: front (2/2)"); return *begin(); }
 
       /**
        *  Returns a read/write reference to the data at the last element
@@ -954,7 +954,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reference
       back() _GLIBCXX_NOEXCEPT
-      { 
+      { TRACE("access: back (1/2)");
 	iterator __tmp = end();
 	--__tmp;
 	return *__tmp;
@@ -966,7 +966,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reference
       back() const _GLIBCXX_NOEXCEPT
-      { 
+      { TRACE("access: back (2/2)");
 	const_iterator __tmp = end();
 	--__tmp;
 	return *__tmp;
@@ -985,17 +985,17 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       push_front(const value_type& __x)
-      { this->_M_insert(begin(), __x); }
+      { TRACE("modifiers: push_front (1/2)"); this->_M_insert(begin(), __x); }
 
 #if __cplusplus >= 201103L
       void
       push_front(value_type&& __x)
-      { this->_M_insert(begin(), std::move(__x)); }
+      { TRACE("modifiers: push_front (2/2)"); this->_M_insert(begin(), std::move(__x)); }
 
       template<typename... _Args>
         void
         emplace_front(_Args&&... __args)
-        { this->_M_insert(begin(), std::forward<_Args>(__args)...); }
+        { TRACE("modifiers: emplace_front (1)"); this->_M_insert(begin(), std::forward<_Args>(__args)...); }
 #endif
 
       /**
@@ -1012,7 +1012,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       pop_front() _GLIBCXX_NOEXCEPT
-      { this->_M_erase(begin()); }
+      { TRACE("modifiers: pop_front (1)"); this->_M_erase(begin()); }
 
       /**
        *  @brief  Add data to the end of the %list.
@@ -1026,17 +1026,17 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       push_back(const value_type& __x)
-      { this->_M_insert(end(), __x); }
+      { TRACE("modifiers: push_back (1/2)");this->_M_insert(end(), __x); }
 
 #if __cplusplus >= 201103L
       void
       push_back(value_type&& __x)
-      { this->_M_insert(end(), std::move(__x)); }
+      { TRACE("modifiers: push_back (2/2)"); this->_M_insert(end(), std::move(__x)); }
 
       template<typename... _Args>
         void
         emplace_back(_Args&&... __args)
-        { this->_M_insert(end(), std::forward<_Args>(__args)...); }
+        { TRACE("modifiers: emplace_back (1)");this->_M_insert(end(), std::forward<_Args>(__args)...); }
 #endif
 
       /**
@@ -1052,7 +1052,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       pop_back() _GLIBCXX_NOEXCEPT
-      { this->_M_erase(iterator(this->_M_impl._M_node._M_prev)); }
+      { TRACE("modifiers: pop_back (1)"); this->_M_erase(iterator(this->_M_impl._M_node._M_prev)); }
 
 #if __cplusplus >= 201103L
       /**
@@ -1114,7 +1114,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
         */
       iterator
       insert(const_iterator __position, value_type&& __x)
-      { return emplace(__position, std::move(__x)); }
+      { TRACE("modifiers: insert (2/5)"); return emplace(__position, std::move(__x)); }
 
       /**
        *  @brief  Inserts the contents of an initializer_list into %list
@@ -1133,7 +1133,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       insert(const_iterator __p, initializer_list<value_type> __l)
-      { return this->insert(__p, __l.begin(), __l.end()); }
+      { TRACE("modifiers: insert (3/5)"); return this->insert(__p, __l.begin(), __l.end()); }
 #endif
 
 #if __cplusplus >= 201103L
@@ -1265,7 +1265,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #else
       erase(iterator __first, iterator __last)
 #endif
-      {
+      { TRACE("modifiers: erase (2/2)");
 	while (__first != __last)
 	  __first = erase(__first);
 	return __last._M_const_cast();
@@ -1282,7 +1282,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       swap(list& __x)
-      {
+      { TRACE("modifiers: swap (1)");
 	__detail::_List_node_base::swap(this->_M_impl._M_node, 
 					__x._M_impl._M_node);
 
@@ -1300,7 +1300,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       clear() _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("modifiers: clear (1)");
         _Base::_M_clear();
         _Base::_M_init();
       }
@@ -1323,7 +1323,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #else
       splice(iterator __position, list& __x)
 #endif
-      {
+      { TRACE("operations: splice (1/6)");
 	if (!__x.empty())
 	  {
 	    _M_check_equal_allocators(__x);
@@ -1336,7 +1336,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #if __cplusplus >= 201103L
       void
       splice(const_iterator __position, list& __x) noexcept
-      { splice(__position, std::move(__x)); }
+      { TRACE("operations: splice (2/6)"); splice(__position, std::move(__x)); }
 #endif
 
 #if __cplusplus >= 201103L
@@ -1365,7 +1365,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       void
       splice(iterator __position, list& __x, iterator __i)
 #endif
-      {
+      { TRACE("operations: splice (3/6)");
 	iterator __j = __i._M_const_cast();
 	++__j;
 	if (__position == __i || __position == __j)
@@ -1391,7 +1391,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       splice(const_iterator __position, list& __x, const_iterator __i) noexcept
-      { splice(__position, std::move(__x), __i); }
+      { TRACE("operations: splice (4/6)"); splice(__position, std::move(__x), __i); }
 #endif
 
 #if __cplusplus >= 201103L
@@ -1428,7 +1428,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       splice(iterator __position, list& __x, iterator __first,
 	     iterator __last)
 #endif
-      {
+      { TRACE("operations: splice (5/6)");
 	if (__first != __last)
 	  {
 	    if (this != &__x)
@@ -1457,7 +1457,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       void
       splice(const_iterator __position, list& __x, const_iterator __first,
 	     const_iterator __last) noexcept
-      { splice(__position, std::move(__x), __first, __last); }
+      { TRACE("operations: splice (6/6)"); splice(__position, std::move(__x), __first, __last); }
 #endif
 
       /**
@@ -1533,7 +1533,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       void
       merge(list& __x)
-      { merge(std::move(__x)); }
+      { TRACE("operations: merge (2/4)"); merge(std::move(__x)); }
 #else
       void
       merge(list& __x);
@@ -1560,7 +1560,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       template<typename _StrictWeakOrdering>
         void
         merge(list& __x, _StrictWeakOrdering __comp)
-        { merge(std::move(__x), __comp); }
+        { TRACE("operations: merge (4/4)"); merge(std::move(__x), __comp); }
 #else
       template<typename _StrictWeakOrdering>
         void
@@ -1574,7 +1574,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       reverse() _GLIBCXX_NOEXCEPT
-      { this->_M_impl._M_node._M_reverse(); }
+      { TRACE("operations: reverse (1)"); this->_M_impl._M_node._M_reverse(); }
 
       /**
        *  @brief  Sort the elements.
@@ -1727,7 +1727,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
   template<typename _Tp, typename _Alloc>
     inline bool
     operator==(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-    {
+    { TRACE("overloads: operator== (1)");
       typedef typename list<_Tp, _Alloc>::const_iterator const_iterator;
       const_iterator __end1 = __x.end();
       const_iterator __end2 = __y.end();
@@ -1756,38 +1756,38 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
   template<typename _Tp, typename _Alloc>
     inline bool
     operator<(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-    { return std::lexicographical_compare(__x.begin(), __x.end(),
+    { TRACE("overloads: operator< (1)"); return std::lexicographical_compare(__x.begin(), __x.end(),
 					  __y.begin(), __y.end()); }
 
   /// Based on operator==
   template<typename _Tp, typename _Alloc>
     inline bool
     operator!=(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-    { return !(__x == __y); }
+    { TRACE("overloads: operator!= (1)"); return !(__x == __y); }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
     inline bool
     operator>(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-    { return __y < __x; }
+    { TRACE("overloads: operator> (1)"); return __y < __x; }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
     inline bool
     operator<=(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-    { return !(__y < __x); }
+    { TRACE("overloads: operator<= (1)"); return !(__y < __x); }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
     inline bool
     operator>=(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-    { return !(__x < __y); }
+    { TRACE("overloads: operator>= (1)"); return !(__x < __y); }
 
   /// See std::list::swap().
   template<typename _Tp, typename _Alloc>
     inline void
     swap(list<_Tp, _Alloc>& __x, list<_Tp, _Alloc>& __y)
-    { __x.swap(__y); }
+    { TRACE("overloads: swap (1)"); __x.swap(__y); }
 
 _GLIBCXX_END_NAMESPACE_CONTAINER
 } // namespace std
