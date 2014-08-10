@@ -1,79 +1,65 @@
 tm_stl
 ======
 
-A scratchpad for working on making some of the C++11 STL code from gcc 4.9 transaction-safe
+A scratchpad for working on making the C++11 STL code from gcc 4.10
+transaction-safe.
+
+To that end, this project entails two efforts:
+1. Write driver programs that we can prove call every method of the STL
+2. Make the necessary modifications so that every STL method can be called from an atomic transaction
+
+To achieve the first goal, we have a version of libstdc++ in which there is a
+`printf` within every STL function.  We call this the **trace** version.
+Then, for each STL collection, there is a subfolder within the **validation**
+folder.  When the code in the appropriate subfolder of validation is linked
+to the library in the trace folder, and run, output should indicate that
+every STL function is being called.
+
+To achieve the second goal, we flip a `#define#` so that the validation code
+attempts to call STL functions from within `__transaction_atomic` blocks.  We
+then link against the **tm** version of libstdc++.  It should be the case
+that there are no link errors, and the program executes without any errors.
+
+Note: there is a libstdc++ folder containing unmodified gcc 4.10 source code.
+
+Notice
+----
+On 9 Aug 2014, this repository was heavily restructured.  Please note that
+most file locations have changed to fit with the above description.
 
 Folders
 ----
 
-inc/:
-   We use -nostdinc when building, so that GCC does not use any of its
-   standard header files.  We then manually copy any include files that our
-   program needs into this folder tree, so that we can easily track which
-   (hopefully few) files actually require modification in order to achieve a
-   fully transactional collection.
+libstdc++/:
+   This is the original libstdc++ code from GCC.  Note that it pulls from a
+   few parts of GCC, in order to be compilable.
+
+libstdc++_tm/:
+   This version of libstdc++ has been annotated or otherwise modified as
+   little as possible to make all STL calls transaction-safe.
+
+libstdc++_trace/:
+   This version of libstdc++ has `printf` statements in every method call, so
+   that we can be sure that we have 100% coverage of the STL functions.
    
-inc/stdinc:
-   This folder stores unmodified copies of the files in
-   <gcc_install>/include/c++/4.9.0/.  These are the bulk of the stl
-   implementation.
+old/:
+   Any work from before 9 Aug 2014 that has not yet been ported to the new
+   layout now resides in this folder.  Once it is migrated, it will no longer
+   reside in this folder.
 
-inc/platform_inc:
-   This folder stores unmodified copies of the files in
-   <gcc_install>/include/c++/4.9.0/x86_64-unknown-linux-gnu/.  These are the
-   parts of the stl implementation that are platform-dependent.
-
-inc/libinc:
-   This folder stores unmodified copies of the files in
-   <gcc_install>/lib/gcc/x86_64-unknown-linux-gnu/4.9.0/include/.
-
-inc/tm_stdinc:
-   If we require a modification to something in stdinc, we first move it
-   here, then we modify it.  It should be the case that the only required
-   modifications are annotations, though there are also times where we must
-   wrap abort calls in a pure wrapper.
-
-lib/:
-   Some portions of the stl are not implemented in headers.  When those parts
-   become transaction_safe, we need to re-compile the appropriate parts of
-   libstdc++.so.6.  The easiest way to do it for now is to copy the relevent
-   .cc files here, compile them during the benchmark build, and then
-   statically link them.
-
-lib/libstdc++-v3:
-   A home for the files from gcc's libstdc++ implementation that we need to
-   recompile.  It should be the case that these files do not require
-   modification.
-
-src/:
-   It ought to be the case that we can just mark headers as transaction-safe,
-   and then everything will "just work".  In reality, this is insufficient,
-   because so much of the STL is implemented in templates, and thus a "safe"
-   template function isn't statically checked for safety until it is actually
-   instantiated.  Consequently, we require a program that calls every method
-   of the collection, to ensure that the transaction_safe annotations do not
-   generate errors due to unsafe calls within safe code.  That program is
-   implemented in this folder.
+   
+validation/:
+   In the subfolders of validation are the programs for testing individual
+   STL containers.
 
 Status
 ----
 
-### std::list (in progress)
-
-  + The first step is to produce a sequential program that instantiates every
-    method of std::list (matching not just names, but parameter types).  This
-    effort is underway.  We are using www.cplusplus.com as a reference to
-    identify every public method in std::list, in all of its forms.  Note
-    that we are only concerned with C++11... C++98-only versions mentioned on
-    the site are being ignored. **Status: DONE**
-
-  + The second step is to create a multithreaded program that also
-    instantiates everything in std::list.  There is an initial ad-hoc attempt
-    at this.  The ad-hoc code will be deleted once we finish step 1, because
-    it would be better to use step 1 as a starting point for doing step 2
-    correctly.
-
-  + There are currently annotations in the files in inc/tm_stdinc.  These
-    annotations are legacy, from when we were doing things in a more ad-hoc
-    fashion.  All annotations will be discarded, and the effort re-done, once
-    we finish step 1.
+### std::list:   Complete
+### std::deque:  Incomplete, in old/ folder
+### std::map:    Incomplete, in old/ folder
+### std::queue:  Incomplete, in old/ folder
+### std::string: Incomplete, in old/ folder
+   + When last we looked, this wasn't going to work due to std::string not
+   conforming to C++11 requirements (it is still reference counted!)
+### std::vector: Incomplete, in old/ folder

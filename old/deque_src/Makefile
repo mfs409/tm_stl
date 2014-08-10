@@ -7,6 +7,6 @@
 
 CXXFILES       = bench member iter cap element modifier observer overloads
 
-LIBFILES       = functexcept snprintf_lite
+#LIBFILES       = functexcept snprintf_lite
 
 include ../common/common.mk

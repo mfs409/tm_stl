@@ -6,7 +6,7 @@ BITS          ?= 32
 #
 # Get configuration
 #
-include ../config.mk
+include ../../config.mk
 
 #
 # Directory Names
@@ -33,30 +33,30 @@ DEPS           = $(patsubst %.o, %.d, $(TM_OFILES) $(NOTM_OFILES) $(TRACE_OFILES
 CXX            = g++
 
 CXXFLAGS_NOTM  = -MD -O2 -ggdb -m$(BITS) -std=c++11 -nostdinc                       \
-                 -I/usr/include/ -I../libstdc++/libstdc++-v3/include                \
-                 -I../libstdc++/libstdc++-v3/include/x86_64-unknown-linux-gnu       \
-                 -I../libstdc++/libstdc++-v3/libsupc++                              \
+                 -I/usr/include/ -I../../libstdc++/libstdc++-v3/include                \
+                 -I../../libstdc++/libstdc++-v3/include/x86_64-unknown-linux-gnu       \
+                 -I../../libstdc++/libstdc++-v3/libsupc++                              \
                  -I$(GCC410INSTALL)/lib/gcc/x86_64-unknown-linux-gnu/4.10.0/include \
-                 -DNO_TM
+                 -DNO_TM -pthread
 
 CXXFLAGS_TM    = -MD -O2 -fgnu-tm -ggdb -m$(BITS) -std=c++11 -nostdinc              \
-                 -I/usr/include/ -I../libstdc++_tm/libstdc++-v3/include             \
-                 -I../libstdc++_tm/libstdc++-v3/include/x86_64-unknown-linux-gnu    \
-                 -I../libstdc++_tm/libstdc++-v3/libsupc++                           \
+                 -I/usr/include/ -I../../libstdc++_tm/libstdc++-v3/include             \
+                 -I../../libstdc++_tm/libstdc++-v3/include/x86_64-unknown-linux-gnu    \
+                 -I../../libstdc++_tm/libstdc++-v3/libsupc++                           \
                  -I$(GCC410INSTALL)/lib/gcc/x86_64-unknown-linux-gnu/4.10.0/include \
-                 -DUSE_TM
+                 -DUSE_TM -pthread
 
 CXXFLAGS_TRACE = -MD -O2 -ggdb -m$(BITS) -std=c++11 -nostdinc                       \
-                 -include ../libstdc++_trace/trace.h                                \
-                 -I/usr/include/ -I../libstdc++_trace/libstdc++-v3/include          \
-                 -I../libstdc++_trace/libstdc++-v3/include/x86_64-unknown-linux-gnu \
-                 -I../libstdc++_trace/libstdc++-v3/libsupc++                        \
+                 -include ../../libstdc++_trace/trace.h                                \
+                 -I/usr/include/ -I../../libstdc++_trace/libstdc++-v3/include          \
+                 -I../../libstdc++_trace/libstdc++-v3/include/x86_64-unknown-linux-gnu \
+                 -I../../libstdc++_trace/libstdc++-v3/libsupc++                        \
                  -I$(GCC410INSTALL)/lib/gcc/x86_64-unknown-linux-gnu/4.10.0/include \
-                 -DNO_TM
+                 -DNO_TM -pthread
 
-LDFLAGS_NOTM   = -m$(BITS) -L../libstdc++/libstdc++-v3/src/obj$(BITS) -lstdc++
-LDFLAGS_TM     = -m$(BITS) -fgnu-tm -L../libstdc++_tm/libstdc++-v3/src/obj$(BITS) -lstdc++
-LDFLAGS_TRACE  = -m$(BITS) -L../libstdc++_trace/libstdc++-v3/src/obj$(BITS) -lstdc++
+LDFLAGS_NOTM   = -m$(BITS) -L../../libstdc++/libstdc++-v3/src/obj$(BITS) -lstdc++ -pthread
+LDFLAGS_TM     = -m$(BITS) -fgnu-tm -L../../libstdc++_tm/libstdc++-v3/src/obj$(BITS) -lstdc++ -pthread
+LDFLAGS_TRACE  = -m$(BITS) -L../../libstdc++_trace/libstdc++-v3/src/obj$(BITS) -lstdc++ -pthread
 
 #
 # Best to be safe...
