@@ -785,7 +785,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       /**
        *  @brief  Creates a %deque with no elements.
        */
-      deque() : _Base() { }
+      deque() : _Base() { TRACE("deque: ctor: default(1a)"); }
 
       /**
        *  @brief  Creates a %deque with no elements.
@@ -793,7 +793,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       explicit
       deque(const allocator_type& __a)
-      : _Base(__a, 0) { }
+      : _Base(__a, 0) { TRACE("deque: ctor: default(1b)"); }
 
 #if __cplusplus >= 201103L
       /**
@@ -806,7 +806,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       explicit
       deque(size_type __n)
       : _Base(__n)
-      { _M_default_initialize(); }
+      { TRACE("deque: ctor: fill(2a)"); _M_default_initialize(); }
 
       /**
        *  @brief  Creates a %deque with copies of an exemplar element.
@@ -819,7 +819,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       deque(size_type __n, const value_type& __value,
 	    const allocator_type& __a = allocator_type())
       : _Base(__a, __n)
-      { _M_fill_initialize(__value); }
+      { TRACE("deque: ctor: fill(2b)"); _M_fill_initialize(__value); }
 #else
       /**
        *  @brief  Creates a %deque with copies of an exemplar element.
@@ -845,7 +845,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       deque(const deque& __x)
       : _Base(__x._M_get_Tp_allocator(), __x.size())
-      { std::__uninitialized_copy_a(__x.begin(), __x.end(), 
+      { TRACE("deque: ctor: copy(4a"); std::__uninitialized_copy_a(__x.begin(), __x.end(), 
 				    this->_M_impl._M_start,
 				    _M_get_Tp_allocator()); }
 
@@ -858,7 +858,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  The contents of @a __x are a valid, but unspecified %deque.
        */
       deque(deque&& __x)
-      : _Base(std::move(__x)) { }
+      : _Base(std::move(__x)) { TRACE("deque: ctor: move(5a)"); }
 
       /**
        *  @brief  Builds a %deque from an initializer list.
@@ -874,7 +874,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       deque(initializer_list<value_type> __l,
 	    const allocator_type& __a = allocator_type())
       : _Base(__a)
-      {
+      { TRACE("deque: ctor: list(6)");
 	_M_range_initialize(__l.begin(), __l.end(),
 			    random_access_iterator_tag());
       }
@@ -901,7 +901,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
         deque(_InputIterator __first, _InputIterator __last,
 	      const allocator_type& __a = allocator_type())
 	: _Base(__a)
-        { _M_initialize_dispatch(__first, __last, __false_type()); }
+        { TRACE("deque: ctor: range(3)"); _M_initialize_dispatch(__first, __last, __false_type()); }
 #else
       template<typename _InputIterator>
         deque(_InputIterator __first, _InputIterator __last,
@@ -920,7 +920,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  way.  Managing the pointer is the user's responsibility.
        */
       ~deque() _GLIBCXX_NOEXCEPT
-      { _M_destroy_data(begin(), end(), _M_get_Tp_allocator()); }
+      { TRACE("deque: dtor(1)"); _M_destroy_data(begin(), end(), _M_get_Tp_allocator()); }
 
       /**
        *  @brief  %Deque assignment operator.
@@ -942,7 +942,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       deque&
       operator=(deque&& __x) noexcept
-      {
+      { TRACE("deque: operator=: move(2)");
 	// NB: DR 1204.
 	// NB: DR 675.
 	this->clear();
@@ -963,7 +963,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       deque&
       operator=(initializer_list<value_type> __l)
-      {
+      { TRACE("deque: operator=: ilist(3)");
 	this->assign(__l.begin(), __l.end());
 	return *this;
       }
@@ -981,7 +981,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       assign(size_type __n, const value_type& __val)
-      { _M_fill_assign(__n, __val); }
+      { TRACE("deque: TBD"); _M_fill_assign(__n, __val); }
 
       /**
        *  @brief  Assigns a range to a %deque.
@@ -1000,7 +1000,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 	       typename = std::_RequireInputIter<_InputIterator>>
         void
         assign(_InputIterator __first, _InputIterator __last)
-        { _M_assign_dispatch(__first, __last, __false_type()); }
+        { TRACE("deque: TBD"); _M_assign_dispatch(__first, __last, __false_type()); }
 #else
       template<typename _InputIterator>
         void
@@ -1025,13 +1025,13 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       assign(initializer_list<value_type> __l)
-      { this->assign(__l.begin(), __l.end()); }
+      { TRACE("deque: TBD"); this->assign(__l.begin(), __l.end()); }
 #endif
 
       /// Get a copy of the memory allocation object.
       allocator_type
       get_allocator() const _GLIBCXX_NOEXCEPT
-      { return _Base::get_allocator(); }
+      { TRACE("deque: allocator: get_allocator(1)"); return _Base::get_allocator(); }
 
       // iterators
       /**
@@ -1040,7 +1040,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       begin() _GLIBCXX_NOEXCEPT
-      { return this->_M_impl._M_start; }
+      { TRACE("deque: iterator: begin(1a)"); return this->_M_impl._M_start; }
 
       /**
        *  Returns a read-only (constant) iterator that points to the first
@@ -1048,7 +1048,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       begin() const _GLIBCXX_NOEXCEPT
-      { return this->_M_impl._M_start; }
+      { TRACE("deque: iterator: begin(1b)"); return this->_M_impl._M_start; }
 
       /**
        *  Returns a read/write iterator that points one past the last
@@ -1057,7 +1057,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       end() _GLIBCXX_NOEXCEPT
-      { return this->_M_impl._M_finish; }
+      { TRACE("deque: iterator: end(1a)"); return this->_M_impl._M_finish; }
 
       /**
        *  Returns a read-only (constant) iterator that points one past
@@ -1066,7 +1066,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       end() const _GLIBCXX_NOEXCEPT
-      { return this->_M_impl._M_finish; }
+      { TRACE("deque: iterator: end(1b)"); return this->_M_impl._M_finish; }
 
       /**
        *  Returns a read/write reverse iterator that points to the
@@ -1075,7 +1075,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reverse_iterator
       rbegin() _GLIBCXX_NOEXCEPT
-      { return reverse_iterator(this->_M_impl._M_finish); }
+      { TRACE("deque: iterator: rbegin(1a)"); return reverse_iterator(this->_M_impl._M_finish); }
 
       /**
        *  Returns a read-only (constant) reverse iterator that points
@@ -1084,7 +1084,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reverse_iterator
       rbegin() const _GLIBCXX_NOEXCEPT
-      { return const_reverse_iterator(this->_M_impl._M_finish); }
+      { TRACE("deque: iterator: rbegin(1b)"); return const_reverse_iterator(this->_M_impl._M_finish); }
 
       /**
        *  Returns a read/write reverse iterator that points to one
@@ -1093,7 +1093,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reverse_iterator
       rend() _GLIBCXX_NOEXCEPT
-      { return reverse_iterator(this->_M_impl._M_start); }
+      { TRACE("deque: iterator: rend(1a)"); return reverse_iterator(this->_M_impl._M_start); }
 
       /**
        *  Returns a read-only (constant) reverse iterator that points
@@ -1102,7 +1102,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reverse_iterator
       rend() const _GLIBCXX_NOEXCEPT
-      { return const_reverse_iterator(this->_M_impl._M_start); }
+      { TRACE("deque: iterator: rend(1b)"); return const_reverse_iterator(this->_M_impl._M_start); }
 
 #if __cplusplus >= 201103L
       /**
@@ -1111,7 +1111,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       cbegin() const noexcept
-      { return this->_M_impl._M_start; }
+      { TRACE("deque: iterator: cbegin(1)"); return this->_M_impl._M_start; }
 
       /**
        *  Returns a read-only (constant) iterator that points one past
@@ -1120,7 +1120,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       cend() const noexcept
-      { return this->_M_impl._M_finish; }
+      { TRACE("deque: iterator: cend(1)"); return this->_M_impl._M_finish; }
 
       /**
        *  Returns a read-only (constant) reverse iterator that points
@@ -1129,7 +1129,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reverse_iterator
       crbegin() const noexcept
-      { return const_reverse_iterator(this->_M_impl._M_finish); }
+      { TRACE("deque: iterator: crbegin(1)"); return const_reverse_iterator(this->_M_impl._M_finish); }
 
       /**
        *  Returns a read-only (constant) reverse iterator that points
@@ -1138,19 +1138,19 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reverse_iterator
       crend() const noexcept
-      { return const_reverse_iterator(this->_M_impl._M_start); }
+      { TRACE("deque: iterator: crend(1)"); return const_reverse_iterator(this->_M_impl._M_start); }
 #endif
 
       // [23.2.1.2] capacity
       /**  Returns the number of elements in the %deque.  */
       size_type
       size() const _GLIBCXX_NOEXCEPT
-      { return this->_M_impl._M_finish - this->_M_impl._M_start; }
+      { TRACE("deque: TBD"); return this->_M_impl._M_finish - this->_M_impl._M_start; }
 
       /**  Returns the size() of the largest possible %deque.  */
       size_type
       max_size() const _GLIBCXX_NOEXCEPT
-      { return _M_get_Tp_allocator().max_size(); }
+      { TRACE("deque: TBD"); return _M_get_Tp_allocator().max_size(); }
 
 #if __cplusplus >= 201103L
       /**
@@ -1164,7 +1164,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       resize(size_type __new_size)
-      {
+      { TRACE("deque: TBD");
 	const size_type __len = size();
 	if (__new_size > __len)
 	  _M_default_append(__new_size - __len);
@@ -1186,7 +1186,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       resize(size_type __new_size, const value_type& __x)
-      {
+      { TRACE("deque: TBD");
 	const size_type __len = size();
 	if (__new_size > __len)
 	  insert(this->_M_impl._M_finish, __new_size - __len, __x);
@@ -1222,7 +1222,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       /**  A non-binding request to reduce memory use.  */
       void
       shrink_to_fit() noexcept
-      { _M_shrink_to_fit(); }
+      { TRACE("deque: TBD"); _M_shrink_to_fit(); }
 #endif
 
       /**
@@ -1231,7 +1231,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       bool
       empty() const _GLIBCXX_NOEXCEPT
-      { return this->_M_impl._M_finish == this->_M_impl._M_start; }
+      { TRACE("deque: TBD"); return this->_M_impl._M_finish == this->_M_impl._M_start; }
 
       // element access
       /**
@@ -1247,7 +1247,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reference
       operator[](size_type __n) _GLIBCXX_NOEXCEPT
-      { return this->_M_impl._M_start[difference_type(__n)]; }
+      { TRACE("deque: TBD"); return this->_M_impl._M_start[difference_type(__n)]; }
 
       /**
        *  @brief Subscript access to the data contained in the %deque.
@@ -1262,7 +1262,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reference
       operator[](size_type __n) const _GLIBCXX_NOEXCEPT
-      { return this->_M_impl._M_start[difference_type(__n)]; }
+      { TRACE("deque: TBD"); return this->_M_impl._M_start[difference_type(__n)]; }
 
     protected:
       /// Safety check used only from at().
@@ -1290,7 +1290,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reference
       at(size_type __n)
-      {
+      { TRACE("deque: TBD");
 	_M_range_check(__n);
 	return (*this)[__n];
       }
@@ -1308,7 +1308,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reference
       at(size_type __n) const
-      {
+      { TRACE("deque: TBD");
 	_M_range_check(__n);
 	return (*this)[__n];
       }
@@ -1319,7 +1319,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reference
       front() _GLIBCXX_NOEXCEPT
-      { return *begin(); }
+      { TRACE("deque: TBD"); return *begin(); }
 
       /**
        *  Returns a read-only (constant) reference to the data at the first
@@ -1327,7 +1327,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reference
       front() const _GLIBCXX_NOEXCEPT
-      { return *begin(); }
+      { TRACE("deque: TBD"); return *begin(); }
 
       /**
        *  Returns a read/write reference to the data at the last element of the
@@ -1335,7 +1335,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reference
       back() _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("deque: TBD");
 	iterator __tmp = end();
 	--__tmp;
 	return *__tmp;
@@ -1347,7 +1347,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reference
       back() const _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("deque: TBD");
 	const_iterator __tmp = end();
 	--__tmp;
 	return *__tmp;
@@ -1365,7 +1365,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       push_front(const value_type& __x)
-      {
+      { TRACE("deque: TBD");
 	if (this->_M_impl._M_start._M_cur != this->_M_impl._M_start._M_first)
 	  {
 	    this->_M_impl.construct(this->_M_impl._M_start._M_cur - 1, __x);
@@ -1378,7 +1378,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #if __cplusplus >= 201103L
       void
       push_front(value_type&& __x)
-      { emplace_front(std::move(__x)); }
+      { TRACE("deque: TBD"); emplace_front(std::move(__x)); }
 
       template<typename... _Args>
         void
@@ -1396,7 +1396,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       push_back(const value_type& __x)
-      {
+      { TRACE("deque: TBD");
 	if (this->_M_impl._M_finish._M_cur
 	    != this->_M_impl._M_finish._M_last - 1)
 	  {
@@ -1410,7 +1410,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #if __cplusplus >= 201103L
       void
       push_back(value_type&& __x)
-      { emplace_back(std::move(__x)); }
+      { TRACE("deque: TBD"); emplace_back(std::move(__x)); }
 
       template<typename... _Args>
         void
@@ -1427,7 +1427,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       pop_front() _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("deque: TBD");
 	if (this->_M_impl._M_start._M_cur
 	    != this->_M_impl._M_start._M_last - 1)
 	  {
@@ -1448,7 +1448,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       pop_back() _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("deque: TBD");
 	if (this->_M_impl._M_finish._M_cur
 	    != this->_M_impl._M_finish._M_first)
 	  {
@@ -1510,7 +1510,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       insert(const_iterator __position, value_type&& __x)
-      { return emplace(__position, std::move(__x)); }
+      { TRACE("deque: TBD"); return emplace(__position, std::move(__x)); }
 
       /**
        *  @brief  Inserts an initializer list into the %deque.
@@ -1523,7 +1523,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       insert(const_iterator __p, initializer_list<value_type> __l)
-      { return this->insert(__p, __l.begin(), __l.end()); }
+      { TRACE("deque: TBD"); return this->insert(__p, __l.begin(), __l.end()); }
 #endif
 
 #if __cplusplus >= 201103L
@@ -1539,7 +1539,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       insert(const_iterator __position, size_type __n, const value_type& __x)
-      {
+      { TRACE("deque: TBD");
 	difference_type __offset = __position - cbegin();
 	_M_fill_insert(__position._M_const_cast(), __n, __x);
 	return begin() + __offset;
@@ -1556,7 +1556,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       insert(iterator __position, size_type __n, const value_type& __x)
-      { _M_fill_insert(__position, __n, __x); }
+      { TRACE("deque: TBD"); _M_fill_insert(__position, __n, __x); }
 #endif
 
 #if __cplusplus >= 201103L
@@ -1576,7 +1576,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
         iterator
         insert(const_iterator __position, _InputIterator __first,
 	       _InputIterator __last)
-        {
+        { TRACE("deque: TBD");
 	  difference_type __offset = __position - cbegin();
 	  _M_insert_dispatch(__position._M_const_cast(),
 			     __first, __last, __false_type());
@@ -1597,7 +1597,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
         void
         insert(iterator __position, _InputIterator __first,
 	       _InputIterator __last)
-        {
+        { TRACE("deque: TBD");
 	  // Check whether it's an integral type.  If so, it's not an iterator.
 	  typedef typename std::__is_integer<_InputIterator>::__type _Integral;
 	  _M_insert_dispatch(__position, __first, __last, _Integral());
@@ -1623,7 +1623,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #else
       erase(iterator __position)
 #endif
-      { return _M_erase(__position._M_const_cast()); }
+      { TRACE("deque: TBD"); return _M_erase(__position._M_const_cast()); }
 
       /**
        *  @brief  Remove a range of elements.
@@ -1647,7 +1647,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #else
       erase(iterator __first, iterator __last)
 #endif
-      { return _M_erase(__first._M_const_cast(), __last._M_const_cast()); }
+      { TRACE("deque: TBD"); return _M_erase(__first._M_const_cast(), __last._M_const_cast()); }
 
       /**
        *  @brief  Swaps data with another %deque.
@@ -1660,7 +1660,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       swap(deque& __x) _GLIBCXX_NOEXCEPT
-      {
+      { TRACE("deque: TBD");
 	std::swap(this->_M_impl._M_start, __x._M_impl._M_start);
 	std::swap(this->_M_impl._M_finish, __x._M_impl._M_finish);
 	std::swap(this->_M_impl._M_map, __x._M_impl._M_map);
@@ -1680,7 +1680,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       clear() _GLIBCXX_NOEXCEPT
-      { _M_erase_at_end(begin()); }
+      { TRACE("deque: TBD"); _M_erase_at_end(begin()); }
 
     protected:
       // Internal constructor functions follow.

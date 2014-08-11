@@ -46,9 +46,9 @@ void ctor_dtor_tests(int id)
     int data[256], dsize;
 
     if (id == 0)
-        printf("Testing member deque constructors(7) and destructors(1)\n");
+        printf("Testing member deque constructors(8) and destructors(1)\n");
 
-    // test #1 is simple ctor and dtor
+    // the first test is simple ctor and dtor
     //
     // NB: we haven't actually verified size yet, but we use it here.
     global_barrier->arrive(id);
@@ -63,7 +63,26 @@ void ctor_dtor_tests(int id)
     }
     CHECK_SIZE("basic ctor(1) and dtor(1)", 0);
 
-    // the second test will call the simple fill constructor and the fill
+    // the next test uses special allocators with ctor 1
+    //
+    // NB: we haven't actually verified size yet, but we use it here.
+    global_barrier->arrive(id);
+    {
+        RESET_LOCAL(-2);
+        BEGIN_TX;
+        member_deque = new std::deque<int>();
+        // using get_allocator without checking it
+        auto a = member_deque->get_allocator();
+        delete(member_deque);
+        member_deque = new std::deque<int>(a);
+        dsize = member_deque->size();
+        delete(member_deque);
+        member_deque = NULL;
+        END_TX;
+    }
+    CHECK_SIZE("basic ctor(1) and dtor(1)", 0);
+
+    // the next test will call the simple fill constructor and the fill
     // constructor with default value
     //
     // NB: we haven't actually verified iterators yet, but we use them in
@@ -83,7 +102,7 @@ void ctor_dtor_tests(int id)
         CHECK("fill ctor (2a) and fill ctor (2b)", 8, 9, { 0, 0, 0, 0, 98, 98, 98, 98, -2});
     }
 
-    // the third test will use the range ctor
+    // the next test will use the range ctor
     global_barrier->arrive(id);
     {
         RESET_LOCAL(-2);
@@ -97,7 +116,7 @@ void ctor_dtor_tests(int id)
         CHECK("range ctor (3)", 3, 4, { 9, 8, 7, -2 });
     }
 
-    // the fourth test will use the copy ctor
+    // the next test will use the copy ctor
     global_barrier->arrive(id);
     {
         RESET_LOCAL(-2);
@@ -111,7 +130,7 @@ void ctor_dtor_tests(int id)
         CHECK("copy ctor (4a) -- there is no 4b", 4, 5, {3, 4, 5, 6, -2});
     }
 
-    // test #5 is the move ctor
+    // the next test is the move ctor
     global_barrier->arrive(id);
     {
         RESET_LOCAL(-2);
@@ -125,7 +144,7 @@ void ctor_dtor_tests(int id)
         CHECK("move ctor (5a) -- there is no 5b", 3, 4, {5, 4, 3, -2});
     }
 
-    // test #6 is the ilist ctor
+    // the next test is the ilist ctor
     global_barrier->arrive(id);
     {
         RESET_LOCAL(-2);
@@ -135,7 +154,7 @@ void ctor_dtor_tests(int id)
         delete(member_deque);
         member_deque = NULL;
         END_TX;
-        CHECK("move ilist ctor (6) -- there is no 5b", 4, 5, {11, 13, 15, 17, -2});
+        CHECK("move ilist ctor (6)", 4, 5, {11, 13, 15, 17, -2});
     }
 }
 

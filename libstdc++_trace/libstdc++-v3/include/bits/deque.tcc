@@ -91,7 +91,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     deque<_Tp, _Alloc>&
     deque<_Tp, _Alloc>::
     operator=(const deque& __x)
-    {
+    { TRACE("deque: operator=: copy(1)");
       const size_type __len = size();
       if (&__x != this)
 	{
@@ -114,7 +114,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       void
       deque<_Tp, _Alloc>::
       emplace_front(_Args&&... __args)
-      {
+      { TRACE("TBD");
 	if (this->_M_impl._M_start._M_cur != this->_M_impl._M_start._M_first)
 	  {
 	    this->_M_impl.construct(this->_M_impl._M_start._M_cur - 1,
@@ -130,7 +130,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       void
       deque<_Tp, _Alloc>::
       emplace_back(_Args&&... __args)
-      {
+      { TRACE("TBD");
 	if (this->_M_impl._M_finish._M_cur
 	    != this->_M_impl._M_finish._M_last - 1)
 	  {
@@ -149,7 +149,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       typename deque<_Tp, _Alloc>::iterator
       deque<_Tp, _Alloc>::
       emplace(const_iterator __position, _Args&&... __args)
-      {
+      { TRACE("TBD");
 	if (__position._M_cur == this->_M_impl._M_start._M_cur)
 	  {
 	    emplace_front(std::forward<_Args>(__args)...);
@@ -176,7 +176,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #else
     insert(iterator __position, const value_type& __x)
 #endif
-    {
+    { TRACE("TBD");
       if (__position._M_cur == this->_M_impl._M_start._M_cur)
 	{
 	  push_front(__x);
