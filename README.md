@@ -5,8 +5,8 @@ A scratchpad for working on making the C++11 STL code from gcc 4.10
 transaction-safe.
 
 To that end, this project entails two efforts:
-1. Write driver programs that we can prove call every method of the STL
-2. Make the necessary modifications so that every STL method can be called from an atomic transaction
+   1. Write driver programs that we can prove call every method of the STL
+   2. Make the necessary modifications so that every STL method can be called from an atomic transaction
 
 To achieve the first goal, we have a version of libstdc++ in which there is a
 `printf` within every STL function.  We call this the **trace** version.
@@ -15,7 +15,7 @@ folder.  When the code in the appropriate subfolder of validation is linked
 to the library in the trace folder, and run, output should indicate that
 every STL function is being called.
 
-To achieve the second goal, we flip a `#define#` so that the validation code
+To achieve the second goal, we flip a `#define` so that the validation code
 attempts to call STL functions from within `__transaction_atomic` blocks.  We
 then link against the **tm** version of libstdc++.  It should be the case
 that there are no link errors, and the program executes without any errors.
@@ -62,4 +62,5 @@ Status
 ### std::string: Incomplete, in old/ folder
    + When last we looked, this wasn't going to work due to std::string not
    conforming to C++11 requirements (it is still reference counted!)
+
 ### std::vector: Incomplete, in old/ folder
