@@ -32,21 +32,21 @@ DEPS           = $(patsubst %.o, %.d, $(TM_OFILES) $(NOTM_OFILES) $(TRACE_OFILES
 # and want changes to force recompilation.
 CXX            = g++
 
-CXXFLAGS_NOTM  = -MD -O2 -ggdb -m$(BITS) -std=c++11 -nostdinc                       \
+CXXFLAGS_NOTM  = -MD -O2 -ggdb -m$(BITS) -std=c++1y -nostdinc                       \
                  -I/usr/include/ -I../../libstdc++/libstdc++-v3/include                \
                  -I../../libstdc++/libstdc++-v3/include/x86_64-unknown-linux-gnu       \
                  -I../../libstdc++/libstdc++-v3/libsupc++                              \
                  -I$(GCC410INSTALL)/lib/gcc/x86_64-unknown-linux-gnu/4.10.0/include \
                  -DNO_TM -pthread
 
-CXXFLAGS_TM    = -MD -O2 -fgnu-tm -ggdb -m$(BITS) -std=c++11 -nostdinc              \
+CXXFLAGS_TM    = -MD -O2 -fgnu-tm -ggdb -m$(BITS) -std=c++1y -nostdinc              \
                  -I/usr/include/ -I../../libstdc++_tm/libstdc++-v3/include             \
                  -I../../libstdc++_tm/libstdc++-v3/include/x86_64-unknown-linux-gnu    \
                  -I../../libstdc++_tm/libstdc++-v3/libsupc++                           \
                  -I$(GCC410INSTALL)/lib/gcc/x86_64-unknown-linux-gnu/4.10.0/include \
                  -DUSE_TM -pthread
 
-CXXFLAGS_TRACE = -MD -O2 -ggdb -m$(BITS) -std=c++11 -nostdinc                       \
+CXXFLAGS_TRACE = -MD -O2 -ggdb -m$(BITS) -std=c++1y -nostdinc                       \
                  -include ../../libstdc++_trace/trace.h                                \
                  -I/usr/include/ -I../../libstdc++_trace/libstdc++-v3/include          \
                  -I../../libstdc++_trace/libstdc++-v3/include/x86_64-unknown-linux-gnu \
@@ -91,7 +91,7 @@ $(ODIR)/%_trace.o: %.cc
 $(ODIR)/bench_tm: $(TM_OFILES)
 $(ODIR)/%_tm:$(ODIR)/%_tm.o
 	@echo "[LD] $^ --> $@"
-	$(CXX) $^ -o $@ $(LDFLAGS_TM)
+	@$(CXX) $^ -o $@ $(LDFLAGS_TM)
 
 $(ODIR)/bench_notm: $(NOTM_OFILES)
 $(ODIR)/%_notm:$(ODIR)/%_notm.o

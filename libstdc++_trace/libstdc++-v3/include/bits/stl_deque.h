@@ -127,14 +127,14 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       _Deque_iterator(_Tp* __x, _Map_pointer __y) _GLIBCXX_NOEXCEPT
       : _M_cur(__x), _M_first(*__y),
-        _M_last(*__y + _S_buffer_size()), _M_node(__y) { }
+        _M_last(*__y + _S_buffer_size()), _M_node(__y) { TRACE("deque_iterator: ctor: ???(3)"); }
 
       _Deque_iterator() _GLIBCXX_NOEXCEPT
-      : _M_cur(0), _M_first(0), _M_last(0), _M_node(0) { }
+      : _M_cur(0), _M_first(0), _M_last(0), _M_node(0) { TRACE("deque_iterator: ctor: default(1)"); }
 
       _Deque_iterator(const iterator& __x) _GLIBCXX_NOEXCEPT
       : _M_cur(__x._M_cur), _M_first(__x._M_first),
-        _M_last(__x._M_last), _M_node(__x._M_node) { }
+        _M_last(__x._M_last), _M_node(__x._M_node) { TRACE("deque_iterator: ctor: copy(2)"); }
 
       iterator
       _M_const_cast() const _GLIBCXX_NOEXCEPT
@@ -142,11 +142,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       reference
       operator*() const _GLIBCXX_NOEXCEPT
-      { return *_M_cur; }
+      { TRACE("deque_iterator: operator* (1)"); return *_M_cur; }
 
       pointer
       operator->() const _GLIBCXX_NOEXCEPT
-      { return _M_cur; }
+      { TRACE("deque_iterator: operator-> (1)"); return _M_cur; }
 
       _Self&
       operator++() _GLIBCXX_NOEXCEPT

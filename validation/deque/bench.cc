@@ -29,9 +29,10 @@
 |                        | crbegin         | 1                 | 1                 |
 |                        | crend           | 1                 | 1                 |
 |------------------------+-----------------+-------------------+-------------------|
-| Iterator               | ctor            |                   |                   |
-| Methods                | operator*       |                   |                   |
-|                        | operator->      |                   |                   |
+| Iterator               | ctor            | 1, 2              | 1, 2, 3           |
+| Methods                | dtor            | 1                 | NONE              |
+|                        | operator*       | 1                 | 1                 |
+|                        | operator->      | 1                 | 1                 |
 |                        | operator++      |                   |                   |
 |                        | operator--      |                   |                   |
 |                        | operator+=      |                   |                   |
