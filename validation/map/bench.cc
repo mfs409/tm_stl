@@ -5,7 +5,7 @@
   std::map interface consists of the following:
 
   Steps:
-    1 - Put TBD traces into all of GCC's deque functions - done
+    1 - Put TBD traces into all of GCC's map functions
     2 - For one category at a time, replace TBDs and update columns 3 and 4
         of table below
     3 - Write test code for ensuring that every traced function is called,
