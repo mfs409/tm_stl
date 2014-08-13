@@ -38,7 +38,7 @@ std::deque<int>* cap_deque = NULL;
 /// test the capacity methods of std::deque
 void cap_tests(int id)
 {
-        global_barrier->arrive(id);
+    global_barrier->arrive(id);
 
     // a temporary array into which we can copy deque data
     int data[256], dsize;
@@ -92,4 +92,39 @@ void cap_tests(int id)
         CHECK(" deque resize (1) and (2)", 8, 8, { 1, 6, 6, 6, 6, 6, 6, 6 });
     }
 
+    // #4: test empty()
+    global_barrier->arrive(id);
+    {
+        bool ok = true;
+        RESET_LOCAL(-2);
+        BEGIN_TX;
+        cap_deque = new std::deque<int>();
+        ok &= cap_deque->empty();
+        cap_deque->resize(8, 6);
+        ok &= !cap_deque->empty();
+        delete(cap_deque);
+        END_TX;
+        if (!ok)
+            printf(" [%d] deque empty test failed\n", id);
+        else if (id == 0)
+            printf(" [OK] %s\n", "deque empty()");
+    }
+
+    // #5: test shrink_to_fit()
+    global_barrier->arrive(id);
+    {
+        int size = 0;
+        RESET_LOCAL(-2);
+        BEGIN_TX;
+        cap_deque = new std::deque<int>(100);
+        cap_deque->resize(10);
+        cap_deque->shrink_to_fit();
+        size = cap_deque->size();
+        delete(cap_deque);
+        END_TX;
+        if (size != 10)
+            printf(" [%d] deque size test failed: size = %d\n", id, size);
+        else if (id == 0)
+            printf(" [OK] %s\n", "deque size()");
+    }
 }

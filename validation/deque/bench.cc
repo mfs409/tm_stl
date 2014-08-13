@@ -73,8 +73,8 @@
 | Methods       |                       |                   |                   |
 |---------------+-----------------------+-------------------+-------------------|
 | Capacity      | size                  |                 1 |                 1 |
-|               | max_size              |                 1 |                 1 |
-|               | resize                |            1a, 1b |            1a, 1b |
+| (DONE)        | max_size              |                 1 |                 1 |
+|               | resize                |              1, 2 |              1, 2 |
 |               | empty                 |                 1 |                 1 |
 |               | shrink_to_fit         |                 1 |                 1 |
 |---------------+-----------------------+-------------------+-------------------|
@@ -144,16 +144,19 @@ void usage()
          << "               1 constructors and destructors" << endl
          << "               2 operator=" << endl
          << "               3 iterator creation" << endl
-         << "               4 basic iterator use" << endl
-         << "               5 const iterator use" << endl
-         << "               6 reverse iterator use" << endl
-         << "               7 const reverse iterator use" << endl
+         << "               4 iterator methods" << endl
+         << "               5 iterator operators" << endl
+         << "               6 iterator overloads" << endl
+         << "               7 iterator functions" << endl
          << "               8 capacity methods" << endl
          << "               9 element access methods" << endl
          << "              10 modifier methods" << endl
          << "              11 observer methods" << endl
          << "              12 relational operator use" << endl
          << "              13 swap use" << endl
+         << endl
+         << "  Note: const, reverse, and const reverse iterators not tested"
+         << endl
          << endl;
     exit(0);
 }
@@ -166,10 +169,10 @@ void (*test_names[NUM_TESTS])(int) = {
     ctor_dtor_tests,                                    // member.cc
     op_eq_tests,                                        // member.cc
     iter_create_tests,                                  // iter.cc
-    basic_iter_tests,                                   // iter.cc
-    const_iter_tests,                                   // iter.cc
-    rev_iter_tests,                                     // iter.cc
-    const_rev_iter_tests,                               // iter.cc
+    iter_method_tests,                                  // iter.cc
+    iter_operator_tests,                                // iter.cc
+    iter_overload_tests,                                // iter.cc
+    iter_function_tests,                                // iter.cc
     cap_tests,                                          // cap.cc
     element_tests,                                      // element.cc
     modifier_tests,                                     // modifier.cc

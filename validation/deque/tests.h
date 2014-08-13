@@ -14,10 +14,13 @@ void op_eq_tests(int id);
 
 // iterator tests, from iter.cc
 void iter_create_tests(int id);
-void basic_iter_tests(int id);
-void const_iter_tests(int id);
-void rev_iter_tests(int id);
-void const_rev_iter_tests(int id);
+void iter_method_tests(int id);
+void iter_operator_tests(int id);
+void iter_overload_tests(int id);
+void iter_function_tests(int id);
+
+// TODO: what about reverse iterators?  const iterators?  const reverse
+// iterators?
 
 // capacity tests, from cap.cc
 void cap_tests(int id);

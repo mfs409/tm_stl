@@ -32,7 +32,7 @@ void iter_create_tests(int id)
     int data[256], dsize;
 
     if (id == 0)
-        printf("Testing iterator functions: begin(2), end(2), rbegin(2), rend(2), cbegin, cend, crbegin, crend\n");
+        printf("Testing iterator begin/end functions\n");
 
     // the first test will simply ensure that we can call begin() and end()
     // correctly
@@ -156,11 +156,10 @@ void iter_create_tests(int id)
 }
 
 /**
- *  Make sure that std::deque's random access iterator
- *  (http://www.cplusplus.com/reference/iterator/RandomAccessIterator/) does
- *  everything it should
+ *  Make sure that std::deque's random access iterator methods work
+ *  (http://www.cplusplus.com/reference/iterator/RandomAccessIterator/)
  */
-void basic_iter_tests(int id)
+void iter_method_tests(int id)
 {
     global_barrier->arrive(id);
 
@@ -168,7 +167,7 @@ void basic_iter_tests(int id)
     int data[256], dsize;
 
     if (id == 0)
-        printf("Testing functions on std::deque::iterator\n");
+        printf("Testing basic methods of std::deque::iterator\n");
 
     // test copy-assignable, copy constructable, and destructable
     //
@@ -216,6 +215,34 @@ void basic_iter_tests(int id)
         END_TX;
         CHECK("swap iterators", 10, dsize, data, id, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     }
+}
+
+/**
+ *  Test Iterator methods (operators)
+ */
+void iter_operator_tests(int id)
+{
+    global_barrier->arrive(id);
+
+    // a temporary array into which we can copy deque data
+    int data[256], dsize;
+
+    if (id == 0)
+        printf("Testing operator methods on std::deque::iterator\n");
+}
+
+/**
+ * Test Iterator overloads (comparison operators)
+ */
+void iter_overload_tests(int id)
+{
+    global_barrier->arrive(id);
+
+    // a temporary array into which we can copy deque data
+    int data[256], dsize;
+
+    if (id == 0)
+        printf("Testing non-method comparator overloads on std::deque::iterator\n");
 
     // test comparability of iterators
     global_barrier->arrive(id);
@@ -237,8 +264,26 @@ void basic_iter_tests(int id)
         else if (id == 0)
             printf(" [OK] %s\n", "iterator comparability checks passed\n");
     }
+}
+
+/**
+ * Test iterator functions
+ */
+void iter_function_tests(int id)
+{
+    global_barrier->arrive(id);
+
+    // a temporary array into which we can copy deque data
+    int data[256], dsize;
+
+    if (id == 0)
+        printf("Testing non-method functions on std::deque::iterator\n");
+}
 
 #if 0
+void legacy_tests
+{
+
     // iterators should be comparable with == (5) and != (6)
     global_barrier->arrive(id);
     std::vector<int>::iterator e;
@@ -350,8 +395,8 @@ void basic_iter_tests(int id)
         std::cout << " [OK] operator --" << std::endl;
 
 
-#endif
 }
+#endif
 
 void const_iter_tests(int id)
 {
