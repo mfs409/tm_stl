@@ -3,7 +3,7 @@
 #include <deque>
 #include <cassert>
 #include "tests.h"
-#include "support.h"
+#include "verify.h"
 
 /// The deque we will use for our tests
 std::deque<int>* member_deque = NULL;
@@ -13,11 +13,8 @@ std::deque<int>* member_deque = NULL;
  */
 void ctor_dtor_tests(int id)
 {
+    // print simple output
     global_barrier->arrive(id);
-
-    // a temporary array into which we can copy deque data
-    int data[256], dsize;
-
     if (id == 0)
         printf("Testing member deque constructors(8) and destructors(1)\n");
 
@@ -26,14 +23,15 @@ void ctor_dtor_tests(int id)
     // NB: we haven't actually verified size yet, but we use it here.
     global_barrier->arrive(id);
     {
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
+        int size;
         BEGIN_TX;
         member_deque = new std::deque<int>();
-        dsize = member_deque->size();
+        int size = member_deque->size();
         delete(member_deque);
         member_deque = NULL;
         END_TX;
-        CHECK_SIZE("basic ctor(1) and dtor(1)", 0, dsize, id);
+        v.check_size("basic ctor(1) and dtor(1)", id, size);
     }
 
     // the next test uses a custom allocator with ctor 1
@@ -41,18 +39,19 @@ void ctor_dtor_tests(int id)
     // NB: we haven't actually verified size yet, but we use it here.
     global_barrier->arrive(id);
     {
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
+        int size;
         BEGIN_TX;
         member_deque = new std::deque<int>();
         // using get_allocator without checking it
         auto a = member_deque->get_allocator();
         delete(member_deque);
         member_deque = new std::deque<int>(a);
-        dsize = member_deque->size();
+        size = member_deque->size();
         delete(member_deque);
         member_deque = NULL;
         END_TX;
-        CHECK_SIZE("basic ctor(1) and dtor(1)", 0, dsize, id);
+        v.check_size("basic ctor(1) and dtor(1)", id, size);
     }
 
     // the next test will call the simple fill constructor and the fill
@@ -62,73 +61,73 @@ void ctor_dtor_tests(int id)
     //     COPY_DEQUE
     global_barrier->arrive(id);
     {
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         BEGIN_TX;
         member_deque = new std::deque<int>(4);
-        COPY_DEQUE(member_deque, data, dsize);
+        v.insert_all<std::deque<int>>(member_deque);
         delete(member_deque);
         member_deque = new std::deque<int>(4, 98);
-        COPY_DEQUE(member_deque, data, dsize);
+        v.insert_all<std::deque<int>>(member_deque);
         delete(member_deque);
         member_deque = NULL;
         END_TX;
-        CHECK("fill ctor (2a) and fill ctor (2b)", 8, dsize, data, id,
+        v.check("fill ctor (2a) and fill ctor (2b)", id, 8,
               { 0, 0, 0, 0, 98, 98, 98, 98, -2});
     }
 
     // the next test will use the range ctor
     global_barrier->arrive(id);
     {
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         int q [] = { 9, 8, 7 };
         BEGIN_TX;
         member_deque = new std::deque<int>(q, q+3);
-        COPY_DEQUE(member_deque, data, dsize);
+        v.insert_all<std::deque<int>>(member_deque);
         delete(member_deque);
         member_deque = NULL;
         END_TX;
-        CHECK("range ctor (3)", 3, dsize, data, id, { 9, 8, 7, -2 });
+        v.check("range ctor (3)", id, 3, { 9, 8, 7, -2 });
     }
 
     // the next test will use the copy ctor
     global_barrier->arrive(id);
     {
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         std::deque<int> local = { 3, 4, 5, 6 };
         BEGIN_TX;
         member_deque = new std::deque<int>(local);
-        COPY_DEQUE(member_deque, data, dsize);
+        v.insert_all<std::deque<int>>(member_deque);
         delete(member_deque);
         member_deque = NULL;
         END_TX;
-        CHECK("copy ctor (4a) -- there is no 4b", 4, dsize, data, id, {3, 4, 5, 6, -2});
+        v.check("copy ctor (4a) -- there is no 4b", id, 4, {3, 4, 5, 6, -2});
     }
 
     // the next test is the move ctor
     global_barrier->arrive(id);
     {
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         std::deque<int> local = {5, 4, 3};
         BEGIN_TX;
         member_deque = new std::deque<int>(std::move(local));
-        COPY_DEQUE(member_deque, data, dsize);
+        v.insert_all<std::deque<int>>(member_deque);
         delete(member_deque);
         member_deque = NULL;
         END_TX;
-        CHECK("move ctor (5a) -- there is no 5b", 3, dsize, data, id, {5, 4, 3, -2});
+        v.check("move ctor (5a) -- there is no 5b", id, 3, {5, 4, 3, -2});
     }
 
     // the next test is the ilist ctor
     global_barrier->arrive(id);
     {
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         BEGIN_TX;
         member_deque = new std::deque<int>({11, 13, 15, 17});
-        COPY_DEQUE(member_deque, data, dsize);
+        v.insert_all<std::deque<int>>(member_deque);
         delete(member_deque);
         member_deque = NULL;
         END_TX;
-        CHECK("move ilist ctor (6)", 4, dsize, data, id, {11, 13, 15, 17, -2});
+        v.check("move ilist ctor (6)", id, 4, {11, 13, 15, 17, -2});
     }
 }
 
@@ -150,44 +149,44 @@ void op_eq_tests(int id)
     // NB: we haven't actually verified iterators yet, but we use them...
     global_barrier->arrive(id);
     {
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         std::deque<int> local = { 3, 4, 5, 6 };
         BEGIN_TX;
         member_deque = new std::deque<int>();
         *member_deque = local;
-        COPY_DEQUE(member_deque, data, dsize);
+        v.insert_all<std::deque<int>>(member_deque);
         delete(member_deque);
         member_deque = NULL;
         END_TX;
-        CHECK("copy operator= (1)", 4, dsize, data, id, {3, 4, 5, 6, -2});
+        v.check("copy operator= (1)", id, 4, {3, 4, 5, 6, -2});
     }
 
     // test #2 is operator= move
     global_barrier->arrive(id);
     {
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         std::deque<int> local = { 9, 8, 7, 6 };
         BEGIN_TX;
         member_deque = new std::deque<int>();
         *member_deque = std::move(local);
-        COPY_DEQUE(member_deque, data, dsize);
+        v.insert_all<std::deque<int>>(member_deque);
         delete(member_deque);
         member_deque = NULL;
         END_TX;
-        CHECK("move operator= (2)", 4, dsize, data, id, {9, 8, 7, 6, -2});
+        v.check("move operator= (2)", id, 4, {9, 8, 7, 6, -2});
     }
 
     // test #3 is operator= ilist
     global_barrier->arrive(id);
     {
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         BEGIN_TX;
         member_deque = new std::deque<int>();
         *member_deque = { 13, 14, 15, 16 };
-        COPY_DEQUE(member_deque, data, dsize);
+        v.insert_all<std::deque<int>>(member_deque);
         delete(member_deque);
         member_deque = NULL;
         END_TX;
-        CHECK("ilist operator= (3)", 4, dsize, data, id, {13, 14, 15, 16, -2});
+        v.check("ilist operator= (3)", id, 4, {13, 14, 15, 16, -2});
     }
 }

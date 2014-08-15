@@ -4,8 +4,8 @@
 #pragma once
 
 /**
- * This header is just a convenience for listing all the different concurrent
- * tests that we might run.
+ * This header is just a convenience for listing all the different tests that
+ * we might run.
  */
 
 // member function tests, from member.cc: ctor tests, dtor tests, and operator= tests
@@ -31,8 +31,8 @@ void element_tests(int id);
 // modifier tests, from modifier.cc
 void modifier_tests(int id);
 
-// observers tests, from observers.cc
-void observers_test(int id);
+// observer tests, from observers.cc
+void observer_tests(int id);
 
 // test for relational operators
 void relational_operator_tests(int id);

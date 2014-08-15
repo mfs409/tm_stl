@@ -64,8 +64,8 @@
 | Iterator      | basic iterator        |                   |                   |
 | Methods       |                       |                   |                   |
 |---------------+-----------------------+-------------------+-------------------|
-| Reverse       |                       |                   |                   |
-| Iterator      |                       |                   |                   |
+| Reverse       | TODO: in              |                   |                   |
+| Iterator      | bits/stl_iterator.h   |                   |                   |
 | Methods       |                       |                   |                   |
 |---------------+-----------------------+-------------------+-------------------|
 | Const Reverse | Subsumed by           |                   |                   |
@@ -109,7 +109,6 @@
 |---------------+-----------------------+-------------------+-------------------|
 */
 
-#include <list>
 #include <cstdio>
 #include <thread>
 #include <atomic>
@@ -161,7 +160,8 @@ void usage()
     exit(0);
 }
 
-#define NUM_TESTS 14
+const int NUM_TESTS = 14;
+
 bool test_flags[NUM_TESTS] = {false};
 
 void (*test_names[NUM_TESTS])(int) = {
@@ -176,7 +176,7 @@ void (*test_names[NUM_TESTS])(int) = {
     cap_tests,                                          // cap.cc
     element_tests,                                      // element.cc
     modifier_tests,                                     // modifier.cc
-    observers_test,                                     // observer.cc
+    observer_tests,                                     // observer.cc
     relational_operator_tests,                          // overloads.cc
     swap_tests                                          // overloads.cc
 };
@@ -196,8 +196,8 @@ void parseargs(int argc, char** argv)
     }
 }
 
-/// A concurrent test for exercising every method of std::list.  This is
-/// called by every thread
+/// A concurrent test for exercising every method.  This is called by every
+/// thread
 void per_thread_test(int id)
 {
     // wait for all threads to be ready

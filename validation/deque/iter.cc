@@ -3,7 +3,7 @@
 #include <deque>
 #include <cassert>
 #include "tests.h"
-#include "support.h"
+#include "verify.h"
 
 /// for testing ->
 namespace
@@ -27,10 +27,6 @@ std::deque<Q>*   iter_deque_q   = NULL;
 void iter_create_tests(int id)
 {
     global_barrier->arrive(id);
-
-    // a temporary array into which we can copy deque data
-    int data[256], dsize;
-
     if (id == 0)
         printf("Testing iterator begin/end functions\n");
 
@@ -39,7 +35,7 @@ void iter_create_tests(int id)
     global_barrier->arrive(id);
     {
         bool ok = false;
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         BEGIN_TX;
         iter_deque_int = new std::deque<int>();
         std::deque<int>::iterator b = iter_deque_int->begin();
@@ -58,7 +54,7 @@ void iter_create_tests(int id)
     global_barrier->arrive(id);
     {
         bool ok = false;
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         BEGIN_TX;
         iter_deque_int = new std::deque<int>();
         const std::deque<int>* cd = iter_deque_int;
@@ -79,7 +75,7 @@ void iter_create_tests(int id)
     global_barrier->arrive(id);
     {
         bool ok = false;
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         BEGIN_TX;
         iter_deque_int = new std::deque<int>();
         std::deque<int>::reverse_iterator b = iter_deque_int->rbegin();
@@ -98,7 +94,7 @@ void iter_create_tests(int id)
     global_barrier->arrive(id);
     {
         bool ok = false;
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         BEGIN_TX;
         iter_deque_int = new std::deque<int>();
         const std::deque<int>* cd = iter_deque_int;
@@ -118,7 +114,7 @@ void iter_create_tests(int id)
     global_barrier->arrive(id);
     {
         bool ok = false;
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         BEGIN_TX;
         iter_deque_int = new std::deque<int>();
         const std::deque<int>* cd = iter_deque_int;
@@ -138,7 +134,7 @@ void iter_create_tests(int id)
     global_barrier->arrive(id);
     {
         bool ok = false;
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         BEGIN_TX;
         iter_deque_int = new std::deque<int>();
         const std::deque<int>* cd = iter_deque_int;
@@ -163,9 +159,6 @@ void iter_method_tests(int id)
 {
     global_barrier->arrive(id);
 
-    // a temporary array into which we can copy deque data
-    int data[256], dsize;
-
     if (id == 0)
         printf("Testing basic methods of std::deque::iterator\n");
 
@@ -174,7 +167,7 @@ void iter_method_tests(int id)
     // NB: the implementation has 3 ctors, this only manages to get two of them to run
     global_barrier->arrive(id);
     {
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         BEGIN_TX;
         iter_deque_int = new std::deque<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
         // iterators should be default constructable
@@ -186,14 +179,12 @@ void iter_method_tests(int id)
         std::deque<int>::iterator* pe = new std::deque<int>::iterator(e);
         // manually copy the vector, so we can be sure to use i, b, and
         // pe... otherwise this might get optimized out
-        dsize = 0;
-        for (i = b; i != *pe; ++i) {
-            data[dsize++] = *i;
-        }
+        for (i = b; i != *pe; ++i)
+            v.insert(*i);
         // iterators should be destructable
         delete pe;
         END_TX;
-        CHECK("ctors, dtors, and assignment", 10, dsize, data, id, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+        v.check("ctors, dtors, and assignment", id, 10, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     }
 
     // iterators should be swappable
@@ -201,19 +192,17 @@ void iter_method_tests(int id)
     // NB: not sure how to get this to TRACE
     global_barrier->arrive(id);
     {
-        RESET_LOCAL(-2, data, dsize);
+        verifier v;
         BEGIN_TX;
         iter_deque_int = new std::deque<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
         std::deque<int>::iterator b = iter_deque_int->begin();
         std::deque<int>::iterator e = iter_deque_int->end();
         std::swap(b, e);
         // manually copy the vector, so we can be sure to use b, e
-        dsize = 0;
-        for (std::deque<int>::iterator i = e; i != b; ++i) {
-            data[dsize++] = *i;
-        }
+        for (std::deque<int>::iterator i = e; i != b; ++i)
+            v.insert(*i);
         END_TX;
-        CHECK("swap iterators", 10, dsize, data, id, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+        v.check("swap iterators", id, 10, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     }
 }
 
@@ -223,10 +212,6 @@ void iter_method_tests(int id)
 void iter_operator_tests(int id)
 {
     global_barrier->arrive(id);
-
-    // a temporary array into which we can copy deque data
-    int data[256], dsize;
-
     if (id == 0)
         printf("Testing operator methods on std::deque::iterator\n");
 }
@@ -237,17 +222,12 @@ void iter_operator_tests(int id)
 void iter_overload_tests(int id)
 {
     global_barrier->arrive(id);
-
-    // a temporary array into which we can copy deque data
-    int data[256], dsize;
-
     if (id == 0)
         printf("Testing non-method comparator overloads on std::deque::iterator\n");
 
     // test comparability of iterators
     global_barrier->arrive(id);
     {
-        RESET_LOCAL(-2, data, dsize);
         bool ok = true;
         BEGIN_TX;
         iter_deque_int = new std::deque<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
@@ -260,9 +240,9 @@ void iter_overload_tests(int id)
         ok &= !(b == ce);
         END_TX;
         if (!ok)
-            printf(" [%d] error with operator== and operator!=", id);
+            printf(" [%d] error with operator== and operator!=\n", id);
         else if (id == 0)
-            printf(" [OK] %s\n", "iterator comparability checks passed\n");
+            printf(" [OK] %s\n", "iterator comparability checks passed");
     }
 }
 
@@ -272,10 +252,6 @@ void iter_overload_tests(int id)
 void iter_function_tests(int id)
 {
     global_barrier->arrive(id);
-
-    // a temporary array into which we can copy deque data
-    int data[256], dsize;
-
     if (id == 0)
         printf("Testing non-method functions on std::deque::iterator\n");
 }
@@ -418,18 +394,15 @@ void const_rev_iter_tests(int id)
 void iter_test(int id)
 {
     global_barrier->arrive(id);
-
-    // a temporary array into which we can copy deque data
-    int data[256], dsize;
-
     // the first test will simply ensure that we can call begin() and end()
     // correctly
     if (id == 0)
         printf("Testing iterator functions: begin(1), end(1)\n");
+
     global_barrier->arrive(id);
     {
     bool ok = false;
-    RESET_LOCAL(-2, data, dsize);
+    verifier v;
     BEGIN_TX;
     iter_deque_int = new std::deque<int>();
     std::deque<int>::iterator b = iter_deque_int->begin();
@@ -446,7 +419,7 @@ void iter_test(int id)
 
     // now test copy-assignable, copy constructable, and destructable
     global_barrier->arrive(id);
-    RESET_LOCAL(-2, data, dsize);
+    verifier v;
     BEGIN_TX;
     iter_deque_int = new std::deque<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     // iterators should be default constructable
@@ -457,14 +430,12 @@ void iter_test(int id)
     std::deque<int>::iterator e = iter_deque_int->end();
     std::deque<int>::iterator* pe = new std::deque<int>::iterator(e);
     // manually copy the vector, so we can be sure to use i, b, pe
-    dsize = 0;
-    for (i = b; i != *pe; ++i) {
-        data[dsize++] = *i;
-    }
+    for (i = b; i != *pe; ++i)
+        v.insert(*i);
     // iterators should be destructable
     delete pe;
     END_TX;
-    CHECK("ctors and dtors", 10, dsize, data, id, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    v.check("ctors and dtors", id, 10, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 
 #if 0
     // iterators should be comparable with == (5) and != (6)
@@ -601,10 +572,6 @@ void iter_test(int id)
 void legacy_const_iter_test(int id)
 {
     global_barrier->arrive(id);
-
-    // a temporary array into which we can copy deque data
-    int data[256], dsize;
-
     // the first test will simply ensure that we can call begin() and end()
     // correctly
     if (id == 0)
@@ -612,7 +579,7 @@ void legacy_const_iter_test(int id)
     global_barrier->arrive(id);
     {
     bool ok = false;
-    RESET_LOCAL(-2, data, dsize);
+    verifier v;
     BEGIN_TX;
     iter_deque_int = new std::deque<int>();
     const std::deque<int>* cd = iter_deque_int;
