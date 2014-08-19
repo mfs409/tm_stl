@@ -1,11 +1,13 @@
 /*
-  Driver to test the transactional version of the std::map interface
+  Driver to test the transactional version of the std::unordered_map
+  interface
 
-  According to http://www.cplusplus.com/reference/map/map/, the
-  std::map interface consists of the following:
+  According to
+  http://www.cplusplus.com/reference/unordered_map/unordered_map/, the
+  std::unordered_map interface consists of the following:
 
   Steps:
-    1 - Put TBD traces into all of GCC's map functions
+    1 - Put TBD traces into all of GCC's unordered_map functions
     2 - For one category at a time, replace TBDs and update columns 3 and 4
         of table below
     3 - Write test code for ensuring that every traced function is called,
@@ -22,12 +24,8 @@
 |------------------+-----------------------+----------+--------|
 | Iterators        | begin                 |          |        |
 |                  | end                   |          |        |
-|                  | rbegin                |          |        |
-|                  | rend                  |          |        |
 |                  | cbegin                |          |        |
 |                  | cend                  |          |        |
-|                  | crbegin               |          |        |
-|                  | crend                 |          |        |
 |------------------+-----------------------+----------+--------|
 | Iterator         | default constructable |          |        |
 | Methods          | copy constructable    |          |        |
@@ -58,20 +56,16 @@
 | Iterator         |                       |          |        |
 | Methods          |                       |          |        |
 |------------------+-----------------------+----------+--------|
-| Reverse          |                       |          |        |
-| Iterator         |                       |          |        |
-| Methods          |                       |          |        |
-|------------------+-----------------------+----------+--------|
-| Const Reverse    |                       |          |        |
-| Iterator         |                       |          |        |
-| Methods          |                       |          |        |
-|------------------+-----------------------+----------+--------|
 | Capacity         | empty                 |          |        |
 |                  | size                  |          |        |
 |                  | max_size              |          |        |
 |------------------+-----------------------+----------+--------|
 | Element          | operator[]            |          |        |
 | Access           | at                    |          |        |
+|------------------+-----------------------+----------+--------|
+| Element          | find                  |          |        |
+| Lookup           | count                 |          |        |
+|                  | equal_range           |          |        |
 |------------------+-----------------------+----------+--------|
 | Modifiers        | insert                |          |        |
 |                  | erase                 |          |        |
@@ -80,15 +74,19 @@
 |                  | emplace               |          |        |
 |                  | emplace_hint          |          |        |
 |------------------+-----------------------+----------+--------|
-| Observers        | get_allocator         |          |        |
-|                  | key_comp              |          |        |
-|                  | value_comp            |          |        |
+| Buckets          | bucket_count          |          |        |
+|                  | max_bucket_count      |          |        |
+|                  | bucket_size           |          |        |
+|                  | bucket                |          |        |
 |------------------+-----------------------+----------+--------|
-| Operations       | find                  |          |        |
-|                  | count                 |          |        |
-|                  | lower_bound           |          |        |
-|                  | upper_bound           |          |        |
-|                  | equal_range           |          |        |
+| Hash Policy      | load_factor           |          |        |
+|                  | max_load_factor       |          |        |
+|                  | rehash                |          |        |
+|                  | reserve               |          |        |
+|------------------+-----------------------+----------+--------|
+| Observers        | get_allocator         |          |        |
+|                  | hash_function         |          |        |
+|                  | key_eq                |          |        |
 |------------------+-----------------------+----------+--------|
 */
 
@@ -133,9 +131,11 @@ void usage()
          << "               7 iterator functions" << endl
          << "               8 capacity methods" << endl
          << "               9 element access methods" << endl
-         << "              10 modifier methods" << endl
-         << "              11 observer methods" << endl
-         << "              12 operations methods" << endl
+         << "              10 element lookup methods" << endl
+         << "              11 modifier methods" << endl
+         << "              12 bucket methods" << endl
+         << "              13 hash methods" << endl
+         << "              14 observer methods" << endl
          << endl
          << "  Note: const, reverse, and const reverse iterators not tested"
          << endl
@@ -143,7 +143,7 @@ void usage()
     exit(0);
 }
 
-#define NUM_TESTS 13
+#define NUM_TESTS 15
 bool test_flags[NUM_TESTS] = {false};
 
 void (*test_names[NUM_TESTS])(int) = {
@@ -157,9 +157,11 @@ void (*test_names[NUM_TESTS])(int) = {
     iter_function_tests,                                // iter.cc
     cap_tests,                                          // cap.cc
     element_tests,                                      // element.cc
+    lookup_tests,                                       // lookup.cc
     modifier_tests,                                     // modifier.cc
-    observer_tests,                                     // observer.cc
-    operation_tests                                     // operations.cc
+    bucket_tests,                                       // bucket.cc
+    hash_tests,                                         // hash.cc
+    observer_tests                                      // observer.cc
 };
 
 /// Parse command line arguments using getopt()
