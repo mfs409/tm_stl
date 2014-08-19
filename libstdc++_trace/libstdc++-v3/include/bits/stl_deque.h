@@ -1556,7 +1556,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       insert(iterator __position, size_type __n, const value_type& __x)
-      { TRACE("deque: TBD"); _M_fill_insert(__position, __n, __x); }
+      { _M_fill_insert(__position, __n, __x); }
 #endif
 
 #if __cplusplus >= 201103L
@@ -1597,7 +1597,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
         void
         insert(iterator __position, _InputIterator __first,
 	       _InputIterator __last)
-        { TRACE("deque: TBD");
+        {
 	  // Check whether it's an integral type.  If so, it's not an iterator.
 	  typedef typename std::__is_integer<_InputIterator>::__type _Integral;
 	  _M_insert_dispatch(__position, __first, __last, _Integral());
