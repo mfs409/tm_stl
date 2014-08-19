@@ -11,92 +11,85 @@
     3 - Write test code for ensuring that every traced function is called,
         and then write DONE in the category
 
-|------------------------+-----------------------+------------------+--------|
-| Category               | Functions             |            C++14 | GCC    |
-|                        |                       |         Expected | Actual |
-|------------------------+-----------------------+------------------+--------|
-| Member Functions       | (constructor)         | 1, 2a, 2b, 3, 4a |        |
-|                        |                       |    4b, 5a, 5b, 6 |        |
-|                        | (destructor)          |                1 |        |
-|                        | operator=             |          1, 2, 3 |        |
-|------------------------+-----------------------+------------------+--------|
-| Iterators              | begin                 |             1, 2 |        |
-|                        | end                   |             1, 2 |        |
-|                        | rbegin                |             1, 2 |        |
-|                        | rend                  |             1, 2 |        |
-|                        | cbegin                |                1 |        |
-|                        | cend                  |                1 |        |
-|                        | crbegin               |                1 |        |
-|                        | crend                 |                1 |        |
-|------------------------+-----------------------+------------------+--------|
-| Iterator               | default constructable |                  |        |
-| Methods                | copy constructable    |                  |        |
-|                        | copy assignable       |                  |        |
-|                        | destructible          |                  |        |
-|                        | swappable             |                  |        |
-|------------------------+-----------------------+------------------+--------|
-| Iterator               | operator*             |                  |        |
-| Operators              | operator->            |                  |        |
-|                        | operator++            |                  |        |
-|                        | operator--            |                  |        |
-|                        | operator+=            |                  |        |
-|                        | operator+             |                  |        |
-|                        | operator-=            |                  |        |
-|                        | operator-             |                  |        |
-|                        | operator[]            |                  |        |
-|------------------------+-----------------------+------------------+--------|
-| Iterator               | operator==            |                  |        |
-| Overloads              | operator!=            |                  |        |
-|                        | operator<             |                  |        |
-|                        | operator>             |                  |        |
-|                        | operator<=            |                  |        |
-|                        | operator>=            |                  |        |
-|                        | operator-             |                  |        |
-|                        | operator+             |                  |        |
-|------------------------+-----------------------+------------------+--------|
-| Const Iterator         |                       |                  |        |
-| Methods                |                       |                  |        |
-|------------------------+-----------------------+------------------+--------|
-| reverse_iterator       |                       |                  |        |
-| methods                |                       |                  |        |
-|------------------------+-----------------------+------------------+--------|
-| Const Reverse Iterator |                       |                  |        |
-| Methods                |                       |                  |        |
-|------------------------+-----------------------+------------------+--------|
-| Capacity               | size                  |                1 |        |
-|                        | max_size              |                1 |        |
-|                        | resize                |             1, 2 |        |
-|                        | capacity              |                1 |        |
-|                        | empty                 |                1 |        |
-|                        | reserve               |                1 |        |
-|                        | shrink_to_fit         |                1 |        |
-|------------------------+-----------------------+------------------+--------|
-| Element access         | operator[]            |                  |        |
-|                        | at                    |                  |        |
-|                        | front                 |                  |        |
-|                        | back                  |                  |        |
-|                        | data                  |                  |        |
-|------------------------+-----------------------+------------------+--------|
-| Modifiers              | assign                |                  |        |
-|                        | push_back             |                  |        |
-|                        | pop_back              |                  |        |
-|                        | insert                |                  |        |
-|                        | erase                 |                  |        |
-|                        | swap                  |                  |        |
-|                        | clear                 |                  |        |
-|                        | emplace               |                  |        |
-|                        | emplace_back          |                  |        |
-|------------------------+-----------------------+------------------+--------|
-| Allocators             | get_allocator         |                  |        |
-|------------------------+-----------------------+------------------+--------|
-| Non-member             | '=='                  |                  |        |
-| function               | '!='                  |                  |        |
-| overloads (NMFOs)      | '<'                   |                  |        |
-|                        | '<='                  |                  |        |
-|                        | '>'                   |                  |        |
-|                        | '>='                  |                  |        |
-|                        | swap                  |                  |        |
-|------------------------+-----------------------+------------------+--------|
+|-------------------+-----------------------+----------+--------|
+| Category          | Functions             | C++14    | GCC    |
+|                   |                       | Expected | Actual |
+|-------------------+-----------------------+----------+--------|
+| Member Functions  | (constructor)         |          |        |
+|                   |                       |          |        |
+|                   | (destructor)          |          |        |
+|                   | operator=             |          |        |
+|-------------------+-----------------------+----------+--------|
+| Iterators         | begin                 |          |        |
+|                   | end                   |          |        |
+|                   | rbegin                |          |        |
+|                   | rend                  |          |        |
+|                   | cbegin                |          |        |
+|                   | cend                  |          |        |
+|                   | crbegin               |          |        |
+|                   | crend                 |          |        |
+|-------------------+-----------------------+----------+--------|
+| Iterator          | default constructable |          |        |
+| Methods           | copy constructable    |          |        |
+|                   | copy assignable       |          |        |
+|                   | destructible          |          |        |
+|                   | swappable             |          |        |
+|-------------------+-----------------------+----------+--------|
+| Iterator          | operator*             |          |        |
+| Operators         | operator->            |          |        |
+|                   | operator++            |          |        |
+|                   | operator--            |          |        |
+|                   | operator+=            |          |        |
+|                   | operator+             |          |        |
+|                   | operator-=            |          |        |
+|                   | operator-             |          |        |
+|                   | operator[]            |          |        |
+|-------------------+-----------------------+----------+--------|
+| Iterator          | operator==            |          |        |
+| Overloads         | operator!=            |          |        |
+|                   | operator<             |          |        |
+|                   | operator>             |          |        |
+|                   | operator<=            |          |        |
+|                   | operator>=            |          |        |
+|                   | operator-             |          |        |
+|                   | operator+             |          |        |
+|-------------------+-----------------------+----------+--------|
+| Const             |                       |          |        |
+| Iterator          |                       |          |        |
+| Methods           |                       |          |        |
+|-------------------+-----------------------+----------+--------|
+| Reverse           |                       |          |        |
+| Iterator          |                       |          |        |
+| Methods           |                       |          |        |
+|-------------------+-----------------------+----------+--------|
+| Const Reverse     |                       |          |        |
+| Iterator          |                       |          |        |
+| Methods           |                       |          |        |
+|-------------------+-----------------------+----------+--------|
+| Capacity          | empty                 |          |        |
+|                   | size                  |          |        |
+|                   | max_size              |          |        |
+|-------------------+-----------------------+----------+--------|
+| Element access    | operator[]            |          |        |
+|                   | at                    |          |        |
+|-------------------+-----------------------+----------+--------|
+| Modifiers         | insert                |          |        |
+|                   | erase                 |          |        |
+|                   | swap                  |          |        |
+|                   | clear                 |          |        |
+|                   | emplace               |          |        |
+|                   | emplace_hint          |          |        |
+|-------------------+-----------------------+----------+--------|
+| Observers         | get_allocator         |          |        |
+|                   | key_comp              |          |        |
+|                   | value_comp            |          |        |
+|-------------------+-----------------------+----------+--------|
+| Operations        | find                  |          |        |
+|                   | count                 |          |        |
+|                   | lower_bound           |          |        |
+|                   | upper_bound           |          |        |
+|                   | equal_range           |          |        |
+|-------------------+-----------------------+----------+--------|
 */
 
 #include <list>
@@ -134,21 +127,23 @@ void usage()
          << "               1 constructors and destructors" << endl
          << "               2 operator=" << endl
          << "               3 iterator creation" << endl
-         << "               4 basic iterator use" << endl
-         << "               5 const iterator use" << endl
-         << "               6 reverse iterator use" << endl
-         << "               7 const reverse iterator use" << endl
+         << "               4 iterator methods" << endl
+         << "               5 iterator operators" << endl
+         << "               6 iterator overloads" << endl
+         << "               7 iterator functions" << endl
          << "               8 capacity methods" << endl
          << "               9 element access methods" << endl
          << "              10 modifier methods" << endl
          << "              11 observer methods" << endl
-         << "              12 relational operator use" << endl
-         << "              13 swap use" << endl
+         << "              12 operations methods" << endl
+         << endl
+         << "  Note: const, reverse, and const reverse iterators not tested"
+         << endl
          << endl;
     exit(0);
 }
 
-#define NUM_TESTS 14
+#define NUM_TESTS 13
 bool test_flags[NUM_TESTS] = {false};
 
 void (*test_names[NUM_TESTS])(int) = {
@@ -156,16 +151,15 @@ void (*test_names[NUM_TESTS])(int) = {
     ctor_dtor_tests,                                    // member.cc
     op_eq_tests,                                        // member.cc
     iter_create_tests,                                  // iter.cc
-    basic_iter_tests,                                   // iter.cc
-    const_iter_tests,                                   // iter.cc
-    rev_iter_tests,                                     // iter.cc
-    const_rev_iter_tests,                               // iter.cc
+    iter_method_tests,                                  // iter.cc
+    iter_operator_tests,                                // iter.cc
+    iter_overload_tests,                                // iter.cc
+    iter_function_tests,                                // iter.cc
     cap_tests,                                          // cap.cc
     element_tests,                                      // element.cc
     modifier_tests,                                     // modifier.cc
-    observers_test,                                     // observer.cc
-    relational_operator_tests,                          // overloads.cc
-    swap_tests                                          // overloads.cc
+    observer_tests,                                     // observer.cc
+    operation_tests                                     // operations.cc
 };
 
 /// Parse command line arguments using getopt()

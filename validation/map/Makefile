@@ -5,6 +5,6 @@
 # Makefile handle all rules and other global declarations
 #
 
-CXXFILES       = bench member iter cap element modifier observer overloads
+CXXFILES       = bench member iter cap element modifier observer operations
 
 include ../common/common.mk
