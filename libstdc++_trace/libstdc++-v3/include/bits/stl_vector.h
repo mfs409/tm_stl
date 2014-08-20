@@ -318,7 +318,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       vector(const vector& __x)
       : _Base(__x.size(),
         _Alloc_traits::_S_select_on_copy(__x._M_get_Tp_allocator()))
-      { this->_M_impl._M_finish =
+      { TRACE("vector: ctor: copy(4a)");this->_M_impl._M_finish =
 	  std::__uninitialized_copy_a(__x.begin(), __x.end(),
 				      this->_M_impl._M_start,
 				      _M_get_Tp_allocator());
@@ -333,12 +333,12 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  The contents of @a __x are a valid, but unspecified %vector.
        */
       vector(vector&& __x) noexcept
-      : _Base(std::move(__x)) { }
+      : _Base(std::move(__x)) { TRACE("vector: ctor: move(5a)"); }
 
       /// Copy constructor with alternative allocator
       vector(const vector& __x, const allocator_type& __a)
       : _Base(__x.size(), __a)
-      { this->_M_impl._M_finish =
+      { TRACE("vector: ctor: copy(4b)");this->_M_impl._M_finish =
 	  std::__uninitialized_copy_a(__x.begin(), __x.end(),
 				      this->_M_impl._M_start,
 				      _M_get_Tp_allocator());
@@ -349,7 +349,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       noexcept(_Alloc_traits::_S_always_equal())
       : _Base(std::move(__rv), __m)
       {
-	if (__rv.get_allocator() != __m)
+	TRACE("vector: ctor: move(5b)");if (__rv.get_allocator() != __m)
 	  {
 	    this->_M_impl._M_finish =
 	      std::__uninitialized_move_a(__rv.begin(), __rv.end(),
@@ -373,7 +373,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       vector(initializer_list<value_type> __l,
 	     const allocator_type& __a = allocator_type())
       : _Base(__a)
-      {
+      { TRACE("vector: ctor: initializer_list(6)");
 	_M_range_initialize(__l.begin(), __l.end(),
 			    random_access_iterator_tag());
       }
@@ -401,7 +401,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
         vector(_InputIterator __first, _InputIterator __last,
 	       const allocator_type& __a = allocator_type())
 	: _Base(__a)
-        { _M_initialize_dispatch(__first, __last, __false_type()); }
+      {  TRACE("vector: ctor: range(3)");_M_initialize_dispatch(__first, __last, __false_type()); }
 #else
       template<typename _InputIterator>
         vector(_InputIterator __first, _InputIterator __last,
@@ -421,7 +421,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *  responsibility.
        */
       ~vector() _GLIBCXX_NOEXCEPT
-      { std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
+      {TRACE("vector: dtor: (1)"); std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
 		      _M_get_Tp_allocator()); }
 
       /**
@@ -447,6 +447,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       vector&
       operator=(vector&& __x) noexcept(_Alloc_traits::_S_nothrow_move())
       {
+	TRACE("vector: oper=: move(2)");
         constexpr bool __move_storage =
           _Alloc_traits::_S_propagate_on_move_assign()
           || _Alloc_traits::_S_always_equal();
@@ -469,6 +470,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       vector&
       operator=(initializer_list<value_type> __l)
       {
+	TRACE("vector: oper=: initializer_list(3)");
 	this->assign(__l.begin(), __l.end());
 	return *this;
       }
@@ -486,7 +488,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       assign(size_type __n, const value_type& __val)
-      { _M_fill_assign(__n, __val); }
+      {TRACE("vector: assign: fill(2)"); _M_fill_assign(__n, __val); }
 
       /**
        *  @brief  Assigns a range to a %vector.
@@ -505,7 +507,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 	       typename = std::_RequireInputIter<_InputIterator>>
         void
         assign(_InputIterator __first, _InputIterator __last)
-        { _M_assign_dispatch(__first, __last, __false_type()); }
+      { TRACE("vector: assign: range(1)");_M_assign_dispatch(__first, __last, __false_type()); }
 #else
       template<typename _InputIterator>
         void
@@ -531,7 +533,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       assign(initializer_list<value_type> __l)
-      { this->assign(__l.begin(), __l.end()); }
+      { TRACE("vector: assign: initlist(3)");this->assign(__l.begin(), __l.end()); }
 #endif
 
       /// Get a copy of the memory allocation object.
@@ -545,7 +547,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       begin() _GLIBCXX_NOEXCEPT
-      { return iterator(this->_M_impl._M_start); }
+      { TRACE("vector: begin: (1a)");return iterator(this->_M_impl._M_start); }
 
       /**
        *  Returns a read-only (constant) iterator that points to the
@@ -554,7 +556,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       begin() const _GLIBCXX_NOEXCEPT
-      { return const_iterator(this->_M_impl._M_start); }
+      { TRACE("vector: begin: (1b)");return const_iterator(this->_M_impl._M_start); }
 
       /**
        *  Returns a read/write iterator that points one past the last
@@ -563,7 +565,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       end() _GLIBCXX_NOEXCEPT
-      { return iterator(this->_M_impl._M_finish); }
+      { TRACE("vector: end: (1a)");return iterator(this->_M_impl._M_finish); }
 
       /**
        *  Returns a read-only (constant) iterator that points one past
@@ -572,7 +574,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       end() const _GLIBCXX_NOEXCEPT
-      { return const_iterator(this->_M_impl._M_finish); }
+      { TRACE("vector: end: (1b)");return const_iterator(this->_M_impl._M_finish); }
 
       /**
        *  Returns a read/write reverse iterator that points to the
@@ -581,7 +583,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reverse_iterator
       rbegin() _GLIBCXX_NOEXCEPT
-      { return reverse_iterator(end()); }
+      { TRACE("vector: rbegin: (1a)");return reverse_iterator(end()); }
 
       /**
        *  Returns a read-only (constant) reverse iterator that points
@@ -590,7 +592,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reverse_iterator
       rbegin() const _GLIBCXX_NOEXCEPT
-      { return const_reverse_iterator(end()); }
+      { TRACE("vector: rbegin: (1b)");return const_reverse_iterator(end()); }
 
       /**
        *  Returns a read/write reverse iterator that points to one
@@ -599,7 +601,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reverse_iterator
       rend() _GLIBCXX_NOEXCEPT
-      { return reverse_iterator(begin()); }
+      { TRACE("vector: rend: (1a)");return reverse_iterator(begin()); }
 
       /**
        *  Returns a read-only (constant) reverse iterator that points
@@ -608,7 +610,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reverse_iterator
       rend() const _GLIBCXX_NOEXCEPT
-      { return const_reverse_iterator(begin()); }
+      { TRACE("vector: rend: (1b)");return const_reverse_iterator(begin()); }
 
 #if __cplusplus >= 201103L
       /**
@@ -618,7 +620,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       cbegin() const noexcept
-      { return const_iterator(this->_M_impl._M_start); }
+      { TRACE("vector: cbegin: (1)");return const_iterator(this->_M_impl._M_start); }
 
       /**
        *  Returns a read-only (constant) iterator that points one past
@@ -627,7 +629,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       cend() const noexcept
-      { return const_iterator(this->_M_impl._M_finish); }
+      { TRACE("vector: cend: (1)");return const_iterator(this->_M_impl._M_finish); }
 
       /**
        *  Returns a read-only (constant) reverse iterator that points
@@ -636,7 +638,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reverse_iterator
       crbegin() const noexcept
-      { return const_reverse_iterator(end()); }
+      { TRACE("vector: crbegin: (1)");return const_reverse_iterator(end()); }
 
       /**
        *  Returns a read-only (constant) reverse iterator that points
@@ -645,19 +647,19 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reverse_iterator
       crend() const noexcept
-      { return const_reverse_iterator(begin()); }
+      { TRACE("vector: crend: (1)");return const_reverse_iterator(begin()); }
 #endif
 
       // [23.2.4.2] capacity
       /**  Returns the number of elements in the %vector.  */
       size_type
       size() const _GLIBCXX_NOEXCEPT
-      { return size_type(this->_M_impl._M_finish - this->_M_impl._M_start); }
+      { TRACE("vector: size: (1)");return size_type(this->_M_impl._M_finish - this->_M_impl._M_start); }
 
       /**  Returns the size() of the largest possible %vector.  */
       size_type
       max_size() const _GLIBCXX_NOEXCEPT
-      { return _Alloc_traits::max_size(_M_get_Tp_allocator()); }
+      { TRACE("vector: max_size: (1)");return _Alloc_traits::max_size(_M_get_Tp_allocator()); }
 
 #if __cplusplus >= 201103L
       /**
@@ -672,6 +674,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       void
       resize(size_type __new_size)
       {
+	TRACE("vector: resize: (1a)");
 	if (__new_size > size())
 	  _M_default_append(__new_size - size());
 	else if (__new_size < size())
@@ -691,7 +694,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       resize(size_type __new_size, const value_type& __x)
-      {
+      {TRACE("vector: resize: (1b)");
 	if (__new_size > size())
 	  insert(end(), __new_size - size(), __x);
 	else if (__new_size < size())
@@ -723,7 +726,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       /**  A non-binding request to reduce capacity() to size().  */
       void
       shrink_to_fit()
-      { _M_shrink_to_fit(); }
+      {TRACE("vector: shrink_to_fit: (1)"); _M_shrink_to_fit(); }
 #endif
 
       /**
@@ -732,7 +735,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       size_type
       capacity() const _GLIBCXX_NOEXCEPT
-      { return size_type(this->_M_impl._M_end_of_storage
+      {TRACE("vector: capacity: (1)"); return size_type(this->_M_impl._M_end_of_storage
 			 - this->_M_impl._M_start); }
 
       /**
@@ -741,7 +744,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       bool
       empty() const _GLIBCXX_NOEXCEPT
-      { return begin() == end(); }
+      { TRACE("vector: empty: (1)");return begin() == end(); }
 
       /**
        *  @brief  Attempt to preallocate enough memory for specified number of
@@ -777,7 +780,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reference
       operator[](size_type __n) _GLIBCXX_NOEXCEPT
-      { return *(this->_M_impl._M_start + __n); }
+      {TRACE("vector: oper[]: (1a)"); return *(this->_M_impl._M_start + __n); }
 
       /**
        *  @brief  Subscript access to the data contained in the %vector.
@@ -792,7 +795,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reference
       operator[](size_type __n) const _GLIBCXX_NOEXCEPT
-      { return *(this->_M_impl._M_start + __n); }
+      {TRACE("vector: oper[]: (1b)"); return *(this->_M_impl._M_start + __n); }
 
     protected:
       /// Safety check used only from at().
@@ -821,6 +824,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       reference
       at(size_type __n)
       {
+	TRACE("vector: at: (1a)");
 	_M_range_check(__n);
 	return (*this)[__n]; 
       }
@@ -839,6 +843,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       const_reference
       at(size_type __n) const
       {
+	TRACE("vector: at: (1b)");
 	_M_range_check(__n);
 	return (*this)[__n];
       }
@@ -849,7 +854,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reference
       front() _GLIBCXX_NOEXCEPT
-      { return *begin(); }
+      { TRACE("vector: front: (1a)"); return *begin(); }
 
       /**
        *  Returns a read-only (constant) reference to the data at the first
@@ -857,7 +862,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reference
       front() const _GLIBCXX_NOEXCEPT
-      { return *begin(); }
+      {TRACE("vector: front: (1b)"); return *begin(); }
 
       /**
        *  Returns a read/write reference to the data at the last
@@ -865,7 +870,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       reference
       back() _GLIBCXX_NOEXCEPT
-      { return *(end() - 1); }
+      {TRACE("vector: back: (1a)"); return *(end() - 1); }
       
       /**
        *  Returns a read-only (constant) reference to the data at the
@@ -873,7 +878,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_reference
       back() const _GLIBCXX_NOEXCEPT
-      { return *(end() - 1); }
+      {TRACE("vector: back: (1b)"); return *(end() - 1); }
 
       // _GLIBCXX_RESOLVE_LIB_DEFECTS
       // DR 464. Suggestion for new member functions in standard containers.
@@ -888,7 +893,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       pointer
 #endif
       data() _GLIBCXX_NOEXCEPT
-      { return _M_data_ptr(this->_M_impl._M_start); }
+      {TRACE("vector: data: (1a)"); return _M_data_ptr(this->_M_impl._M_start); }
 
 #if __cplusplus >= 201103L
       const _Tp*
@@ -896,7 +901,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       const_pointer
 #endif
       data() const _GLIBCXX_NOEXCEPT
-      { return _M_data_ptr(this->_M_impl._M_start); }
+      {TRACE("vector: data: (1b)"); return _M_data_ptr(this->_M_impl._M_start); }
 
       // [23.2.4.3] modifiers
       /**
@@ -911,7 +916,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       push_back(const value_type& __x)
-      {
+      {TRACE("vector: push_back: (1a)");
 	if (this->_M_impl._M_finish != this->_M_impl._M_end_of_storage)
 	  {
 	    _Alloc_traits::construct(this->_M_impl, this->_M_impl._M_finish,
@@ -929,7 +934,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #if __cplusplus >= 201103L
       void
       push_back(value_type&& __x)
-      { emplace_back(std::move(__x)); }
+      {TRACE("vector: push_back: (1b)"); emplace_back(std::move(__x)); }
 
       template<typename... _Args>
         void
@@ -947,7 +952,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       pop_back() _GLIBCXX_NOEXCEPT
-      {
+      {TRACE("vector: pop_back: (1)");
 	--this->_M_impl._M_finish;
 	_Alloc_traits::destroy(this->_M_impl, this->_M_impl._M_finish);
       }
@@ -1012,7 +1017,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       insert(const_iterator __position, value_type&& __x)
-      { return emplace(__position, std::move(__x)); }
+      {TRACE("vector: insert: move(4)"); return emplace(__position, std::move(__x)); }
 
       /**
        *  @brief  Inserts an initializer_list into the %vector.
@@ -1029,7 +1034,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       insert(const_iterator __position, initializer_list<value_type> __l)
-      { return this->insert(__position, __l.begin(), __l.end()); }
+      {TRACE("vector: insert: initList(5)"); return this->insert(__position, __l.begin(), __l.end()); }
 #endif
 
 #if __cplusplus >= 201103L
@@ -1049,7 +1054,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       insert(const_iterator __position, size_type __n, const value_type& __x)
-      {
+      {TRACE("vector: insert: fill(2)");
 	difference_type __offset = __position - cbegin();
 	_M_fill_insert(begin() + __offset, __n, __x);
 	return begin() + __offset;
@@ -1094,7 +1099,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
         iterator
         insert(const_iterator __position, _InputIterator __first,
 	       _InputIterator __last)
-        {
+      {TRACE("vector: insert: range(3)");
 	  difference_type __offset = __position - cbegin();
 	  _M_insert_dispatch(begin() + __offset,
 			     __first, __last, __false_type());
@@ -1144,7 +1149,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       iterator
 #if __cplusplus >= 201103L
       erase(const_iterator __position)
-      { return _M_erase(begin() + (__position - cbegin())); }
+      {TRACE("vector: erase: (1a)"); return _M_erase(begin() + (__position - cbegin())); }
 #else
       erase(iterator __position)
       { return _M_erase(__position); }
@@ -1171,7 +1176,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       iterator
 #if __cplusplus >= 201103L
       erase(const_iterator __first, const_iterator __last)
-      {
+      {TRACE("vector: erase: (1b)");
 	const auto __beg = begin();
 	const auto __cbeg = cbegin();
 	return _M_erase(__beg + (__first - __cbeg), __beg + (__last - __cbeg));
@@ -1195,7 +1200,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #if __cplusplus >= 201103L
       noexcept(_Alloc_traits::_S_nothrow_swap())
 #endif
-      {
+      {TRACE("vector: swap: (1)");
 	this->_M_impl._M_swap_data(__x._M_impl);
 	_Alloc_traits::_S_on_swap(_M_get_Tp_allocator(),
 	                          __x._M_get_Tp_allocator());
@@ -1209,7 +1214,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       clear() _GLIBCXX_NOEXCEPT
-      { _M_erase_at_end(this->_M_impl._M_start); }
+      {TRACE("vector: clear: (1)"); _M_erase_at_end(this->_M_impl._M_start); }
 
     protected:
       /**
@@ -1509,7 +1514,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
   template<typename _Tp, typename _Alloc>
     inline bool
     operator==(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
-    { return (__x.size() == __y.size()
+  {TRACE("vector: relaoper: ==(1)"); return (__x.size() == __y.size()
 	      && std::equal(__x.begin(), __x.end(), __y.begin())); }
 
   /**
@@ -1526,38 +1531,38 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
   template<typename _Tp, typename _Alloc>
     inline bool
     operator<(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
-    { return std::lexicographical_compare(__x.begin(), __x.end(),
+  {TRACE("vector: relaoper: <(3)"); return std::lexicographical_compare(__x.begin(), __x.end(),
 					  __y.begin(), __y.end()); }
 
   /// Based on operator==
   template<typename _Tp, typename _Alloc>
     inline bool
     operator!=(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
-    { return !(__x == __y); }
+  {TRACE("vector: relaoper: !=(2)"); return !(__x == __y); }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
     inline bool
     operator>(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
-    { return __y < __x; }
+  {TRACE("vector: relaoper: >(5a)"); return __y < __x; }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
     inline bool
     operator<=(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
-    { return !(__y < __x); }
+  {TRACE("vector: relaoper: <=(4)"); return !(__y < __x); }
 
   /// Based on operator<
   template<typename _Tp, typename _Alloc>
     inline bool
     operator>=(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
-    { return !(__x < __y); }
+  {TRACE("vector: relaoper: >=(5b)"); return !(__x < __y); }
 
   /// See std::vector::swap().
   template<typename _Tp, typename _Alloc>
     inline void
     swap(vector<_Tp, _Alloc>& __x, vector<_Tp, _Alloc>& __y)
-    { __x.swap(__y); }
+  {TRACE("vector: non-mem-swap: (1)"); __x.swap(__y); }
 
 _GLIBCXX_END_NAMESPACE_CONTAINER
 } // namespace std
