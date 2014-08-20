@@ -71,6 +71,11 @@ LDFLAGS_TRACE  = -m$(BITS) -L../../libstdc++_trace/libstdc++-v3/src/obj$(BITS) -
 all: $(EXEFILES)
 
 #
+# For skipping TM builds
+#
+notm: $(ODIR)/bench_notm $(ODIR)/bench_trace
+
+#
 # Rules for building .o files from sources
 #
 $(ODIR)/%_tm.o: %.cc
