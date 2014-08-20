@@ -16,7 +16,7 @@
 |                   |                       | Expected           | Actual                 |
 |-------------------+-----------------------+--------------------+------------------------|
 | Member Functions  | (constructor)         | 1a, 1b, 1c, 2a, 2b | 1a, 1b, 1c, 2a, 2b, 2c |
-|                   |                       | 3a, 3b, 4a, 4b     | 3a, 3b, 4a, 4b         |
+| (DONE)            |                       | 3a, 3b, 4a, 4b     | 3a, 3b, 4a, 4b         |
 |                   |                       | 5a, 5b             | 5a, 5b                 |
 |                   | (destructor)          | 1                  | NONE                   |
 |                   | operator=             | 1, 2, 3            | 1, 2, 3                |
