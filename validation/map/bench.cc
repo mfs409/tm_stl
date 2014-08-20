@@ -12,23 +12,23 @@
         and then write DONE in the category
 
 |-------------------+-----------------------+--------------------+------------------------|
-| Category          | Functions             | C++14              | GCC                    |
-|                   |                       | Expected           | Actual                 |
+| Category          | Functions             | C++14              |                    GCC |
+|                   |                       | Expected           |                 Actual |
 |-------------------+-----------------------+--------------------+------------------------|
 | Member Functions  | (constructor)         | 1a, 1b, 1c, 2a, 2b | 1a, 1b, 1c, 2a, 2b, 2c |
-| (DONE)            |                       | 3a, 3b, 4a, 4b     | 3a, 3b, 4a, 4b         |
-|                   |                       | 5a, 5b             | 5a, 5b                 |
-|                   | (destructor)          | 1                  | NONE                   |
-|                   | operator=             | 1, 2, 3            | 1, 2, 3                |
+| (DONE)            |                       | 3a, 3b, 4a, 4b     |         3a, 3b, 4a, 4b |
+|                   |                       | 5a, 5b             |                 5a, 5b |
+|                   | (destructor)          | 1                  |                   NONE |
+|                   | operator=             | 1, 2, 3            |                1, 2, 3 |
 |-------------------+-----------------------+--------------------+------------------------|
-| Iterators         | begin                 | 1a, 1b             | 1a, 1b                 |
-|                   | end                   | 1a, 1b             | 1a, 1b                 |
-|                   | rbegin                | 1a, 1b             | 1a, 1b                 |
-|                   | rend                  | 1a, 1b             | 1a, 1b                 |
-|                   | cbegin                | 1                  | 1                      |
-|                   | cend                  | 1                  | 1                      |
-|                   | crbegin               | 1                  | 1                      |
-|                   | crend                 | 1                  | 1                      |
+| Iterators         | begin                 | 1a, 1b             |                 1a, 1b |
+| (DONE)            | end                   | 1a, 1b             |                 1a, 1b |
+|                   | rbegin                | 1a, 1b             |                 1a, 1b |
+|                   | rend                  | 1a, 1b             |                 1a, 1b |
+|                   | cbegin                | 1                  |                      1 |
+|                   | cend                  | 1                  |                      1 |
+|                   | crbegin               | 1                  |                      1 |
+|                   | crend                 | 1                  |                      1 |
 |-------------------+-----------------------+--------------------+------------------------|
 | Iterator          | default constructable |                    |                        |
 | Methods           | copy constructable    |                    |                        |
@@ -67,38 +67,38 @@
 | Iterator          |                       |                    |                        |
 | Methods           |                       |                    |                        |
 |-------------------+-----------------------+--------------------+------------------------|
-| Capacity          | empty                 | 1                  | 1                      |
-|                   | size                  | 1                  | 1                      |
-|                   | max_size              | 1                  | 1                      |
+| Capacity          | empty                 | 1                  |                      1 |
+|                   | size                  | 1                  |                      1 |
+|                   | max_size              | 1                  |                      1 |
 |-------------------+-----------------------+--------------------+------------------------|
-| Element           | operator[]            | 1a, 1b             | 1a, 1b                 |
-| Access            | at                    | 1a, 1b             | 1a, 1b                 |
+| Element           | operator[]            | 1a, 1b             |                 1a, 1b |
+| Access            | at                    | 1a, 1b             |                 1a, 1b |
 |-------------------+-----------------------+--------------------+------------------------|
-| Modifiers         | insert                | 1a, 1b, 2a, 2b     | 1a, 1b, 2a, 2b         |
-|                   |                       | 3, 4               | 3, 4                   |
-|                   | erase                 | 1, 2, 3            | 1a, 1b, 2, 3           |
-|                   | swap                  | 1                  | 1                      |
-|                   | clear                 | 1                  | 1                      |
-|                   | emplace               | 1                  | 1                      |
-|                   | emplace_hint          | 1                  | 1                      |
+| Modifiers         | insert                | 1a, 1b, 2a, 2b     |         1a, 1b, 2a, 2b |
+|                   |                       | 3, 4               |                   3, 4 |
+|                   | erase                 | 1, 2, 3            |           1a, 1b, 2, 3 |
+|                   | swap                  | 1                  |                      1 |
+|                   | clear                 | 1                  |                      1 |
+|                   | emplace               | 1                  |                      1 |
+|                   | emplace_hint          | 1                  |                      1 |
 |-------------------+-----------------------+--------------------+------------------------|
-| Observers         | get_allocator         | 1                  | 1                      |
-|                   | key_comp              | 1                  | 1                      |
-|                   | value_comp            | 1                  | 1                      |
+| Observers         | get_allocator         | 1                  |                      1 |
+|                   | key_comp              | 1                  |                      1 |
+|                   | value_comp            | 1                  |                      1 |
 |-------------------+-----------------------+--------------------+------------------------|
-| Operations        | find                  | 1a, 1b             | 1a, 1b                 |
-|                   | count                 | 1                  | 1                      |
-|                   | lower_bound           | 1a, 1b             | 1a, 1b                 |
-|                   | upper_bound           | 1a, 1b             | 1a, 1b                 |
-|                   | equal_range           | 1a, 1b             | 1a, 1b                 |
+| Operations        | find                  | 1a, 1b             |                 1a, 1b |
+|                   | count                 | 1                  |                      1 |
+|                   | lower_bound           | 1a, 1b             |                 1a, 1b |
+|                   | upper_bound           | 1a, 1b             |                 1a, 1b |
+|                   | equal_range           | 1a, 1b             |                 1a, 1b |
 |-------------------+-----------------------+--------------------+------------------------|
-| Non-member        | '=='                  |                    | 1                      |
-| function          | '!='                  |                    | 1                      |
-| overloads (NMFOs) | '<'                   |                    | 1                      |
-|                   | '<='                  |                    | 1                      |
-|                   | '>'                   |                    | 1                      |
-|                   | '>='                  |                    | 1                      |
-|                   | swap                  |                    | 1                      |
+| Non-member        | '=='                  |                    |                      1 |
+| function          | '!='                  |                    |                      1 |
+| overloads (NMFOs) | '<'                   |                    |                      1 |
+|                   | '<='                  |                    |                      1 |
+|                   | '>'                   |                    |                      1 |
+|                   | '>='                  |                    |                      1 |
+|                   | swap                  |                    |                      1 |
 |-------------------+-----------------------+--------------------+------------------------|
 */
 

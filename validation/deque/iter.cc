@@ -1,7 +1,5 @@
 #include <iostream>
-#include <string>
 #include <deque>
-#include <cassert>
 #include "tests.h"
 #include "verify.h"
 
