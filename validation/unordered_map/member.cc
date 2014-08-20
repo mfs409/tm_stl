@@ -7,6 +7,8 @@
 
 /// The map we will use for our tests
 typedef std::unordered_map<int, int> intmap;
+typedef map_verifier verifier;
+
 intmap* member_map = NULL;
 
 void ctor_dtor_tests(int id)
@@ -59,26 +61,25 @@ void ctor_dtor_tests(int id)
         intmap q ({{1,1},{2,2},{3,3}});
         BEGIN_TX;
         member_map = new intmap(q.begin(), q.end());
-        // v.insert_all<std::map<int>>(member_map);
+        v.insert_all<intmap>(member_map);
         delete(member_map);
         member_map = NULL;
         END_TX;
-        // v.check("range ctor (3)", id, 3, { 9, 8, 7, -2 });
+        v.check("range ctor (2)", id, 6, { 1, 1, 2, 2, 3, 3 });
     }
-    std::cout<<std::endl;
 
     // the next test will use the copy ctor
     global_barrier->arrive(id);
     {
         verifier v;
-        intmap local ({{3,3},{4,4},{5,5}});
+        intmap local ({{3,3},{4,4}});
         BEGIN_TX;
-        member_map = new intmap(local);
-        // v.insert_all<intmap>(member_map);
+        member_map = new intmap(local, member_map->get_allocator());
+        v.insert_all<intmap>(member_map);
         delete(member_map);
         member_map = NULL;
         END_TX;
-        // v.check("copy ctor (4a) -- there is no 4b", id, 4, {3, 4, 5, 6, -2});
+        v.check("copy ctor (3b) -- 3a is default", id, 4, {3, 3, 4, 4});
     }
 
     // the next test is the move ctor
@@ -87,15 +88,28 @@ void ctor_dtor_tests(int id)
         verifier v;
         intmap local ({{5,5},{4,4},{3,3}});
         BEGIN_TX;
-        member_map = new intmap(std::move(local));
-        // v.insert_all<intmap>(member_map);
+        member_map = new intmap(std::move(local), member_map->get_allocator());
+        v.insert_all<intmap>(member_map);
         delete(member_map);
         member_map = NULL;
         END_TX;
-        // v.check("move ctor (5a) -- there is no 5b", id, 3, {5, 4, 3, -2});
+        v.check("move ctor (4b) -- 4a is default", id, 6, {5, 5, 4, 4, 3, 3});
     }
 }
 
 void op_eq_tests(int id)
 {
+    // test #3 is operator= ilist
+    global_barrier->arrive(id);
+    {
+        verifier v;
+        BEGIN_TX;
+        member_map = new intmap();
+        *member_map = { {13, 14}, {15, 16} };
+        v.insert_all<intmap>(member_map);
+        delete(member_map);
+        member_map = NULL;
+        END_TX;
+        v.check("ilist operator= (3)", id, 4, {13, 14, 15, 16});
+    }
 }
