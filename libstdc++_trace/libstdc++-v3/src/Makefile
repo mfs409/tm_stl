@@ -29,6 +29,9 @@ CFLAGS1=-fno-implicit-templates -Wall -Wextra -Wwrite-strings -Wcast-qual -Wabi 
 CFLAGS2=-g -O2 -D_GNU_SOURCE
 CFLAGS3=-fPIC -DPIC -D_GLIBCXX_SHARED
 
+CFLAGS1+=-include ../../trace.h
+
+
 #
 # Path to special crt*.o files
 #
