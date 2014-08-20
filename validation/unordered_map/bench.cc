@@ -13,81 +13,85 @@
     3 - Write test code for ensuring that every traced function is called,
         and then write DONE in the category
 
-|------------------+-----------------------+----------+--------|
-| Category         | Functions             | C++14    | GCC    |
-|                  |                       | Expected | Actual |
-|------------------+-----------------------+----------+--------|
-| Member Functions | (constructor)         |          |        |
-|                  |                       |          |        |
-|                  | (destructor)          |          |        |
-|                  | operator=             |          |        |
-|------------------+-----------------------+----------+--------|
-| Iterators        | begin                 |          |        |
-|                  | end                   |          |        |
-|                  | cbegin                |          |        |
-|                  | cend                  |          |        |
-|------------------+-----------------------+----------+--------|
-| Iterator         | default constructable |          |        |
-| Methods          | copy constructable    |          |        |
-|                  | copy assignable       |          |        |
-|                  | destructible          |          |        |
-|                  | swappable             |          |        |
-|------------------+-----------------------+----------+--------|
-| Iterator         | operator*             |          |        |
-| Operators        | operator->            |          |        |
-|                  | operator++            |          |        |
-|                  | operator--            |          |        |
-|                  | operator+=            |          |        |
-|                  | operator+             |          |        |
-|                  | operator-=            |          |        |
-|                  | operator-             |          |        |
-|                  | operator[]            |          |        |
-|------------------+-----------------------+----------+--------|
-| Iterator         | operator==            |          |        |
-| Overloads        | operator!=            |          |        |
-|                  | operator<             |          |        |
-|                  | operator>             |          |        |
-|                  | operator<=            |          |        |
-|                  | operator>=            |          |        |
-|                  | operator-             |          |        |
-|                  | operator+             |          |        |
-|------------------+-----------------------+----------+--------|
-| Const            |                       |          |        |
-| Iterator         |                       |          |        |
-| Methods          |                       |          |        |
-|------------------+-----------------------+----------+--------|
-| Capacity         | empty                 |          |        |
-|                  | size                  |          |        |
-|                  | max_size              |          |        |
-|------------------+-----------------------+----------+--------|
-| Element          | operator[]            |          |        |
-| Access           | at                    |          |        |
-|------------------+-----------------------+----------+--------|
-| Element          | find                  |          |        |
-| Lookup           | count                 |          |        |
-|                  | equal_range           |          |        |
-|------------------+-----------------------+----------+--------|
-| Modifiers        | insert                |          |        |
-|                  | erase                 |          |        |
-|                  | swap                  |          |        |
-|                  | clear                 |          |        |
-|                  | emplace               |          |        |
-|                  | emplace_hint          |          |        |
-|------------------+-----------------------+----------+--------|
-| Buckets          | bucket_count          |          |        |
-|                  | max_bucket_count      |          |        |
-|                  | bucket_size           |          |        |
-|                  | bucket                |          |        |
-|------------------+-----------------------+----------+--------|
-| Hash Policy      | load_factor           |          |        |
-|                  | max_load_factor       |          |        |
-|                  | rehash                |          |        |
-|                  | reserve               |          |        |
-|------------------+-----------------------+----------+--------|
-| Observers        | get_allocator         |          |        |
-|                  | hash_function         |          |        |
-|                  | key_eq                |          |        |
-|------------------+-----------------------+----------+--------|
+|------------------+-----------------------+------------------+------------------|
+| Category         | Functions             |            C++11 |              GCC |
+|                  |                       |         Expected |           Actual |
+|------------------+-----------------------+------------------+------------------|
+| Member Functions | (constructor)         |           1a, 1b |           1a, 1b |
+| (DONE)           |                       |                2 |                2 |
+|                  |                       |           3a, 3b |          3a*, 3b |
+|                  |                       |           4a, 4b |          4a*, 4b |
+|                  |                       |                5 |                5 |
+|                  | (destructor)          |                1 |               1* |
+|                  | operator=             |          1, 2, 3 |        1*, 2*, 3 |
+|------------------+-----------------------+------------------+------------------|
+| Iterators        | begin                 |   1a, 1b, 2a, 2b |   1a, 1b, 2a, 2b |
+|                  | end                   |   1a, 1b, 2a, 2b |   1a, 1b, 2a, 2b |
+|                  | cbegin                |             1, 2 |             1, 2 |
+|                  | cend                  |             1, 2 |             1, 2 |
+|------------------+-----------------------+------------------+------------------|
+| Iterator         | default constructable |                  |                  |
+| Methods          | copy constructable    |                  |                  |
+|                  | copy assignable       |                  |                  |
+|                  | destructible          |                  |                  |
+|                  | swappable             |                  |                  |
+|------------------+-----------------------+------------------+------------------|
+| Iterator         | operator*             |                  |                  |
+| Operators        | operator->            |                  |                  |
+|                  | operator++            |                  |                  |
+|                  | operator--            |                  |                  |
+|                  | operator+=            |                  |                  |
+|                  | operator+             |                  |                  |
+|                  | operator-=            |                  |                  |
+|                  | operator-             |                  |                  |
+|                  | operator[]            |                  |                  |
+|------------------+-----------------------+------------------+------------------|
+| Iterator         | operator==            |                  |                  |
+| Overloads        | operator!=            |                  |                  |
+|                  | operator<             |                  |                  |
+|                  | operator>             |                  |                  |
+|                  | operator<=            |                  |                  |
+|                  | operator>=            |                  |                  |
+|                  | operator-             |                  |                  |
+|                  | operator+             |                  |                  |
+|------------------+-----------------------+------------------+------------------|
+| Const            |                       |                  |                  |
+| Iterator         |                       |                  |                  |
+| Methods          |                       |                  |                  |
+|------------------+-----------------------+------------------+------------------|
+| Capacity         | empty                 |                1 |                1 |
+|                  | size                  |                1 |                1 |
+|                  | max_size              |                1 |                1 |
+|------------------+-----------------------+------------------+------------------|
+| Element          | operator[]            |             1, 2 |             1, 2 |
+| Access           | at                    |             1, 2 |             1, 2 |
+|                  |                       |                  |                  |
+|------------------+-----------------------+------------------+------------------|
+| Element          | find                  |             1, 2 |             1, 2 |
+| Lookup           | count                 |                1 |                1 |
+|                  | equal_range           |             1, 2 |             1, 2 |
+|------------------+-----------------------+------------------+------------------|
+| Modifiers        | insert                | 1, 2, 3, 4, 5, 6 | 1, 2, 3, 4, 5, 6 |
+|                  | erase                 |          1, 2, 3 |     1a, 1b, 2, 3 |
+|                  | swap                  |                1 |                1 |
+|                  | clear                 |                1 |                1 |
+|                  | emplace               |                1 |                1 |
+|                  | emplace_hint          |                1 |                1 |
+|------------------+-----------------------+------------------+------------------|
+| Buckets          | bucket_count          |                1 |                1 |
+|                  | max_bucket_count      |                1 |                1 |
+|                  | bucket_size           |                1 |                1 |
+|                  | bucket                |                1 |                1 |
+|------------------+-----------------------+------------------+------------------|
+| Hash Policy      | load_factor           |                1 |                1 |
+|                  | max_load_factor       |             1, 2 |             1, 2 |
+|                  | rehash                |                1 |                1 |
+|                  | reserve               |                1 |                1 |
+|------------------+-----------------------+------------------+------------------|
+| Observers        | get_allocator         |                1 |                1 |
+|                  | hash_function         |                1 |                1 |
+|                  | key_eq                |                1 |                1 |
+|------------------+-----------------------+------------------+------------------|
 */
 
 #include <list>

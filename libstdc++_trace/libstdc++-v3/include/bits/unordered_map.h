@@ -141,7 +141,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 		    const key_equal& __eql = key_equal(),
 		    const allocator_type& __a = allocator_type())
       : _M_h(__n, __hf, __eql, __a)
-      { }
+      { TRACE("unordered_map: ctor: default(1a)"); }
 
       /**
        *  @brief  Builds an %unordered_map from a range.
@@ -163,7 +163,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 		      const key_equal& __eql = key_equal(),
 		      const allocator_type& __a = allocator_type())
 	: _M_h(__first, __last, __n, __hf, __eql, __a)
-	{ }
+	{ TRACE("unordered_map: ctor: range(2)"); }
 
       /// Copy constructor.
       unordered_map(const unordered_map&) = default;
@@ -178,7 +178,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       explicit
       unordered_map(const allocator_type& __a)
 	: _M_h(__a)
-      { }
+      { TRACE("unordered_map: ctor: default(1b)"); }
 
       /*
        *  @brief Copy constructor with allocator argument.
@@ -188,7 +188,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       unordered_map(const unordered_map& __umap,
 		    const allocator_type& __a)
 	: _M_h(__umap._M_h, __a)
-      { }
+      { TRACE("unordered_map: ctor: copy(3b)"); }
 
       /*
        *  @brief  Move constructor with allocator argument.
@@ -198,7 +198,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       unordered_map(unordered_map&& __umap,
 		    const allocator_type& __a)
 	: _M_h(std::move(__umap._M_h), __a)
-      { }
+      { TRACE("unordered_map: ctor: move(4b)"); }
 
       /**
        *  @brief  Builds an %unordered_map from an initializer_list.
@@ -217,7 +217,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 		    const key_equal& __eql = key_equal(),
 		    const allocator_type& __a = allocator_type())
 	: _M_h(__l, __n, __hf, __eql, __a)
-      { }
+      { TRACE("unordered_map: ctor: ilist(5)"); }
 
       /// Copy assignment operator.
       unordered_map&
@@ -240,7 +240,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       unordered_map&
       operator=(initializer_list<value_type> __l)
-      {
+      { TRACE("unordered_map: operator=: ilist(3)");
 	_M_h = __l;
 	return *this;
       }
@@ -256,17 +256,17 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       ///  Returns true if the %unordered_map is empty.
       bool
       empty() const noexcept
-      { return _M_h.empty(); }
+      { TRACE("unordered_map: empty(1)"); return _M_h.empty(); }
 
       ///  Returns the size of the %unordered_map.
       size_type
       size() const noexcept
-      { return _M_h.size(); }
+      { TRACE("unordered_map: size(1)"); return _M_h.size(); }
 
       ///  Returns the maximum size of the %unordered_map.
       size_type
       max_size() const noexcept
-      { return _M_h.max_size(); }
+      { TRACE("unordered_map: max_size(1)"); return _M_h.max_size(); }
 
       // iterators.
 
@@ -276,7 +276,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       begin() noexcept
-      { return _M_h.begin(); }
+      { TRACE("unordered_map: begin(1a)"); return _M_h.begin(); }
 
       //@{
       /**
@@ -285,11 +285,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       begin() const noexcept
-      { return _M_h.begin(); }
+      { TRACE("unordered_map: begin(1b)"); return _M_h.begin(); }
 
       const_iterator
       cbegin() const noexcept
-      { return _M_h.begin(); }
+      { TRACE("unordered_map: cbegin(1)"); return _M_h.begin(); }
       //@}
 
       /**
@@ -298,7 +298,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       end() noexcept
-      { return _M_h.end(); }
+      { TRACE("unordered_map: end(1a)"); return _M_h.end(); }
 
       //@{
       /**
@@ -307,11 +307,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       end() const noexcept
-      { return _M_h.end(); }
+      { TRACE("unordered_map: end(1b)"); return _M_h.end(); }
 
       const_iterator
       cend() const noexcept
-      { return _M_h.end(); }
+      { TRACE("unordered_map: cend(1)"); return _M_h.end(); }
       //@}
 
       // modifiers.
@@ -338,7 +338,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       template<typename... _Args>
 	std::pair<iterator, bool>
 	emplace(_Args&&... __args)
-	{ return _M_h.emplace(std::forward<_Args>(__args)...); }
+	{ TRACE("unordered_map: emplace(1)"); return _M_h.emplace(std::forward<_Args>(__args)...); }
 
       /**
        *  @brief Attempts to build and insert a std::pair into the %unordered_map.
@@ -368,7 +368,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       template<typename... _Args>
 	iterator
 	emplace_hint(const_iterator __pos, _Args&&... __args)
-	{ return _M_h.emplace_hint(__pos, std::forward<_Args>(__args)...); }
+	{ TRACE("unordered_map: emplace_hint(1)"); return _M_h.emplace_hint(__pos, std::forward<_Args>(__args)...); }
 
       //@{
       /**
@@ -390,14 +390,14 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       std::pair<iterator, bool>
       insert(const value_type& __x)
-      { return _M_h.insert(__x); }
+      { TRACE("unordered_map: insert(1)"); return _M_h.insert(__x); }
 
       template<typename _Pair, typename = typename
 	       std::enable_if<std::is_constructible<value_type,
 						    _Pair&&>::value>::type>
 	std::pair<iterator, bool>
 	insert(_Pair&& __x)
-        { return _M_h.insert(std::forward<_Pair>(__x)); }
+        { TRACE("unordered_map: empty(2)"); return _M_h.insert(std::forward<_Pair>(__x)); }
       //@}
 
       //@{
@@ -424,14 +424,14 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       insert(const_iterator __hint, const value_type& __x)
-      { return _M_h.insert(__hint, __x); }
+      { TRACE("unordered_map: insert(3)"); return _M_h.insert(__hint, __x); }
 
       template<typename _Pair, typename = typename
 	       std::enable_if<std::is_constructible<value_type,
 						    _Pair&&>::value>::type>
 	iterator
 	insert(const_iterator __hint, _Pair&& __x)
-	{ return _M_h.insert(__hint, std::forward<_Pair>(__x)); }
+	{ TRACE("unordered_map: insert(4)"); return _M_h.insert(__hint, std::forward<_Pair>(__x)); }
       //@}
 
       /**
@@ -446,7 +446,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       template<typename _InputIterator>
 	void
 	insert(_InputIterator __first, _InputIterator __last)
-	{ _M_h.insert(__first, __last); }
+	{ TRACE("unordered_map: insert(5)"); _M_h.insert(__first, __last); }
 
       /**
        *  @brief Attempts to insert a list of elements into the %unordered_map.
@@ -457,7 +457,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       insert(initializer_list<value_type> __l)
-      { _M_h.insert(__l); }
+      { TRACE("unordered_map: insert(6)"); _M_h.insert(__l); }
 
       //@{
       /**
@@ -475,12 +475,12 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       erase(const_iterator __position)
-      { return _M_h.erase(__position); }
+      { TRACE("unordered_map: erase(1a)"); return _M_h.erase(__position); }
 
       // LWG 2059.
       iterator
       erase(iterator __position)
-      { return _M_h.erase(__position); }
+      { TRACE("unordered_map: empty(1b)"); return _M_h.erase(__position); }
       //@}
 
       /**
@@ -497,7 +497,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       size_type
       erase(const key_type& __x)
-      { return _M_h.erase(__x); }
+      { TRACE("unordered_map: empty(2)"); return _M_h.erase(__x); }
 
       /**
        *  @brief Erases a [__first,__last) range of elements from an
@@ -515,7 +515,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       erase(const_iterator __first, const_iterator __last)
-      { return _M_h.erase(__first, __last); }
+      { TRACE("unordered_map: empty(3)"); return _M_h.erase(__first, __last); }
 
       /**
        *  Erases all elements in an %unordered_map.
@@ -525,7 +525,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       clear() noexcept
-      { _M_h.clear(); }
+      { TRACE("unordered_map: clear(1)"); _M_h.clear(); }
 
       /**
        *  @brief  Swaps data with another %unordered_map.
@@ -539,7 +539,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       void
       swap(unordered_map& __x)
       noexcept( noexcept(_M_h.swap(__x._M_h)) )
-      { _M_h.swap(__x._M_h); }
+      { TRACE("unordered_map: swap(1)"); _M_h.swap(__x._M_h); }
 
       // observers.
 
@@ -547,13 +547,13 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       ///  constructed.
       hasher
       hash_function() const
-      { return _M_h.hash_function(); }
+      { TRACE("unordered_map: hash_function(1)"); return _M_h.hash_function(); }
 
       ///  Returns the key comparison object with which the %unordered_map was
       ///  constructed.
       key_equal
       key_eq() const
-      { return _M_h.key_eq(); }
+      { TRACE("unordered_map: key_eq(1)"); return _M_h.key_eq(); }
 
       // lookup.
 
@@ -571,11 +571,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       find(const key_type& __x)
-      { return _M_h.find(__x); }
+      { TRACE("unordered_map: find(1)"); return _M_h.find(__x); }
 
       const_iterator
       find(const key_type& __x) const
-      { return _M_h.find(__x); }
+      { TRACE("unordered_map: find(1)"); return _M_h.find(__x); }
       //@}
 
       /**
@@ -589,7 +589,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       size_type
       count(const key_type& __x) const
-      { return _M_h.count(__x); }
+      { TRACE("unordered_map: count(1)"); return _M_h.count(__x); }
 
       //@{
       /**
@@ -602,11 +602,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       std::pair<iterator, iterator>
       equal_range(const key_type& __x)
-      { return _M_h.equal_range(__x); }
+      { TRACE("unordered_map: equal_range(1)"); return _M_h.equal_range(__x); }
 
       std::pair<const_iterator, const_iterator>
       equal_range(const key_type& __x) const
-      { return _M_h.equal_range(__x); }
+      { TRACE("unordered_map: equal_range(2)"); return _M_h.equal_range(__x); }
       //@}
 
       //@{
@@ -624,11 +624,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       mapped_type&
       operator[](const key_type& __k)
-      { return _M_h[__k]; }
+      { TRACE("unordered_map: operator[](1)"); return _M_h[__k]; }
 
       mapped_type&
       operator[](key_type&& __k)
-      { return _M_h[std::move(__k)]; }
+      { TRACE("unordered_map: operator[](2)"); return _M_h[std::move(__k)]; }
       //@}
 
       //@{
@@ -641,11 +641,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       mapped_type&
       at(const key_type& __k)
-      { return _M_h.at(__k); }
+      { TRACE("unordered_map: at(1)"); return _M_h.at(__k); }
 
       const mapped_type&
       at(const key_type& __k) const
-      { return _M_h.at(__k); }
+      { TRACE("unordered_map: at(2)"); return _M_h.at(__k); }
       //@}
 
       // bucket interface.
@@ -653,12 +653,12 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       /// Returns the number of buckets of the %unordered_map.
       size_type
       bucket_count() const noexcept
-      { return _M_h.bucket_count(); }
+      { TRACE("unordered_map: bucket_count(1)"); return _M_h.bucket_count(); }
 
       /// Returns the maximum number of buckets of the %unordered_map.
       size_type
       max_bucket_count() const noexcept
-      { return _M_h.max_bucket_count(); }
+      { TRACE("unordered_map: max_bucket_count(1)"); return _M_h.max_bucket_count(); }
 
       /*
        * @brief  Returns the number of elements in a given bucket.
@@ -667,7 +667,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       size_type
       bucket_size(size_type __n) const
-      { return _M_h.bucket_size(__n); }
+      { TRACE("unordered_map: bucket_size(1)"); return _M_h.bucket_size(__n); }
 
       /*
        * @brief  Returns the bucket index of a given element.
@@ -676,7 +676,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       size_type
       bucket(const key_type& __key) const
-      { return _M_h.bucket(__key); }
+      { return TRACE("unordered_map: bucket(1)"); _M_h.bucket(__key); }
       
       /**
        *  @brief  Returns a read/write iterator pointing to the first bucket
@@ -686,7 +686,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       local_iterator
       begin(size_type __n)
-      { return _M_h.begin(__n); }
+      { TRACE("unordered_map: begin(2a)"); return _M_h.begin(__n); }
 
       //@{
       /**
@@ -697,11 +697,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_local_iterator
       begin(size_type __n) const
-      { return _M_h.begin(__n); }
+      { TRACE("unordered_map: begin(2b)"); return _M_h.begin(__n); }
 
       const_local_iterator
       cbegin(size_type __n) const
-      { return _M_h.cbegin(__n); }
+      { TRACE("unordered_map: cbegin(2)"); return _M_h.cbegin(__n); }
       //@}
 
       /**
@@ -712,7 +712,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       local_iterator
       end(size_type __n)
-      { return _M_h.end(__n); }
+      { TRACE("unordered_map: end(2a)"); return _M_h.end(__n); }
 
       //@{
       /**
@@ -723,11 +723,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_local_iterator
       end(size_type __n) const
-      { return _M_h.end(__n); }
+      { TRACE("unordered_map: end(2b)"); _M_h.end(__n); }
 
       const_local_iterator
       cend(size_type __n) const
-      { return _M_h.cend(__n); }
+      { TRACE("unordered_map: cend(2)"); return _M_h.cend(__n); }
       //@}
 
       // hash policy.
@@ -735,13 +735,13 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       /// Returns the average number of elements per bucket.
       float
       load_factor() const noexcept
-      { return _M_h.load_factor(); }
+      { TRACE("unordered_map: load_factor(1)"); return _M_h.load_factor(); }
 
       /// Returns a positive number that the %unordered_map tries to keep the
       /// load factor less than or equal to.
       float
       max_load_factor() const noexcept
-      { return _M_h.max_load_factor(); }
+      { TRACE("unordered_map: max_load_factor(1)"); return _M_h.max_load_factor(); }
 
       /**
        *  @brief  Change the %unordered_map maximum load factor.
@@ -749,7 +749,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       max_load_factor(float __z)
-      { _M_h.max_load_factor(__z); }
+      { TRACE("unordered_map: max_load_factor(2)"); _M_h.max_load_factor(__z); }
 
       /**
        *  @brief  May rehash the %unordered_map.
@@ -760,7 +760,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       rehash(size_type __n)
-      { _M_h.rehash(__n); }
+      { TRACE("unordered_map: rehash(1)"); _M_h.rehash(__n); }
 
       /**
        *  @brief  Prepare the %unordered_map for a specified number of
@@ -771,7 +771,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       reserve(size_type __n)
-      { _M_h.reserve(__n); }
+      { TRACE("unordered_map: reserve(1)"); _M_h.reserve(__n); }
 
       template<typename _Key1, typename _Tp1, typename _Hash1, typename _Pred1,
 	       typename _Alloc1>
