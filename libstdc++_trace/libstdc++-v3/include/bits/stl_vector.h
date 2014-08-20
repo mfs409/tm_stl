@@ -254,7 +254,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 #if __cplusplus >= 201103L
       noexcept(is_nothrow_default_constructible<_Alloc>::value)
 #endif
-      : _Base() { }
+      : _Base() { TRACE("vector: ctor: default(1a)"); }
 
       /**
        *  @brief  Creates a %vector with no elements.
@@ -262,7 +262,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       explicit
       vector(const allocator_type& __a) _GLIBCXX_NOEXCEPT
-      : _Base(__a) { }
+      : _Base(__a) { TRACE("vector: ctor: default(1b)"); }
 
 #if __cplusplus >= 201103L
       /**
@@ -276,7 +276,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       explicit
       vector(size_type __n, const allocator_type& __a = allocator_type())
       : _Base(__n, __a)
-      { _M_default_initialize(__n); }
+      { TRACE("vector: ctor: fill(2a)"); _M_default_initialize(__n); }
 
       /**
        *  @brief  Creates a %vector with copies of an exemplar element.
@@ -289,7 +289,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       vector(size_type __n, const value_type& __value,
 	     const allocator_type& __a = allocator_type())
       : _Base(__n, __a)
-      { _M_fill_initialize(__n, __value); }
+      { TRACE("vector: ctor: fill(2b)"); _M_fill_initialize(__n, __value); }
 #else
       /**
        *  @brief  Creates a %vector with copies of an exemplar element.
