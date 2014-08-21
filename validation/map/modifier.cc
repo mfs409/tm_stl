@@ -29,15 +29,10 @@ void modifier_tests(int id)
     {
         map_verifier v;
         BEGIN_TX;
-        modifier_map_special = new std::map<int, Foo>({{1, Foo(1)}, {2, Foo(2)}, {4, Foo(4)}, {8, Foo(8)}});
-        const std::pair<int, Foo>* t = new std::pair<int, Foo>(3, Foo(3));
-        const std::pair<int, Foo>& tt = *t;
-        modifier_map_special->insert(tt);
-        for (auto i : *modifier_map_special) {
-            v.insert(i.first);
-            v.insert(i.second.x);
-        }
-        delete(modifier_map_special);
+        modifier_map = new std::map<int, int>({{1, 1}, {2, 2}, {4, 4}, {8, 8}});
+        modifier_map->insert({3, 3});
+        v.insert_all(modifier_map);
+        delete(modifier_map);
         END_TX;
         v.check("single element insert (1a)", id, 10, {1, 1, 2, 2, 3, 3, 4, 4, 8, 8, -2});
     }
@@ -64,7 +59,7 @@ void modifier_tests(int id)
         BEGIN_TX;
         modifier_map = new std::map<int, int>({{1, 1}, {2, 2}, {4, 4}, {8, 8}});
         auto i = modifier_map->begin(); i++;
-        modifier_map->insert(i, std::make_pair(3, 3));
+        modifier_map->insert(i, {3, 3});
         v.insert_all(modifier_map);
         delete(modifier_map);
         END_TX;
