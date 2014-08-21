@@ -1,7 +1,6 @@
 #include <iostream>
 #include <deque>
 #include "tests.h"
-#include "verify.h"
 
 /// The deques we will use for our tests
 std::deque<int>* element_deque = NULL;
@@ -16,7 +15,6 @@ void element_tests(int id)
     global_barrier->arrive(id);
     {
         int ans = -2;
-        verifier v;
         BEGIN_TX;
         element_deque = new std::deque<int>({1, 2, 3});
         ans = (*element_deque)[1];
@@ -32,7 +30,6 @@ void element_tests(int id)
     global_barrier->arrive(id);
     {
         int ans = -2;
-        verifier v;
         BEGIN_TX;
         element_deque = new std::deque<int>({1, 2, 3});
         const std::deque<int> ce = *element_deque;
@@ -49,7 +46,6 @@ void element_tests(int id)
     global_barrier->arrive(id);
     {
         int ans = -2;
-        verifier v;
         BEGIN_TX;
         element_deque = new std::deque<int>({1, 2, 3});
         ans = element_deque->at(1);
@@ -65,7 +61,6 @@ void element_tests(int id)
     global_barrier->arrive(id);
     {
         int ans = -2;
-        verifier v;
         BEGIN_TX;
         element_deque = new std::deque<int>({1, 2, 3});
         const std::deque<int> ce = *element_deque;
@@ -82,7 +77,6 @@ void element_tests(int id)
     global_barrier->arrive(id);
     {
         int ans = -2;
-        verifier v;
         BEGIN_TX;
         element_deque = new std::deque<int>({1, 2, 3});
         ans = element_deque->front();
@@ -98,7 +92,6 @@ void element_tests(int id)
     global_barrier->arrive(id);
     {
         int ans = -2;
-        verifier v;
         BEGIN_TX;
         element_deque = new std::deque<int>({1, 2, 3});
         const std::deque<int> ce = *element_deque;
@@ -115,7 +108,6 @@ void element_tests(int id)
     global_barrier->arrive(id);
     {
         int ans = -2;
-        verifier v;
         BEGIN_TX;
         element_deque = new std::deque<int>({1, 2, 3});
         ans = element_deque->back();
@@ -131,7 +123,6 @@ void element_tests(int id)
     global_barrier->arrive(id);
     {
         int ans = -2;
-        verifier v;
         BEGIN_TX;
         element_deque = new std::deque<int>({1, 2, 3});
         const std::deque<int> ce = *element_deque;
