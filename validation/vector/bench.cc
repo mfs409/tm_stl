@@ -15,19 +15,19 @@
 | Category          | Functions       | C++14             | GCC            |
 |                   |                 | Expected          | Actual         |
 |-------------------+-----------------+-------------------+----------------|
-| Member            | (constructor)   | 1a, 1b, 2a, 2b, 3 | 1a, 1b, 2a, 2b |
-| Functions         |                 | 4a, 4b, 5a, 5b, 6 | (in progress)  |
-|                   | (destructor)    |                   |                |
-|                   | operator=       |                   |                |
+| Member            | (constructor)   | 1a, 1b, 2a, 2b, 3 | 1a, 1b, 2a, 2b, 3 |
+| Functions         |                 | 4a, 4b, 5a, 5b, 6 | 4a, 4b, 5a, 5b, 6 |
+|                   | (destructor)    | 1                 | 1              |
+|                   | operator=       | 1, 2, 3           | 2, 3           |
 |-------------------+-----------------+-------------------+----------------|
-| Iterators         | begin           |                   |                |
-|                   | end             |                   |                |
-|                   | rbegin          |                   |                |
-|                   | rend            |                   |                |
-|                   | cbegin          |                   |                |
-|                   | cend            |                   |                |
-|                   | crbegin         |                   |                |
-|                   | crend           |                   |                |
+| Iterators         | begin           | 1a, 1b            | 1a, 1b         |
+|                   | end             | 1a, 1b            | 1a, 1b         |
+|                   | rbegin          | 1a, 1b            | 1a, 1b         |
+|                   | rend            | 1a, 1b            | 1a, 1b         |
+|                   | cbegin          | 1                 | 1              |
+|                   | cend            | 1                 | 1              |
+|                   | crbegin         | 1                 | 1              |
+|                   | crend           | 1                 | 1              |
 |-------------------+-----------------+-------------------+----------------|
 | Iterator          | ctor            |                   |                |
 | Methods           | dtor            |                   |                |
@@ -72,40 +72,40 @@
 | Iterator          |                 |                   |                |
 | Methods           |                 |                   |                |
 |-------------------+-----------------+-------------------+----------------|
-| Capacity          | size            |                   |                |
-|                   | max_size        |                   |                |
-|                   | resize          |                   |                |
-|                   | capacity        |                   |                |
-|                   | empty           |                   |                |
-|                   | reserve         |                   |                |
-|                   | shrink_to_fit   |                   |                |
+| Capacity          | size            | 1                 | 1              |
+|                   | max_size        | 1                 | 1              |
+|                   | resize          | 1a, 1b            | 1a, 1b         |
+|                   | capacity        | 1                 | 1              |
+|                   | empty           | 1                 | 1              |
+|                   | reserve         | 1                 |                |
+|                   | shrink_to_fit   | 1                 | 1              |
 |-------------------+-----------------+-------------------+----------------|
-| Element access    | operator[]      |                   |                |
-|                   | at              |                   |                |
-|                   | front           |                   |                |
-|                   | back            |                   |                |
-|                   | data            |                   |                |
+| Element access    | operator[]      | 1a, 1b            | 1a, 1b         |
+|                   | at              | 1a, 1b            | 1a, 1b         |
+|                   | front           | 1a, 1b            | 1a, 1b         |
+|                   | back            | 1a, 1b            | 1a, 1b         |
+|                   | data            | 1a, 1b            | 1a, 1b         |
 |-------------------+-----------------+-------------------+----------------|
-| Modifiers         | assign          |                   |                |
-|                   | push_back       |                   |                |
-|                   | pop_back        |                   |                |
-|                   | insert          |                   |                |
-|                   | erase           |                   |                |
-|                   | swap            |                   |                |
-|                   | clear           |                   |                |
-|                   | emplace         |                   |                |
-|                   | emplace_back    |                   |                |
+| Modifiers         | assign          | 1, 2, 3           | 1, 2, 3        |
+|                   | push_back       | 1a, 1b            | 1a, 1b         |
+|                   | pop_back        | 1                 | 1              |
+|                   | insert          | 1, 2, 3, 4, 5     | 2, 3, 4, 5     |
+|                   | erase           | 1a, 1b            | 1a, 1b         |
+|                   | swap            | 1                 | 1              |
+|                   | clear           | 1                 | 1              |
+|                   | emplace         | 1                 |                |
+|                   | emplace_back    | 1                 |                |
 |-------------------+-----------------+-------------------+----------------|
-| Allocators        | get_allocator   |                   |                |
+| Allocators        | get_allocator   | 1                 |                |
 |                   |                 |                   |                |
 |-------------------+-----------------+-------------------+----------------|
-| Non-member        | '=='            |                   |                |
-| function          | '!='            |                   |                |
-| overloads (NMFOs) | '<'             |                   |                |
-|                   | '<='            |                   |                |
-|                   | '>'             |                   |                |
-|                   | '>='            |                   |                |
-|                   | swap            |                   |                |
+| Non-member        | '=='            |  1                | 1              |
+| function          | '!='            |  2                | 2              |
+| overloads (NMFOs) | '<'             |  3                | 3              |
+|                   | '<='            |  4                | 4              |
+|                   | '>'             |  5a               | 5a             |
+|                   | '>='            |  5b               | 5b             |
+|                   | swap            |  1                | 1              |
 |-------------------+-----------------+-------------------+----------------|
 */
 
