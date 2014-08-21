@@ -88,7 +88,7 @@
 |                   | value_comp            | 1                  |                      1 |
 |-------------------+-----------------------+--------------------+------------------------|
 | Operations        | find                  | 1a, 1b             |                 1a, 1b |
-|                   | count                 | 1                  |                      1 |
+| (DONE)            | count                 | 1                  |                      1 |
 |                   | lower_bound           | 1a, 1b             |                 1a, 1b |
 |                   | upper_bound           | 1a, 1b             |                 1a, 1b |
 |                   | equal_range           | 1a, 1b             |                 1a, 1b |
@@ -96,7 +96,7 @@
 | Non-member        | '=='                  |                    |                      1 |
 | function          | '!='                  |                    |                      1 |
 | overloads (NMFOs) | '<'                   |                    |                      1 |
-|                   | '<='                  |                    |                      1 |
+| (DONE)            | '<='                  |                    |                      1 |
 |                   | '>'                   |                    |                      1 |
 |                   | '>='                  |                    |                      1 |
 |                   | swap                  |                    |                      1 |
@@ -147,6 +147,7 @@ void usage()
          << "              10 modifier methods" << endl
          << "              11 observer methods" << endl
          << "              12 operations methods" << endl
+         << "              13 overload functions" << endl
          << endl
          << "  Note: const, reverse, and const reverse iterators not tested"
          << endl
@@ -154,7 +155,7 @@ void usage()
     exit(0);
 }
 
-#define NUM_TESTS 13
+#define NUM_TESTS 14
 bool test_flags[NUM_TESTS] = {false};
 
 void (*test_names[NUM_TESTS])(int) = {
@@ -170,7 +171,8 @@ void (*test_names[NUM_TESTS])(int) = {
     element_tests,                                      // element.cc
     modifier_tests,                                     // modifier.cc
     observer_tests,                                     // observer.cc
-    operation_tests                                     // operations.cc
+    operation_tests,                                    // operations.cc
+    overload_tests                                      // overloads.cc
 };
 
 /// Parse command line arguments using getopt()

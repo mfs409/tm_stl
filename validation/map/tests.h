@@ -36,3 +36,6 @@ void observer_tests(int id);
 
 // tests of map operations, from operations.cc
 void operation_tests(int id);
+
+// tests of non-member function overloads, from overloads.cc
+void overload_tests(int id);
