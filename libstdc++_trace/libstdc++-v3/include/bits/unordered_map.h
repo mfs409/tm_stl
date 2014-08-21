@@ -397,7 +397,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 						    _Pair&&>::value>::type>
 	std::pair<iterator, bool>
 	insert(_Pair&& __x)
-        { TRACE("unordered_map: empty(2)"); return _M_h.insert(std::forward<_Pair>(__x)); }
+        { TRACE("unordered_map: insert(2)"); return _M_h.insert(std::forward<_Pair>(__x)); }
       //@}
 
       //@{
