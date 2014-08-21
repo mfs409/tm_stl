@@ -999,7 +999,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     inline bool
     operator==(const map<_Key, _Tp, _Compare, _Alloc>& __x,
                const map<_Key, _Tp, _Compare, _Alloc>& __y)
-    { TRACE("map nmfo: operator=="); return __x._M_t == __y._M_t; }
+    { TRACE("map nmfo: operator==(1)"); return __x._M_t == __y._M_t; }
 
   /**
    *  @brief  Map ordering relation.
