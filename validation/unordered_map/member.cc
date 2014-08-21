@@ -9,7 +9,7 @@
 typedef std::unordered_map<int, int> intmap;
 typedef map_verifier verifier;
 
-intmap* member_map = NULL;
+static intmap* member_map = NULL;
 
 void ctor_dtor_tests(int id)
 {
