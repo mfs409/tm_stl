@@ -5,7 +5,10 @@
 
 /// The maps we will use for our tests
 std::map<int, int>* member_map = NULL;
-std::map<int, int, bool(*)(int,int)>* member_map_comparison = NULL;
+// NB: we must make the comparison function transaction_safe, or we'll get
+//     lots of errors.  This is slightly annoying.
+typedef bool(*safecomp)(int, int) __attribute__((transaction_safe));
+std::map<int, int, safecomp>* member_map_comparison = NULL;
 
 // a comparison function
 bool intcomp(int lhs, int rhs) { return lhs < rhs;}
@@ -18,7 +21,7 @@ void ctor_dtor_tests(int id)
         printf("Testing member map constructors(12/11) and destructors(0/1)\n");
 
     // set up our comparison function pointer:
-    bool(*comparison)(int,int) = intcomp;
+    safecomp comparison = intcomp;
 
     // test simple ctor and dtor
     //
@@ -41,7 +44,7 @@ void ctor_dtor_tests(int id)
         map_verifier v;
         int size;
         BEGIN_TX;
-        member_map_comparison = new std::map<int, int, bool(*)(int, int)>(comparison);
+        member_map_comparison = new std::map<int, int, safecomp>(comparison);
         int size = member_map_comparison->size();
         delete(member_map_comparison);
         END_TX;
@@ -68,7 +71,7 @@ void ctor_dtor_tests(int id)
         map_verifier v;
         std::map<int, int> tmp({{1, 1}, {2, 2}, {3, 3}});
         BEGIN_TX;
-        member_map_comparison = new std::map<int, int, bool(*)(int, int)>(tmp.begin(), tmp.end(), comparison);
+        member_map_comparison = new std::map<int, int, safecomp>(tmp.begin(), tmp.end(), comparison);
         v.insert_all(member_map_comparison);
         delete(member_map_comparison);
         END_TX;
@@ -158,7 +161,7 @@ void ctor_dtor_tests(int id)
     {
         map_verifier v;
         BEGIN_TX;
-        member_map_comparison = new std::map<int, int, bool(*)(int, int)>({{1, 1}, {2, 2}, {3, 3}}, comparison);
+        member_map_comparison = new std::map<int, int, safecomp>({{1, 1}, {2, 2}, {3, 3}}, comparison);
         v.insert_all(member_map_comparison);
         delete(member_map_comparison);
         END_TX;

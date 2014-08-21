@@ -532,7 +532,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        *           such a data is present in the %map.
        *  @throw  std::out_of_range  If no such data is present.
        */
-      mapped_type&
+      mapped_type& __attribute__((transaction_safe)) // [mfs] no attrib needed once __throw fixed
       at(const key_type& __k)
       {
 	iterator __i = lower_bound(__k);
@@ -541,7 +541,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 	return (*__i).second;
       }
 
-      const mapped_type&
+      const mapped_type& __attribute__((transaction_safe)) // [mfs] no attrib needed once __throw fixed
       at(const key_type& __k) const
       {
 	const_iterator __i = lower_bound(__k);

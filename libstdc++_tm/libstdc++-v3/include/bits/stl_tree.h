@@ -158,13 +158,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 #endif
     };
 
-  _GLIBCXX_PURE _Rb_tree_node_base*
+  _GLIBCXX_PURE _Rb_tree_node_base* __attribute__((transaction_safe))
   _Rb_tree_increment(_Rb_tree_node_base* __x) throw ();
 
-  _GLIBCXX_PURE const _Rb_tree_node_base*
+  _GLIBCXX_PURE const _Rb_tree_node_base* __attribute__((transaction_safe))
   _Rb_tree_increment(const _Rb_tree_node_base* __x) throw ();
 
-  _GLIBCXX_PURE _Rb_tree_node_base*
+  _GLIBCXX_PURE _Rb_tree_node_base* __attribute__((transaction_safe))
   _Rb_tree_decrement(_Rb_tree_node_base* __x) throw ();
 
   _GLIBCXX_PURE const _Rb_tree_node_base*
@@ -332,13 +332,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
                const _Rb_tree_const_iterator<_Val>& __y) _GLIBCXX_NOEXCEPT
     { return __x._M_node != __y._M_node; }
 
-  void
+  void __attribute__((transaction_safe)) 
   _Rb_tree_insert_and_rebalance(const bool __insert_left,
                                 _Rb_tree_node_base* __x,
                                 _Rb_tree_node_base* __p,
                                 _Rb_tree_node_base& __header) throw ();
 
-  _Rb_tree_node_base*
+  _Rb_tree_node_base* __attribute__((transaction_safe))
   _Rb_tree_rebalance_for_erase(_Rb_tree_node_base* const __z,
 			       _Rb_tree_node_base& __header) throw ();
 
