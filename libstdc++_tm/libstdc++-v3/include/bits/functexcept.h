@@ -69,30 +69,35 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   void
   __throw_invalid_argument(const char*) __attribute__((__noreturn__));
 
-  // [mfs] If we make this "transaction pure", then we can compile
-  //       std::deque.  It is not clear that making it "pure" is correct.
-  //       The issue is that "pure" is supposed to mean "doesn't touch any
-  //       shared memory", and that's absolutely not true in this case.  This
-  //       function is implemented in lib.libstdc++-v3/c++11/functexcept.cc,
-  //       by using a macro that (a) constructs a string from the const char
-  //       * (string ctor is not safe due to refcounts); (b) constructs a
-  //       length_error object using the string just constructed (ctor in
-  //       inc/stdinc/stdexcept and lib/c++98/stdexcept.cc, which calls the
-  //       string copy constructor and the exception constructor); and then
-  //       (c) the macro for GLIBCXX_THROW_OR_ABORT
-  //       (platform_inc/bits/c++config.h) throws the exception using the
-  //       'throw' keyword.  The trouble with 'throw' is that the various
-  //       _cxa_ functions (defined in libstdc++-v3/libsupc++/eh_alloc.cc and
-  //       elsewhere) make use of an "emergency mutex" to protect a bitmap
-  //       ("emergency_used"), i.e., in __cxa_free_exception, and this is all
-  //       unsafe.
+  // [mfs] If we make these "transaction pure", then we can compile
+  //       more collections.  It is not clear that making them "pure"
+  //       is correct.  The issue is that "pure" is supposed to mean
+  //       "doesn't touch any shared memory", and that's absolutely
+  //       not true in these cases.  For example, __throw_length_error
+  //       is implemented in libstdc++-v3/src/c++11/functexcept.cc, by
+  //       using a macro that (a) constructs a string from the const
+  //       char * (string ctor is not safe due to refcounts); (b)
+  //       constructs a length_error object using the string just
+  //       constructed (the ctor is in stdexcept / stdexcept.cc, and
+  //       it calls the string copy constructor and the exception
+  //       constructor); and then (c) the macro for
+  //       GLIBCXX_THROW_OR_ABORT
+  //       (libstdc++-v3/include/x86_64-unknown-linux-gnu/bits/c++config.h)
+  //       throws the exception using the 'throw' keyword.  The
+  //       trouble with 'throw' is that the various _cxa_ functions
+  //       (defined in libstdc++-v3/libsupc++/eh_alloc.cc and
+  //       elsewhere) make use of an "emergency mutex" to protect a
+  //       bitmap ("emergency_used"), i.e., in __cxa_free_exception,
+  //       and this is all unsafe.
   __attribute__((transaction_pure))
   void
   __throw_length_error(const char*) __attribute__((__noreturn__));
 
+  __attribute__((transaction_pure))
   void
   __throw_out_of_range(const char*) __attribute__((__noreturn__));
 
+  __attribute__((transaction_pure))
   void
   __throw_out_of_range_fmt(const char*, ...) __attribute__((__noreturn__))
     __attribute__((__format__(__gnu_printf__, 1, 2)));
