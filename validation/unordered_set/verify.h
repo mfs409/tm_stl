@@ -35,6 +35,11 @@ class verifier
             data[count++] = i;
     }
 
+    template <class T>
+    void insert_all(const T* in)
+    {
+	insert_all((T*)in);
+    }
 
     void check(const char* test_name, int thread_id, int expected_size,
                initializer_list<int> expected_data)

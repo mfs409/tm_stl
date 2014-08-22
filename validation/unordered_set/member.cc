@@ -29,8 +29,6 @@ void ctor_dtor_tests(int id)
         v.check_size("empty ctor (1b)", id, size);
     }
 
-     
-
     // the range constructor (2a)
     global_barrier->arrive(id);
     {
@@ -124,11 +122,10 @@ void op_eq_tests(int id)
 	verifier v;
 	int size;
 	BEGIN_TX;
-/*
+
 	std::unordered_set<int> tmp;
 	tmp = {1,2,3,4,9,8,7,6};
-*/
-	std::unordered_set<int> tmp({1,2,3,4,9,8,7,6});
+
 	member_unordered_set = new std::unordered_set<int>(tmp);
 	size = member_unordered_set->size();
 	v.insert_all<std::unordered_set<int>>(member_unordered_set);
