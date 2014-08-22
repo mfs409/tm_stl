@@ -1043,7 +1043,6 @@ _GLIBCXX_BEGIN_NAMESPACE_ALGO
    *  ranges are equal.
   */
   template<typename _II1, typename _II2>
-  __attribute__((transaction_safe))
     inline bool
     equal(_II1 __first1, _II1 __last1, _II2 __first2)
     {
