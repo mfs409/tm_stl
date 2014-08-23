@@ -925,7 +925,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     void
     fill(const _Deque_iterator<_Tp, _Tp&, _Tp*>& __first,
 	 const _Deque_iterator<_Tp, _Tp&, _Tp*>& __last, const _Tp& __value)
-    { TRACE("deque function: fill: (1)");
+    { TRACE("deque_iterator function: fill: (1)");
       typedef typename _Deque_iterator<_Tp, _Tp&, _Tp*>::_Self _Self;
 
       for (typename _Self::_Map_pointer __node = __first._M_node + 1;
@@ -946,7 +946,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     copy(_Deque_iterator<_Tp, const _Tp&, const _Tp*> __first,
 	 _Deque_iterator<_Tp, const _Tp&, const _Tp*> __last,
 	 _Deque_iterator<_Tp, _Tp&, _Tp*> __result)
-    { TRACE("deque function: copy: (1)");
+    { TRACE("deque_iterator function: copy: (1)");
       typedef typename _Deque_iterator<_Tp, _Tp&, _Tp*>::_Self _Self;
       typedef typename _Self::difference_type difference_type;
 
@@ -969,7 +969,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     copy_backward(_Deque_iterator<_Tp, const _Tp&, const _Tp*> __first,
 		  _Deque_iterator<_Tp, const _Tp&, const _Tp*> __last,
 		  _Deque_iterator<_Tp, _Tp&, _Tp*> __result)
-    { TRACE("deque function: copy_backward: (1)");
+    { TRACE("deque_iterator function: copy_backward: (1)");
       typedef typename _Deque_iterator<_Tp, _Tp&, _Tp*>::_Self _Self;
       typedef typename _Self::difference_type difference_type;
 
@@ -1009,7 +1009,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     move(_Deque_iterator<_Tp, const _Tp&, const _Tp*> __first,
 	 _Deque_iterator<_Tp, const _Tp&, const _Tp*> __last,
 	 _Deque_iterator<_Tp, _Tp&, _Tp*> __result)
-    { TRACE("deque function: move: (1)");
+    { TRACE("deque_iterator function: move: (1)");
       typedef typename _Deque_iterator<_Tp, _Tp&, _Tp*>::_Self _Self;
       typedef typename _Self::difference_type difference_type;
 
@@ -1032,7 +1032,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     move_backward(_Deque_iterator<_Tp, const _Tp&, const _Tp*> __first,
 		  _Deque_iterator<_Tp, const _Tp&, const _Tp*> __last,
 		  _Deque_iterator<_Tp, _Tp&, _Tp*> __result)
-    { TRACE("deque function: move_backward: (1)");
+    { TRACE("deque_iterator function: move_backward: (1)");
       typedef typename _Deque_iterator<_Tp, _Tp&, _Tp*>::_Self _Self;
       typedef typename _Self::difference_type difference_type;
 

@@ -250,33 +250,33 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     inline bool
     operator==(const _Deque_iterator<_Tp, _Ref, _Ptr>& __x,
 	       const _Deque_iterator<_Tp, _Ref, _Ptr>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator==: (1)"); return __x._M_cur == __y._M_cur; }
+    { TRACE("deque_iterator overload: operator==: (1)"); return __x._M_cur == __y._M_cur; }
 
   template<typename _Tp, typename _RefL, typename _PtrL,
 	   typename _RefR, typename _PtrR>
     inline bool
     operator==(const _Deque_iterator<_Tp, _RefL, _PtrL>& __x,
 	       const _Deque_iterator<_Tp, _RefR, _PtrR>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator==: (2)"); return __x._M_cur == __y._M_cur; }
+    { TRACE("deque_iterator overload: operator==: (2)"); return __x._M_cur == __y._M_cur; }
 
   template<typename _Tp, typename _Ref, typename _Ptr>
     inline bool
     operator!=(const _Deque_iterator<_Tp, _Ref, _Ptr>& __x,
 	       const _Deque_iterator<_Tp, _Ref, _Ptr>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator!=: (1)"); return !(__x == __y); }
+    { TRACE("deque_iterator overload: operator!=: (1)"); return !(__x == __y); }
 
   template<typename _Tp, typename _RefL, typename _PtrL,
 	   typename _RefR, typename _PtrR>
     inline bool
     operator!=(const _Deque_iterator<_Tp, _RefL, _PtrL>& __x,
 	       const _Deque_iterator<_Tp, _RefR, _PtrR>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator!=: (2)"); return !(__x == __y); }
+    { TRACE("deque_iterator overload: operator!=: (2)"); return !(__x == __y); }
 
   template<typename _Tp, typename _Ref, typename _Ptr>
     inline bool
     operator<(const _Deque_iterator<_Tp, _Ref, _Ptr>& __x,
 	      const _Deque_iterator<_Tp, _Ref, _Ptr>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator<: (1)"); return (__x._M_node == __y._M_node) ? (__x._M_cur < __y._M_cur)
+    { TRACE("deque_iterator overload: operator<: (1)"); return (__x._M_node == __y._M_node) ? (__x._M_cur < __y._M_cur)
                                           : (__x._M_node < __y._M_node); }
 
   template<typename _Tp, typename _RefL, typename _PtrL,
@@ -284,47 +284,47 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     inline bool
     operator<(const _Deque_iterator<_Tp, _RefL, _PtrL>& __x,
 	      const _Deque_iterator<_Tp, _RefR, _PtrR>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator<: (2)"); return (__x._M_node == __y._M_node) ? (__x._M_cur < __y._M_cur)
+    { TRACE("deque_iterator overload: operator<: (2)"); return (__x._M_node == __y._M_node) ? (__x._M_cur < __y._M_cur)
 	                                  : (__x._M_node < __y._M_node); }
 
   template<typename _Tp, typename _Ref, typename _Ptr>
     inline bool
     operator>(const _Deque_iterator<_Tp, _Ref, _Ptr>& __x,
 	      const _Deque_iterator<_Tp, _Ref, _Ptr>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator>: (1)"); return __y < __x; }
+    { TRACE("deque_iterator overload: operator>: (1)"); return __y < __x; }
 
   template<typename _Tp, typename _RefL, typename _PtrL,
 	   typename _RefR, typename _PtrR>
     inline bool
     operator>(const _Deque_iterator<_Tp, _RefL, _PtrL>& __x,
 	      const _Deque_iterator<_Tp, _RefR, _PtrR>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator>: (2)"); return __y < __x; }
+    { TRACE("deque_iterator overload: operator>: (2)"); return __y < __x; }
 
   template<typename _Tp, typename _Ref, typename _Ptr>
     inline bool
     operator<=(const _Deque_iterator<_Tp, _Ref, _Ptr>& __x,
 	       const _Deque_iterator<_Tp, _Ref, _Ptr>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator<=: (1)"); return !(__y < __x); }
+    { TRACE("deque_iterator overload: operator<=: (1)"); return !(__y < __x); }
 
   template<typename _Tp, typename _RefL, typename _PtrL,
 	   typename _RefR, typename _PtrR>
     inline bool
     operator<=(const _Deque_iterator<_Tp, _RefL, _PtrL>& __x,
 	       const _Deque_iterator<_Tp, _RefR, _PtrR>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator<=: (2)"); return !(__y < __x); }
+    { TRACE("deque_iterator overload: operator<=: (2)"); return !(__y < __x); }
 
   template<typename _Tp, typename _Ref, typename _Ptr>
     inline bool
     operator>=(const _Deque_iterator<_Tp, _Ref, _Ptr>& __x,
 	       const _Deque_iterator<_Tp, _Ref, _Ptr>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator>=: (1)"); return !(__x < __y); }
+    { TRACE("deque_iterator overload: operator>=: (1)"); return !(__x < __y); }
 
   template<typename _Tp, typename _RefL, typename _PtrL,
 	   typename _RefR, typename _PtrR>
     inline bool
     operator>=(const _Deque_iterator<_Tp, _RefL, _PtrL>& __x,
 	       const _Deque_iterator<_Tp, _RefR, _PtrR>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator>=: (2)"); return !(__x < __y); }
+    { TRACE("deque_iterator overload: operator>=: (2)"); return !(__x < __y); }
 
   // _GLIBCXX_RESOLVE_LIB_DEFECTS
   // According to the resolution of DR179 not only the various comparison
@@ -334,7 +334,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     inline typename _Deque_iterator<_Tp, _Ref, _Ptr>::difference_type
     operator-(const _Deque_iterator<_Tp, _Ref, _Ptr>& __x,
 	      const _Deque_iterator<_Tp, _Ref, _Ptr>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator-: (1)");
+    { TRACE("deque_iterator overload: operator-: (1)");
       return typename _Deque_iterator<_Tp, _Ref, _Ptr>::difference_type
 	(_Deque_iterator<_Tp, _Ref, _Ptr>::_S_buffer_size())
 	* (__x._M_node - __y._M_node - 1) + (__x._M_cur - __x._M_first)
@@ -346,7 +346,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     inline typename _Deque_iterator<_Tp, _RefL, _PtrL>::difference_type
     operator-(const _Deque_iterator<_Tp, _RefL, _PtrL>& __x,
 	      const _Deque_iterator<_Tp, _RefR, _PtrR>& __y) _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator-: (2)");
+    { TRACE("deque_iterator overload: operator-: (2)");
       return typename _Deque_iterator<_Tp, _RefL, _PtrL>::difference_type
 	(_Deque_iterator<_Tp, _RefL, _PtrL>::_S_buffer_size())
 	* (__x._M_node - __y._M_node - 1) + (__x._M_cur - __x._M_first)
@@ -357,7 +357,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     inline _Deque_iterator<_Tp, _Ref, _Ptr>
     operator+(ptrdiff_t __n, const _Deque_iterator<_Tp, _Ref, _Ptr>& __x)
     _GLIBCXX_NOEXCEPT
-    { TRACE("deque overload: operator+: (1)"); return __x + __n; }
+    { TRACE("deque_iterator overload: operator+: (1)"); return __x + __n; }
 
   template<typename _Tp>
     void
@@ -375,7 +375,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     copy(_Deque_iterator<_Tp, _Tp&, _Tp*> __first,
 	 _Deque_iterator<_Tp, _Tp&, _Tp*> __last,
 	 _Deque_iterator<_Tp, _Tp&, _Tp*> __result)
-    { TRACE("deque function: copy: (2)"); return std::copy(_Deque_iterator<_Tp, const _Tp&, const _Tp*>(__first),
+    { TRACE("deque_iterator function: copy: (2)"); return std::copy(_Deque_iterator<_Tp, const _Tp&, const _Tp*>(__first),
 		       _Deque_iterator<_Tp, const _Tp&, const _Tp*>(__last),
 		       __result); }
 
@@ -390,7 +390,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     copy_backward(_Deque_iterator<_Tp, _Tp&, _Tp*> __first,
 		  _Deque_iterator<_Tp, _Tp&, _Tp*> __last,
 		  _Deque_iterator<_Tp, _Tp&, _Tp*> __result)
-    { TRACE("deque function: copy_backward: (2)"); return std::copy_backward(_Deque_iterator<_Tp,
+    { TRACE("deque_iterator function: copy_backward: (2)"); return std::copy_backward(_Deque_iterator<_Tp,
 				const _Tp&, const _Tp*>(__first),
 				_Deque_iterator<_Tp,
 				const _Tp&, const _Tp*>(__last),
@@ -408,7 +408,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     move(_Deque_iterator<_Tp, _Tp&, _Tp*> __first,
 	 _Deque_iterator<_Tp, _Tp&, _Tp*> __last,
 	 _Deque_iterator<_Tp, _Tp&, _Tp*> __result)
-    { TRACE("deque function: move: (2)"); return std::move(_Deque_iterator<_Tp, const _Tp&, const _Tp*>(__first),
+    { TRACE("deque_iterator function: move: (2)"); return std::move(_Deque_iterator<_Tp, const _Tp&, const _Tp*>(__first),
 		       _Deque_iterator<_Tp, const _Tp&, const _Tp*>(__last),
 		       __result); }
 
@@ -423,7 +423,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     move_backward(_Deque_iterator<_Tp, _Tp&, _Tp*> __first,
 		  _Deque_iterator<_Tp, _Tp&, _Tp*> __last,
 		  _Deque_iterator<_Tp, _Tp&, _Tp*> __result)
-    { TRACE("deque function: move_backward: (2)"); return std::move_backward(_Deque_iterator<_Tp,
+    { TRACE("deque_iterator function: move_backward: (2)"); return std::move_backward(_Deque_iterator<_Tp,
 				const _Tp&, const _Tp*>(__first),
 				_Deque_iterator<_Tp,
 				const _Tp&, const _Tp*>(__last),
