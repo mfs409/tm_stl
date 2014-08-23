@@ -249,7 +249,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       ///  constructed.
       allocator_type
       get_allocator() const noexcept
-      { return _M_h.get_allocator(); }
+      { TRACE("unordered_map: get_allocator(1)"); return _M_h.get_allocator(); }
 
       // size and capacity:
 
