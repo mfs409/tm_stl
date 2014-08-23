@@ -113,7 +113,7 @@ $(ODIR)/%_trace:$(ODIR)/%_trace.o
 #
 clean:
 	@echo Cleaning up...
-	@rm -rf $(ODIR)
+	@rm -rf ./obj32 ./obj64
 
 #
 # Include dependencies
