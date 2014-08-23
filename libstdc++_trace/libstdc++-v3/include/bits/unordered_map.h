@@ -480,7 +480,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       // LWG 2059.
       iterator
       erase(iterator __position)
-      { TRACE("unordered_map: empty(1b)"); return _M_h.erase(__position); }
+      { TRACE("unordered_map: erase(1b)"); return _M_h.erase(__position); }
       //@}
 
       /**
@@ -497,7 +497,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       size_type
       erase(const key_type& __x)
-      { TRACE("unordered_map: empty(2)"); return _M_h.erase(__x); }
+      { TRACE("unordered_map: erase(2)"); return _M_h.erase(__x); }
 
       /**
        *  @brief Erases a [__first,__last) range of elements from an
@@ -515,7 +515,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       erase(const_iterator __first, const_iterator __last)
-      { TRACE("unordered_map: empty(3)"); return _M_h.erase(__first, __last); }
+      { TRACE("unordered_map: erase(3)"); return _M_h.erase(__first, __last); }
 
       /**
        *  Erases all elements in an %unordered_map.
