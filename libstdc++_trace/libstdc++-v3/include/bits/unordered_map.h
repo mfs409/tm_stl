@@ -575,7 +575,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
       const_iterator
       find(const key_type& __x) const
-      { TRACE("unordered_map: find(1)"); return _M_h.find(__x); }
+      { TRACE("unordered_map: find(2)"); return _M_h.find(__x); }
       //@}
 
       /**
