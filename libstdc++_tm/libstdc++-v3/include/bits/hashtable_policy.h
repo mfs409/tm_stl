@@ -468,7 +468,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     { return _M_max_load_factor; }
 
     // Return a bucket size no smaller than n.
-    std::size_t
+    std::size_t __attribute__((transaction_safe))
     _M_next_bkt(std::size_t __n) const;
 
     // Return a bucket count appropriate for n elements
@@ -480,7 +480,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     // and __n_ins is number of elements to be inserted.  Do we need to
     // increase bucket count?  If so, return make_pair(true, n), where n
     // is the new bucket count.  If not, return make_pair(false, 0).
-    std::pair<bool, std::size_t>
+    std::pair<bool, std::size_t> __attribute__((transaction_safe))
     _M_need_rehash(std::size_t __n_bkt, std::size_t __n_elt,
 		   std::size_t __n_ins) const;
 
