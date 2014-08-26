@@ -11,19 +11,22 @@
 | std::deque                           | Iterators are still a TODO                           |
 |                                      | Some cleanup required (not everything uses verify.h) |
 |--------------------------------------+------------------------------------------------------|
-| std::vector                          | Tingzhe                                              |
+| std::vector                          | Iterators are still a TODO                           |
 |--------------------------------------+------------------------------------------------------|
-| std::unordered_set                   | Chao                                                 |
+| std::unordered_set                   | Iterators are still a TODO                           |
 |--------------------------------------+------------------------------------------------------|
 | std::unordered_multiset              | ready to start                                       |
 |--------------------------------------+------------------------------------------------------|
-| std::map                             | Mike                                                 |
+| std::map                             | Iterators are still a TODO                           |
 |--------------------------------------+------------------------------------------------------|
-| std::unordered_map                   | Yujie                                                |
+| std::unordered_map                   | Iterators are still a TODO                           |
 |--------------------------------------+------------------------------------------------------|
-| std::string (actually ext/vstring.h) | ready to start                                       |
+| std::string (actually ext/vstring.h) | In Progress (Matthew)                                |
 |--------------------------------------+------------------------------------------------------|
 | std::tuple                           | ready to start                                       |
 |--------------------------------------+------------------------------------------------------|
 | std::pair (in utility)               | ready to start                                       |
 |--------------------------------------+------------------------------------------------------|
+
+/Note/ Be sure to check that default methods are instantiated, even if we
+can't see them.  Also be sure that all Iterator methods are instantiated.
