@@ -815,7 +815,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     struct __equal<true>
     {
       template<typename _Tp>
-        static bool
+        static bool __attribute__((transaction_pure)) // [mfs] This isn't pure, memcmp is an issue
         equal(const _Tp* __first1, const _Tp* __last1, const _Tp* __first2)
         {
 	  return !__builtin_memcmp(__first1, __first2, sizeof(_Tp)
