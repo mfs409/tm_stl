@@ -1,7 +1,4 @@
-#include <iostream>
-#include <string>
 #include <unordered_set>
-#include <cassert>
 #include "tests.h"
 #include "verify.h"
 
@@ -21,17 +18,17 @@ void bucket_tests(int id)
     {
         verifier v;
         int size;
-	int nbuckets;
+        int nbuckets;
         BEGIN_TX;
         bucket_unordered_set = new std::unordered_set<int>({1,2,3,4,9,8,7,6});
-	nbuckets = bucket_unordered_set->bucket_count();
-	size = bucket_unordered_set->size();
+        nbuckets = bucket_unordered_set->bucket_count();
+        size = bucket_unordered_set->size();
         v.insert_all<std::unordered_set<int>>(bucket_unordered_set);
         delete(bucket_unordered_set);
         bucket_unordered_set = NULL;
         END_TX;
 
-	v.check_size("bucket_count (1)", id, size);
+        v.check_size("bucket_count (1)", id, size);
     }
 
     // the second test is max_bucket_count (1)
@@ -39,17 +36,17 @@ void bucket_tests(int id)
     {
         verifier v;
         int size;
-	int max_nbuckets;
+        int max_nbuckets;
         BEGIN_TX;
         bucket_unordered_set = new std::unordered_set<int>({1,2,3,4,9,8,7,6});
-	max_nbuckets = bucket_unordered_set->max_bucket_count();
-	size = bucket_unordered_set->size();
+        max_nbuckets = bucket_unordered_set->max_bucket_count();
+        size = bucket_unordered_set->size();
         v.insert_all<std::unordered_set<int>>(bucket_unordered_set);
         delete(bucket_unordered_set);
         bucket_unordered_set = NULL;
         END_TX;
 
-	v.check_size("max_bucket_count (1)", id, size);
+        v.check_size("max_bucket_count (1)", id, size);
     }
 
     // the third test is bucket_size (1)
@@ -57,23 +54,23 @@ void bucket_tests(int id)
     {
         verifier v;
         int size;
-	int max_bucket_size = -1;
+        int max_bucket_size = -1;
         BEGIN_TX;
         bucket_unordered_set = new std::unordered_set<int>({1,2,3,4,9,8,7,6});
-	int bucket_count = bucket_unordered_set->bucket_count();
-	for (int i = 0; i < bucket_count; ++i)
-	{
-		int bucket_size_i = bucket_unordered_set->bucket_size(i);
-		if (max_bucket_size < bucket_size_i)
-			max_bucket_size = bucket_size_i;
-	}
-	size = bucket_unordered_set->size();
+        int bucket_count = bucket_unordered_set->bucket_count();
+        for (int i = 0; i < bucket_count; ++i)
+        {
+            int bucket_size_i = bucket_unordered_set->bucket_size(i);
+            if (max_bucket_size < bucket_size_i)
+                max_bucket_size = bucket_size_i;
+        }
+        size = bucket_unordered_set->size();
         v.insert_all<std::unordered_set<int>>(bucket_unordered_set);
         delete(bucket_unordered_set);
         bucket_unordered_set = NULL;
         END_TX;
 
-	v.check_size("bucket_size (1)", id, size);
+        v.check_size("bucket_size (1)", id, size);
     }
 
     // the forth test is bucket (1)
@@ -81,16 +78,16 @@ void bucket_tests(int id)
     {
         verifier v;
         int size;
-	int i_bucket;
+        int i_bucket;
         BEGIN_TX;
         bucket_unordered_set = new std::unordered_set<int>({1,2,3,4,9,8,7,6});
-	i_bucket = bucket_unordered_set->bucket(9);
-	size = bucket_unordered_set->size();
+        i_bucket = bucket_unordered_set->bucket(9);
+        size = bucket_unordered_set->size();
         v.insert_all<std::unordered_set<int>>(bucket_unordered_set);
         delete(bucket_unordered_set);
         bucket_unordered_set = NULL;
         END_TX;
 
-	v.check_size("bucket (1)", id, size);
+        v.check_size("bucket (1)", id, size);
     }
 }

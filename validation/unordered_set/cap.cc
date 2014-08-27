@@ -1,7 +1,4 @@
-#include <iostream>
-#include <string>
 #include <unordered_set>
-#include <cassert>
 #include "tests.h"
 #include "verify.h"
 
@@ -21,20 +18,20 @@ void cap_tests(int id)
     {
         verifier v;
         int size;
-	bool empty;
-	int max_size;
+        bool empty;
+        int max_size;
         BEGIN_TX;
         cap_unordered_set = new std::unordered_set<int>({1,2,3,4,9,8,7,6});
-	size = cap_unordered_set->size();
-	empty = cap_unordered_set->empty();
-	max_size = cap_unordered_set->max_size();
+        size = cap_unordered_set->size();
+        empty = cap_unordered_set->empty();
+        max_size = cap_unordered_set->max_size();
 
         v.insert_all<std::unordered_set<int>>(cap_unordered_set);
         delete(cap_unordered_set);
         cap_unordered_set = NULL;
         END_TX;
 
-	v.check_size("empty, size, max_size (1)", id, size);
+        v.check_size("empty, size, max_size (1)", id, size);
     }
 
 }

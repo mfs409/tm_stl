@@ -1,7 +1,4 @@
-#include <iostream>
-#include <string>
 #include <unordered_set>
-#include <cassert>
 #include "tests.h"
 #include "verify.h"
 
@@ -21,17 +18,17 @@ void observer_tests(int id)
     {
         verifier v;
         int size;
-	std::unordered_set<int>::hasher hs;
+        std::unordered_set<int>::hasher hs;
         BEGIN_TX;
         observer_unordered_set = new std::unordered_set<int>({1,2,3,4,9,8,7,6});
-	hs = observer_unordered_set->hash_function();
-	size = observer_unordered_set->size();
+        hs = observer_unordered_set->hash_function();
+        size = observer_unordered_set->size();
         v.insert_all<std::unordered_set<int>>(observer_unordered_set);
         delete(observer_unordered_set);
         observer_unordered_set = NULL;
         END_TX;
 
-	v.check_size("hash_function (1)", id, size);
+        v.check_size("hash_function (1)", id, size);
     }
 
     // the second test is key_eq (1)
@@ -39,17 +36,17 @@ void observer_tests(int id)
     {
         verifier v;
         int size;
-	bool equal = false;
+        bool equal = false;
         BEGIN_TX;
         observer_unordered_set = new std::unordered_set<int>({1,2,3,4,9,8,7,6});
-	equal = observer_unordered_set->key_eq()(3,6);
-	size = observer_unordered_set->size();
+        equal = observer_unordered_set->key_eq()(3,6);
+        size = observer_unordered_set->size();
         v.insert_all<std::unordered_set<int>>(observer_unordered_set);
         delete(observer_unordered_set);
         observer_unordered_set = NULL;
         END_TX;
 
-	v.check_size("key_eq (1)", id, size);
+        v.check_size("key_eq (1)", id, size);
     }
 
     // the third test is get_allocator (1)
@@ -57,16 +54,16 @@ void observer_tests(int id)
     {
         verifier v;
         int size;
-	bool equal = false;
+        bool equal = false;
         BEGIN_TX;
         observer_unordered_set = new std::unordered_set<int>({1,2,3,4,9,8,7,6});
-	auto a = observer_unordered_set->get_allocator();
-	size = observer_unordered_set->size();
+        auto a = observer_unordered_set->get_allocator();
+        size = observer_unordered_set->size();
         v.insert_all<std::unordered_set<int>>(observer_unordered_set);
         delete(observer_unordered_set);
         observer_unordered_set = NULL;
         END_TX;
 
-	v.check_size("get_allocator (1)", id, size);
+        v.check_size("get_allocator (1)", id, size);
     }
 }
