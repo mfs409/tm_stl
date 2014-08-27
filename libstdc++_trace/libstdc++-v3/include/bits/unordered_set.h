@@ -769,7 +769,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 			 const key_equal& __eql = key_equal(),
 			 const allocator_type& __a = allocator_type())
       : _M_h(__n, __hf, __eql, __a)
-      { TRACE("TBD"); }
+      { TRACE("unordered_multiset: ctor: empty(1b)"); }
 
       /**
        *  @brief  Builds an %unordered_multiset from a range.
@@ -791,7 +791,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 			   const key_equal& __eql = key_equal(),
 			   const allocator_type& __a = allocator_type())
 	: _M_h(__first, __last, __n, __hf, __eql, __a)
-	{ TRACE("TBD"); }
+	{ TRACE("unordered_multiset: ctor: range(2a)"); }
 
       /// Copy constructor.
       unordered_multiset(const unordered_multiset&) = default;
@@ -816,7 +816,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 			 const key_equal& __eql = key_equal(),
 			 const allocator_type& __a = allocator_type())
 	: _M_h(__l, __n, __hf, __eql, __a)
-      { TRACE("TBD"); }
+      { TRACE("unordered_multiset: ctor: ilist(5a)"); }
 
       /// Copy assignment operator.
       unordered_multiset&
@@ -833,7 +833,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       explicit
       unordered_multiset(const allocator_type& __a)
 	: _M_h(__a)
-      { TRACE("TBD"); }
+      { TRACE("unordered_multiset: ctor: empty(1c)"); }
 
       /*
        *  @brief Copy constructor with allocator argument.
@@ -843,7 +843,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       unordered_multiset(const unordered_multiset& __umset,
 			 const allocator_type& __a)
 	: _M_h(__umset._M_h, __a)
-      { TRACE("TBD"); }
+      { TRACE("unordered_multiset: ctor: copy(3b)"); }
 
       /*
        *  @brief  Move constructor with allocator argument.
@@ -853,7 +853,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       unordered_multiset(unordered_multiset&& __umset,
 			 const allocator_type& __a)
 	: _M_h(std::move(__umset._M_h), __a)
-      { TRACE("TBD"); }
+      { TRACE("unordered_multiset: ctor: move(4b"); }
 
       /**
        *  @brief  %Unordered_multiset list assignment operator.
@@ -868,7 +868,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       unordered_multiset&
       operator=(initializer_list<value_type> __l)
-      { TRACE("TBD");
+      { TRACE("unordered_multiset: operator=: ilist(3)");
 	_M_h = __l;
 	return *this;
       }
@@ -877,24 +877,24 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       ///  constructed.
       allocator_type
       get_allocator() const noexcept
-      { TRACE("TBD"); return _M_h.get_allocator(); }
+      { TRACE("unordered_multiset: get_allocator(1)"); return _M_h.get_allocator(); }
 
       // size and capacity:
 
       ///  Returns true if the %unordered_multiset is empty.
       bool
       empty() const noexcept
-      { TRACE("TBD"); return _M_h.empty(); }
+      { TRACE("unordered_multiset: empty(1)"); return _M_h.empty(); }
 
       ///  Returns the size of the %unordered_multiset.
       size_type
       size() const noexcept
-      { TRACE("TBD"); return _M_h.size(); }
+      { TRACE("unordered_multiset: size(1)"); return _M_h.size(); }
 
       ///  Returns the maximum size of the %unordered_multiset.
       size_type
       max_size() const noexcept
-      { TRACE("TBD"); return _M_h.max_size(); }
+      { TRACE("unordered_multiset: max_size(1)"); return _M_h.max_size(); }
 
       // iterators.
 
@@ -905,11 +905,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       begin() noexcept
-      { TRACE("TBD"); return _M_h.begin(); }
+      { TRACE("unordered_multiset: begin(1a)"); return _M_h.begin(); }
 
       const_iterator
       begin() const noexcept
-      { TRACE("TBD"); return _M_h.begin(); }
+      { TRACE("unordered_multiset: begin(1b)"); return _M_h.begin(); }
       //@}
 
       //@{
@@ -919,11 +919,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       end() noexcept
-      { TRACE("TBD"); return _M_h.end(); }
+      { TRACE("unordered_multiset: end(1a)"); return _M_h.end(); }
 
       const_iterator
       end() const noexcept
-      { TRACE("TBD"); return _M_h.end(); }
+      { TRACE("unordered_multiset: end(1b)"); return _M_h.end(); }
       //@}
 
       /**
@@ -932,7 +932,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       cbegin() const noexcept
-      { TRACE("TBD"); return _M_h.begin(); }
+      { TRACE("unordered_multiset: cbegin(1)"); return _M_h.begin(); }
 
       /**
        *  Returns a read-only (constant) iterator that points one past the last
@@ -940,7 +940,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       const_iterator
       cend() const noexcept
-      { TRACE("TBD"); return _M_h.end(); }
+      { TRACE("unordered_multiset: cend(1)"); return _M_h.end(); }
 
       // modifiers.
 
@@ -954,7 +954,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       template<typename... _Args>
 	iterator
 	emplace(_Args&&... __args)
-	{ TRACE("TBD"); return _M_h.emplace(std::forward<_Args>(__args)...); }
+	{ TRACE("unordered_multiset: emplace(1)"); return _M_h.emplace(std::forward<_Args>(__args)...); }
 
       /**
        *  @brief Inserts an element into the %unordered_multiset.
@@ -976,7 +976,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       template<typename... _Args>
 	iterator
 	emplace_hint(const_iterator __pos, _Args&&... __args)
-	{ TRACE("TBD"); return _M_h.emplace_hint(__pos, std::forward<_Args>(__args)...); }
+	{ TRACE("unordered_multiset: emplace_hint(1)"); return _M_h.emplace_hint(__pos, std::forward<_Args>(__args)...); }
 
       //@{
       /**
@@ -988,11 +988,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       insert(const value_type& __x)
-      { TRACE("TBD"); return _M_h.insert(__x); }
+      { TRACE("unordered_multiset: insert: copy(1)"); return _M_h.insert(__x); }
 
       iterator
       insert(value_type&& __x)
-      { TRACE("TBD"); return _M_h.insert(std::move(__x)); }
+      { TRACE("unordered_multiset: insert: move(2)"); return _M_h.insert(std::move(__x)); }
       //@}
 
       //@{
@@ -1014,11 +1014,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       insert(const_iterator __hint, const value_type& __x)
-      { TRACE("TBD"); return _M_h.insert(__hint, __x); }
+      { TRACE("unordered_multiset: insert: copy/hint(3)"); return _M_h.insert(__hint, __x); }
 
       iterator
       insert(const_iterator __hint, value_type&& __x)
-      { TRACE("TBD"); return _M_h.insert(__hint, std::move(__x)); }
+      { TRACE("unordered_multiset: insert: move/hint(4)"); return _M_h.insert(__hint, std::move(__x)); }
       //@}
 
       /**
@@ -1032,7 +1032,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       template<typename _InputIterator>
 	void
 	insert(_InputIterator __first, _InputIterator __last)
-	{ TRACE("TBD"); _M_h.insert(__first, __last); }
+	{ TRACE("unordered_multiset: insert: range(5)"); _M_h.insert(__first, __last); }
 
       /**
        *  @brief Inserts a list of elements into the %unordered_multiset.
@@ -1043,7 +1043,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       insert(initializer_list<value_type> __l)
-      { TRACE("TBD"); _M_h.insert(__l); }
+      { TRACE("unordered_multiset: insert: ilist(6)"); _M_h.insert(__l); }
 
       //@{
       /**
@@ -1062,12 +1062,12 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       erase(const_iterator __position)
-      { TRACE("TBD"); return _M_h.erase(__position); }
+      { TRACE("unordered_multiset: erase: position(1a)"); return _M_h.erase(__position); }
 
       // LWG 2059.
       iterator
       erase(iterator __position)
-      { TRACE("TBD"); return _M_h.erase(__position); }
+      { TRACE("unordered_multiset: erase: position(1b)"); return _M_h.erase(__position); }
       //@}
 
 
@@ -1085,7 +1085,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       size_type
       erase(const key_type& __x)
-      { TRACE("TBD"); return _M_h.erase(__x); }
+      { TRACE("unordered_multiset: erase: key(2)"); return _M_h.erase(__x); }
 
       /**
        *  @brief Erases a [__first,__last) range of elements from an
@@ -1105,7 +1105,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       erase(const_iterator __first, const_iterator __last)
-      { TRACE("TBD"); return _M_h.erase(__first, __last); }
+      { TRACE("unordered_multiset: erase: range(3)"); return _M_h.erase(__first, __last); }
 
       /**
        *  Erases all elements in an %unordered_multiset.
@@ -1116,7 +1116,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       clear() noexcept
-      { TRACE("TBD"); _M_h.clear(); }
+      { TRACE("unordered_multiset: clear(1)"); _M_h.clear(); }
 
       /**
        *  @brief  Swaps data with another %unordered_multiset.
@@ -1130,7 +1130,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       void
       swap(unordered_multiset& __x)
       noexcept( noexcept(_M_h.swap(__x._M_h)) )
-      { TRACE("TBD"); _M_h.swap(__x._M_h); }
+      { TRACE("unordered_multiset: swap(1)"); _M_h.swap(__x._M_h); }
 
       // observers.
 
@@ -1138,13 +1138,13 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       ///  was constructed.
       hasher
       hash_function() const
-      { TRACE("TBD"); return _M_h.hash_function(); }
+      { TRACE("unordered_multiset: hash_function(1)"); return _M_h.hash_function(); }
 
       ///  Returns the key comparison object with which the %unordered_multiset
       ///  was constructed.
       key_equal
       key_eq() const
-      { TRACE("TBD"); return _M_h.key_eq(); }
+      { TRACE("unordered_multiset: key_eq(1)"); return _M_h.key_eq(); }
 
       // lookup.
 
@@ -1162,11 +1162,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       iterator
       find(const key_type& __x)
-      { TRACE("TBD"); return _M_h.find(__x); }
+      { TRACE("unordered_multiset: find(1a)"); return _M_h.find(__x); }
 
       const_iterator
       find(const key_type& __x) const
-      { TRACE("TBD"); return _M_h.find(__x); }
+      { TRACE("unordered_multiset: find(1b)"); return _M_h.find(__x); }
       //@}
 
       /**
@@ -1176,7 +1176,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       size_type
       count(const key_type& __x) const
-      { TRACE("TBD"); return _M_h.count(__x); }
+      { TRACE("unordered_multiset: count(1)"); return _M_h.count(__x); }
 
       //@{
       /**
@@ -1187,11 +1187,11 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       std::pair<iterator, iterator>
       equal_range(const key_type& __x)
-      { TRACE("TBD"); return _M_h.equal_range(__x); }
+      { TRACE("unordered_multiset: equal_range(1a)"); return _M_h.equal_range(__x); }
 
       std::pair<const_iterator, const_iterator>
       equal_range(const key_type& __x) const
-      { TRACE("TBD"); return _M_h.equal_range(__x); }
+      { TRACE("unordered_multiset: equal_range(1b)"); return _M_h.equal_range(__x); }
       //@}
 
       // bucket interface.
@@ -1199,12 +1199,12 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       /// Returns the number of buckets of the %unordered_multiset.
       size_type
       bucket_count() const noexcept
-      { TRACE("TBD"); return _M_h.bucket_count(); }
+      { TRACE("unordered_multiset: bucket_count(1)"); return _M_h.bucket_count(); }
 
       /// Returns the maximum number of buckets of the %unordered_multiset.
       size_type
       max_bucket_count() const noexcept
-      { TRACE("TBD"); return _M_h.max_bucket_count(); }
+      { TRACE("unordered_multiset: max_bucket_count(1)"); return _M_h.max_bucket_count(); }
 
       /*
        * @brief  Returns the number of elements in a given bucket.
@@ -1213,7 +1213,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       size_type
       bucket_size(size_type __n) const
-      { TRACE("TBD"); return _M_h.bucket_size(__n); }
+      { TRACE("unordered_multiset: bucket_size(1)"); return _M_h.bucket_size(__n); }
 
       /*
        * @brief  Returns the bucket index of a given element.
@@ -1222,7 +1222,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       size_type
       bucket(const key_type& __key) const
-      { TRACE("TBD"); return _M_h.bucket(__key); }
+      { TRACE("unordered_multiset: bucket(1)"); return _M_h.bucket(__key); }
 
       //@{
       /**
@@ -1233,15 +1233,15 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       local_iterator
       begin(size_type __n)
-      { TRACE("TBD"); return _M_h.begin(__n); }
+      { TRACE("unordered_multiset: begin(2a)"); return _M_h.begin(__n); }
 
       const_local_iterator
       begin(size_type __n) const
-      { TRACE("TBD"); return _M_h.begin(__n); }
+      { TRACE("unordered_multiset: begin(2b)"); return _M_h.begin(__n); }
 
       const_local_iterator
       cbegin(size_type __n) const
-      { TRACE("TBD"); return _M_h.cbegin(__n); }
+      { TRACE("unordered_multiset: cbegin(2)"); return _M_h.cbegin(__n); }
       //@}
 
       //@{
@@ -1253,15 +1253,15 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       local_iterator
       end(size_type __n)
-      { TRACE("TBD"); return _M_h.end(__n); }
+      { TRACE("unordered_multiset: end(2a)"); return _M_h.end(__n); }
 
       const_local_iterator
       end(size_type __n) const
-      { TRACE("TBD"); return _M_h.end(__n); }
+      { TRACE("unordered_multiset: end(2b)"); return _M_h.end(__n); }
 
       const_local_iterator
       cend(size_type __n) const
-      { TRACE("TBD"); return _M_h.cend(__n); }
+      { TRACE("unordered_multiset: cend(2)"); return _M_h.cend(__n); }
       //@}
 
       // hash policy.
@@ -1269,13 +1269,13 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
       /// Returns the average number of elements per bucket.
       float
       load_factor() const noexcept
-      { TRACE("TBD"); return _M_h.load_factor(); }
+      { TRACE("unordered_multiset: load_factor(1)"); return _M_h.load_factor(); }
 
       /// Returns a positive number that the %unordered_multiset tries to keep the
       /// load factor less than or equal to.
       float
       max_load_factor() const noexcept
-      { TRACE("TBD"); return _M_h.max_load_factor(); }
+      { TRACE("unordered_multiset: max_load_factor: get(1)"); return _M_h.max_load_factor(); }
 
       /**
        *  @brief  Change the %unordered_multiset maximum load factor.
@@ -1283,7 +1283,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       max_load_factor(float __z)
-      { TRACE("TBD"); _M_h.max_load_factor(__z); }
+      { TRACE("unordered_multiset: max_load_factor: set(2)"); _M_h.max_load_factor(__z); }
 
       /**
        *  @brief  May rehash the %unordered_multiset.
@@ -1294,7 +1294,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       rehash(size_type __n)
-      { TRACE("TBD"); _M_h.rehash(__n); }
+      { TRACE("unordered_multiset: rehash(1)"); _M_h.rehash(__n); }
 
       /**
        *  @brief  Prepare the %unordered_multiset for a specified number of
@@ -1305,7 +1305,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
        */
       void
       reserve(size_type __n)
-      { TRACE("TBD"); _M_h.reserve(__n); }
+      { TRACE("unordered_multiset: reserve(1)"); _M_h.reserve(__n); }
 
       template<typename _Value1, typename _Hash1, typename _Pred1,
 	       typename _Alloc1>
@@ -1318,37 +1318,37 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
     inline void
     swap(unordered_set<_Value, _Hash, _Pred, _Alloc>& __x,
 	 unordered_set<_Value, _Hash, _Pred, _Alloc>& __y)
-    {TRACE("unordered_set: swap(unordered_set): (1)");  __x.swap(__y); }
+    {TRACE("unordered_set: nmfo: swap (1)");  __x.swap(__y); }
 
   template<class _Value, class _Hash, class _Pred, class _Alloc>
     inline void
     swap(unordered_multiset<_Value, _Hash, _Pred, _Alloc>& __x,
 	 unordered_multiset<_Value, _Hash, _Pred, _Alloc>& __y)
-    { TRACE("TBD"); __x.swap(__y); }
+    { TRACE("unordered_multiset: nmfo: swap (1)"); __x.swap(__y); }
 
   template<class _Value, class _Hash, class _Pred, class _Alloc>
     inline bool
     operator==(const unordered_set<_Value, _Hash, _Pred, _Alloc>& __x,
 	       const unordered_set<_Value, _Hash, _Pred, _Alloc>& __y)
-    { TRACE("unordered_set: operators(unordered_set): equality(1)"); return __x._M_h._M_equal(__y._M_h); }
+    { TRACE("unordered_set: nmfo: operator==(1)"); return __x._M_h._M_equal(__y._M_h); }
 
   template<class _Value, class _Hash, class _Pred, class _Alloc>
     inline bool
     operator!=(const unordered_set<_Value, _Hash, _Pred, _Alloc>& __x,
 	       const unordered_set<_Value, _Hash, _Pred, _Alloc>& __y)
-    { TRACE("unordered_set: operators(unordered_set): inequality(2)"); return !(__x == __y); }
+    { TRACE("unordered_set: nmfo: operator!=(1)"); return !(__x == __y); }
 
   template<class _Value, class _Hash, class _Pred, class _Alloc>
     inline bool
     operator==(const unordered_multiset<_Value, _Hash, _Pred, _Alloc>& __x,
 	       const unordered_multiset<_Value, _Hash, _Pred, _Alloc>& __y)
-    { TRACE("TBD"); return __x._M_h._M_equal(__y._M_h); }
+    { TRACE("unordered_multiset: nmfo: operator==(1)"); return __x._M_h._M_equal(__y._M_h); }
 
   template<class _Value, class _Hash, class _Pred, class _Alloc>
     inline bool
     operator!=(const unordered_multiset<_Value, _Hash, _Pred, _Alloc>& __x,
 	       const unordered_multiset<_Value, _Hash, _Pred, _Alloc>& __y)
-    { TRACE("TBD"); return !(__x == __y); }
+    { TRACE("unordered_multiset: nmfo: operator!=(1)"); return !(__x == __y); }
 
 _GLIBCXX_END_NAMESPACE_CONTAINER
 } // namespace std
