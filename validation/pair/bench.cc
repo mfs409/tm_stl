@@ -21,17 +21,17 @@
 |                   | operator=           | 1a, 1b, 2a, 2b    | 1a, 1b, 2a, 2b          |
 |                   | swap                | 1                 | 1                       |
 |-------------------+---------------------+-------------------+-------------------------|
-| Non-member        | '=='                |                   |                         |
-| function          | '!='                |                   |                         |
-| overloads (NMFOs) | '<'                 |                   |                         |
-|                   | '<='                |                   |                         |
-|                   | '>'                 |                   |                         |
-|                   | '>='                |                   |                         |
-|                   | swap                |                   |                         |
-|                   | get                 |                   |                         |
+| Non-member        | '=='                | (Untraceable)     | (Untraceable)           |
+| function          | '!='                | (Untraceable)     | (Untraceable)           |
+| overloads (NMFOs) | '<'                 | (Untraceable)     | (Untraceable)           |
+| (DONE)            | '<='                | (Untraceable)     | (Untraceable)           |
+|                   | '>'                 | (Untraceable)     | (Untraceable)           |
+|                   | '>='                | (Untraceable)     | (Untraceable)           |
+|                   | swap                | 1                 |                         |
+|                   | get                 | (Untraceable)     | (Untraceable)           |
 |-------------------+---------------------+-------------------+-------------------------|
 | Non-member        | tuple_element       | (Not-a-Method)    | (Not-a-Method)          |
-| class             | tuple_size          |                   |                         |
+| class             | tuple_size          | (Not-a-Method)    | (Not-a-Method)          |
 | specializations   |                     |                   |                         |
 | (DONE)            |                     |                   |                         |
 |-------------------+---------------------+-------------------+-------------------------|
