@@ -30,12 +30,14 @@
 |                   | swap                |                   |                         |
 |                   | get                 |                   |                         |
 |-------------------+---------------------+-------------------+-------------------------|
-| Non-member        | tuple_element       |                   |                         |
+| Non-member        | tuple_element       | (Not-a-Method)    | (Not-a-Method)          |
 | class             | tuple_size          |                   |                         |
 | specializations   |                     |                   |                         |
+| (DONE)            |                     |                   |                         |
 |-------------------+---------------------+-------------------+-------------------------|
-| Non-member        | make_pair           |                   |                         |
-| Functions         | piecewise_construct |                   |                         |
+| Non-member        | make_pair           | (Untraceable)     | (Untraceable)           |
+| Functions         | piecewise_construct | (Untraceable)     | (Untraceable)           |
+| (DONE)            |                     |                   |                         |
 |-------------------+---------------------+-------------------+-------------------------|
 */
 
