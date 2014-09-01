@@ -156,7 +156,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
       pair&
       operator=(const pair& __p)
-      {
+      { TRACE("pair: ctor: operator=(1a)");
 	first = __p.first;
 	second = __p.second;
 	return *this;
@@ -166,7 +166,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       operator=(pair&& __p)
       noexcept(__and_<is_nothrow_move_assignable<_T1>,
 	              is_nothrow_move_assignable<_T2>>::value)
-      {
+      { TRACE("pair: ctor: operator=(2a)");
 	first = std::forward<first_type>(__p.first);
 	second = std::forward<second_type>(__p.second);
 	return *this;
@@ -175,7 +175,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       template<class _U1, class _U2>
 	pair&
 	operator=(const pair<_U1, _U2>& __p)
-	{
+	{ TRACE("pair: ctor: operator=(1b)");
 	  first = __p.first;
 	  second = __p.second;
 	  return *this;
@@ -184,7 +184,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       template<class _U1, class _U2>
 	pair&
 	operator=(pair<_U1, _U2>&& __p)
-	{
+	{ TRACE("pair: ctor: operator=(2b)");
 	  first = std::forward<_U1>(__p.first);
 	  second = std::forward<_U2>(__p.second);
 	  return *this;
