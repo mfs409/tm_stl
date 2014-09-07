@@ -398,12 +398,12 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
       template<typename _Alloc>
 	tuple(allocator_arg_t __tag, const _Alloc& __a)
-	: _Inherited(__tag, __a) { }
+	: _Inherited(__tag, __a) { TRACE("tuple: ctor (1')"); }
 
       template<typename _Alloc>
 	tuple(allocator_arg_t __tag, const _Alloc& __a,
 	      const _Elements&... __elements)
-	: _Inherited(__tag, __a, __elements...) { }
+	: _Inherited(__tag, __a, __elements...) { TRACE("tuple: ctor (4a')"); }
 
       template<typename _Alloc, typename... _UElements, typename = typename
 	       enable_if<sizeof...(_UElements)
@@ -411,15 +411,15 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	tuple(allocator_arg_t __tag, const _Alloc& __a,
 	      _UElements&&... __elements)
 	: _Inherited(__tag, __a, std::forward<_UElements>(__elements)...)
-       	{ }
+       	{ TRACE("tuple: ctor (4b')"); }
 
       template<typename _Alloc>
 	tuple(allocator_arg_t __tag, const _Alloc& __a, const tuple& __in)
-	: _Inherited(__tag, __a, static_cast<const _Inherited&>(__in)) { }
+	: _Inherited(__tag, __a, static_cast<const _Inherited&>(__in)) { TRACE("tuple: ctor (2a')"); }
 
       template<typename _Alloc>
 	tuple(allocator_arg_t __tag, const _Alloc& __a, tuple&& __in)
-	: _Inherited(__tag, __a, static_cast<_Inherited&&>(__in)) { }
+	: _Inherited(__tag, __a, static_cast<_Inherited&&>(__in)) { TRACE("tuple: ctor (2b')"); }
 
       template<typename _Alloc, typename... _UElements, typename = typename
 	       enable_if<sizeof...(_UElements)
@@ -428,7 +428,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	      const tuple<_UElements...>& __in)
 	: _Inherited(__tag, __a,
 	             static_cast<const _Tuple_impl<0, _UElements...>&>(__in))
-	{ }
+	{ TRACE("tuple: ctor (3a')"); }
 
       template<typename _Alloc, typename... _UElements, typename = typename
 	       enable_if<sizeof...(_UElements)
@@ -437,11 +437,11 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	      tuple<_UElements...>&& __in)
 	: _Inherited(__tag, __a,
 	             static_cast<_Tuple_impl<0, _UElements...>&&>(__in))
-	{ }
+	{ TRACE("tuple: ctor (3b')"); }
 
       tuple&
       operator=(const tuple& __in)
-      {
+      { TRACE("tuple: operator= (1a)");
 	static_cast<_Inherited&>(*this) = __in;
 	return *this;
       }
@@ -449,7 +449,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       tuple&
       operator=(tuple&& __in)
       noexcept(is_nothrow_move_assignable<_Inherited>::value)
-      {
+      { TRACE("tuple: operator= (1b)");
 	static_cast<_Inherited&>(*this) = std::move(__in);
 	return *this;
       }
@@ -459,7 +459,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 			 == sizeof...(_Elements)>::type>
         tuple&
         operator=(const tuple<_UElements...>& __in)
-        {
+        { TRACE("tuple: operator= (2a)");
 	  static_cast<_Inherited&>(*this) = __in;
 	  return *this;
 	}
@@ -469,7 +469,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 			 == sizeof...(_Elements)>::type>
         tuple&
         operator=(tuple<_UElements...>&& __in)
-        {
+        { TRACE("tuple: operator= (2b)");
 	  static_cast<_Inherited&>(*this) = std::move(__in);
 	  return *this;
 	}
@@ -477,7 +477,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       void
       swap(tuple& __in)
       noexcept(noexcept(__in._M_swap(__in)))
-      { _Inherited::_M_swap(__in); }
+      { TRACE("tuple: swap (1)"); _Inherited::_M_swap(__in); }
     };
 
   // Explicit specialization, zero-element tuple.
@@ -578,16 +578,16 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       template<typename _Alloc, typename _U1, typename _U2>
         tuple(allocator_arg_t __tag, const _Alloc& __a,
 	      const pair<_U1, _U2>& __in)
-	: _Inherited(__tag, __a, __in.first, __in.second) { }
+	: _Inherited(__tag, __a, __in.first, __in.second) { TRACE("tuple: ctor (5a')"); }
 
       template<typename _Alloc, typename _U1, typename _U2>
         tuple(allocator_arg_t __tag, const _Alloc& __a, pair<_U1, _U2>&& __in)
 	: _Inherited(__tag, __a, std::forward<_U1>(__in.first),
-		     std::forward<_U2>(__in.second)) { }
+		     std::forward<_U2>(__in.second)) { TRACE("tuple: ctor (5b')"); }
 
       tuple&
       operator=(const tuple& __in)
-      {
+      { TRACE("tuple: operator= (1a)");
 	static_cast<_Inherited&>(*this) = __in;
 	return *this;
       }
@@ -595,7 +595,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       tuple&
       operator=(tuple&& __in)
       noexcept(is_nothrow_move_assignable<_Inherited>::value)
-      {
+      { TRACE("tuple: operator= (1b)");
 	static_cast<_Inherited&>(*this) = std::move(__in);
 	return *this;
       }
@@ -603,7 +603,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       template<typename _U1, typename _U2>
         tuple&
         operator=(const tuple<_U1, _U2>& __in)
-        {
+        { TRACE("tuple: operator= (2a)");
 	  static_cast<_Inherited&>(*this) = __in;
 	  return *this;
 	}
@@ -611,7 +611,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       template<typename _U1, typename _U2>
         tuple&
         operator=(tuple<_U1, _U2>&& __in)
-        {
+        { TRACE("tuple: operator= (2b)");
 	  static_cast<_Inherited&>(*this) = std::move(__in);
 	  return *this;
 	}
@@ -619,7 +619,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       template<typename _U1, typename _U2>
         tuple&
         operator=(const pair<_U1, _U2>& __in)
-        {
+        { TRACE("tuple: operator= (3a)");
 	  this->_M_head(*this) = __in.first;
 	  this->_M_tail(*this)._M_head(*this) = __in.second;
 	  return *this;
@@ -628,7 +628,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       template<typename _U1, typename _U2>
         tuple&
         operator=(pair<_U1, _U2>&& __in)
-        {
+        { TRACE("tuple: operator= (3b)");
 	  this->_M_head(*this) = std::forward<_U1>(__in.first);
 	  this->_M_tail(*this)._M_head(*this) = std::forward<_U2>(__in.second);
 	  return *this;
@@ -866,7 +866,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename... _Elements>
     tuple<_Elements&&...>
     forward_as_tuple(_Elements&&... __args) noexcept
-    { return tuple<_Elements&&...>(std::forward<_Elements>(__args)...); }
+    { TRACE("forward as tuple"); return tuple<_Elements&&...>(std::forward<_Elements>(__args)...); }
 
   template<typename>
     struct __is_tuple_like_impl : false_type
@@ -1017,14 +1017,14 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename... _Elements>
     inline tuple<_Elements&...>
     tie(_Elements&... __args) noexcept
-    { return tuple<_Elements&...>(__args...); }
+    { TRACE("global tuple tie"); return tuple<_Elements&...>(__args...); }
 
   /// swap
   template<typename... _Elements>
     inline void 
     swap(tuple<_Elements...>& __x, tuple<_Elements...>& __y)
     noexcept(noexcept(__x.swap(__y)))
-    { __x.swap(__y); }
+    { TRACE("global tuple swap"); __x.swap(__y); }
 
   // A class (and instance) which can be used in 'tie' when an element
   // of a tuple is not required

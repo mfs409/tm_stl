@@ -11,35 +11,40 @@
     3 - Write test code for ensuring that every traced function is called,
         and then write DONE in the category
 
-|-------------------+------------------+----------+--------|
-| Category          | Functions        | C++14    | GCC    |
-|                   |                  | Expected | Actual |
-|-------------------+------------------+----------+--------|
-| Member Functions  | (constructor)    |          |        |
-|                   |                  |          |        |
-|                   | (destructor)     |          |        |
-|                   | operator=        |          |        |
-|                   | swap             |          |        |
-|-------------------+------------------+----------+--------|
-| Non-member        | '=='             |          |        |
-| function          | '!='             |          |        |
-| overloads (NMFOs) | '<'              |          |        |
-|                   | '<='             |          |        |
-|                   | '>'              |          |        |
-|                   | '>='             |          |        |
-|                   | swap             |          |        |
-|                   | get              |          |        |
-|-------------------+------------------+----------+--------|
-| Non-member        | uses_allocator   |          |        |
-| class             |                  |          |        |
-| specializations   |                  |          |        |
-|-------------------+------------------+----------+--------|
-| Non-member        | make_tuple       |          |        |
-| Functions         | forward_as_tuple |          |        |
-|                   | tie              |          |        |
-|                   | tuple_cat        |          |        |
-|                   | get              |          |        |
-|-------------------+------------------+----------+--------|
+|-------------------+------------------+------------------------+------------------------|
+| Category          | Functions        | C++14                  | GCC                    |
+|                   |                  | Expected               | Actual                 |
+|-------------------+------------------+------------------------+------------------------|
+| Member Functions  | (constructor)    | 1, 2a, 2b, 3a, 3b      | (Untraceable)          |
+| (DONE)            |                  | 4a, 4b                 | (Untraceable)          |
+|                   |                  | 5a, 5b                 | (Untraceable)          |
+|                   |                  | 1', 2a', 2b', 3a', 3b' | 1', 2a', 2b', 3a', 3b' |
+|                   |                  | 4a', 4b'               | 4a', 4b'               |
+|                   |                  | 5a', 5b'               | 5a', 5b'               |
+|                   | (destructor)     |                        |                        |
+|                   | operator=        | 1a, 1b, 2a, 2b, 3a, 3b | 1a, 1b, 2a, 2b, 3a, 3b |
+|                   | swap             | 1                      | 1                      |
+|-------------------+------------------+------------------------+------------------------|
+| Non-member        | '=='             | 1                      | 1 (Untraceable)        |
+| function          | '!='             | 1                      | 1 (Untraceable)        |
+| overloads (NMFOs) | '<'              | 1                      | 1 (Untraceable)        |
+| (DONE)            | '<='             | 1                      | 1 (Untraceable)        |
+|                   | '>'              | 1                      | 1 (Untraceable)        |
+|                   | '>='             | 1                      | 1 (Untraceable)        |
+|                   | swap             | 1                      | 1                      |
+|                   | get              | (Untraceable)          | (Untraceable)          |
+|-------------------+------------------+------------------------+------------------------|
+| Non-member        | uses_allocator   | (Untraceable)          | (Untraceable)          |
+| class             |                  |                        |                        |
+| specializations   |                  |                        |                        |
+| (DONE)            |                  |                        |                        |
+|-------------------+------------------+------------------------+------------------------|
+| Non-member        | make_tuple       | 1                      | 1 (Untraceable)        |
+| Functions         | forward_as_tuple | 1                      | 1                      |
+| (DONE)            | tie              | 1                      | 1                      |
+|                   | tuple_cat        | (Untraceable)          | (Untraceable)          |
+|                   | get              | (Untraceable)          | (Untraceable)          |
+|-------------------+------------------+------------------------+------------------------|
 */
 
 #include <list>
