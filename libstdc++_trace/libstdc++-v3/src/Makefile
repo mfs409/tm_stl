@@ -35,7 +35,7 @@ CFLAGS1+=-include ../../trace.h
 #
 # Path to special crt*.o files
 #
-CRTPATH=$(GCC410INSTALL)/lib/gcc/x86_64-unknown-linux-gnu/4.10.0/
+CRTPATH=$(GCC5INSTALL)/lib/gcc/x86_64-unknown-linux-gnu/5.0.0/
 
 #
 # File names
