@@ -36,14 +36,14 @@ CXXFLAGS_NOTM  = -MD -O2 -ggdb -m$(BITS) -std=c++1y -nostdinc                   
                  -I/usr/include/ -I../../libstdc++/libstdc++-v3/include                \
                  -I../../libstdc++/libstdc++-v3/include/x86_64-unknown-linux-gnu       \
                  -I../../libstdc++/libstdc++-v3/libsupc++                              \
-                 -I$(GCC410INSTALL)/lib/gcc/x86_64-unknown-linux-gnu/4.10.0/include \
+                 -I$(GCC5INSTALL)/lib/gcc/x86_64-unknown-linux-gnu/5.0.0/include \
                  -DNO_TM -pthread
 
 CXXFLAGS_TM    = -MD -O2 -fgnu-tm -ggdb -m$(BITS) -std=c++1y -nostdinc              \
                  -I/usr/include/ -I../../libstdc++_tm/libstdc++-v3/include             \
                  -I../../libstdc++_tm/libstdc++-v3/include/x86_64-unknown-linux-gnu    \
                  -I../../libstdc++_tm/libstdc++-v3/libsupc++                           \
-                 -I$(GCC410INSTALL)/lib/gcc/x86_64-unknown-linux-gnu/4.10.0/include \
+                 -I$(GCC5INSTALL)/lib/gcc/x86_64-unknown-linux-gnu/5.0.0/include \
                  -DUSE_TM -pthread
 
 CXXFLAGS_TRACE = -MD -O2 -ggdb -m$(BITS) -std=c++1y -nostdinc                       \
@@ -51,7 +51,7 @@ CXXFLAGS_TRACE = -MD -O2 -ggdb -m$(BITS) -std=c++1y -nostdinc                   
                  -I/usr/include/ -I../../libstdc++_trace/libstdc++-v3/include          \
                  -I../../libstdc++_trace/libstdc++-v3/include/x86_64-unknown-linux-gnu \
                  -I../../libstdc++_trace/libstdc++-v3/libsupc++                        \
-                 -I$(GCC410INSTALL)/lib/gcc/x86_64-unknown-linux-gnu/4.10.0/include \
+                 -I$(GCC5INSTALL)/lib/gcc/x86_64-unknown-linux-gnu/5.0.0/include \
                  -DNO_TM -pthread
 
 LDFLAGS_NOTM   = -m$(BITS) -L../../libstdc++/libstdc++-v3/src/obj$(BITS) -lstdc++ -pthread
