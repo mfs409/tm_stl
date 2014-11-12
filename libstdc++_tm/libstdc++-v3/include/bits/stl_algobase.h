@@ -74,6 +74,29 @@ namespace std _GLIBCXX_VISIBILITY(default)
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
+  // [mfs] This is a temporary edit for providing a safe way to call
+  // __builtin_memcmp from within a transaction
+  int safe_memcmp(const void* s1, const void* s2, size_t n) __attribute__((transaction_wrap(__builtin_memcmp)));
+ 
+  __attribute__((transaction_safe))
+    // [mfs] using 'weak' is a hack to get around link issues for now.
+    //       Inasumch as this entire mechanism is a (safe) hack for
+    //       getting around the lack of a safe __builtin_memcmp in
+    //       GCC, we're fine.  As soon as __builtin_memcmp is safe,
+    //       all of this can go away.
+  __attribute__((weak)) 
+  int safe_memcmp(const void* s1, const void* s2, size_t n) {
+    unsigned char u1, u2;
+    for ( ; n-- ; s1++, s2++) {
+      u1 = * (unsigned char *) s1;
+      u2 = * (unsigned char *) s2;
+      if ( u1 != u2) {
+	return (u1-u2);
+      }
+    }
+    return 0;
+  }
+
 #if __cplusplus < 201103L
   // See http://gcc.gnu.org/ml/libstdc++/2004-08/msg00167.html: in a
   // nutshell, we are partially implementing the resolution of DR 187,
@@ -815,7 +838,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     struct __equal<true>
     {
       template<typename _Tp>
-        static bool __attribute__((transaction_pure)) // [mfs] This isn't pure, memcmp is an issue
+        static bool
         equal(const _Tp* __first1, const _Tp* __last1, const _Tp* __first2)
         {
 	  return !__builtin_memcmp(__first1, __first2, sizeof(_Tp)
