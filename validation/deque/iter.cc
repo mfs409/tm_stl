@@ -166,12 +166,19 @@ void iter_method_tests(int id)
     global_barrier->arrive(id);
     {
         verifier v;
+        bool ok = true;
         BEGIN_TX;
         iter_deque_int = new std::deque<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
         // iterators should be default constructable
         std::deque<int>::iterator i = std::deque<int>::iterator();
         // iterators should be copy constructable
         std::deque<int>::iterator b(iter_deque_int->begin());
+        // GCC has a third iterator constructor.  Let's just force it to
+        // compile:
+        int* tp;
+        std::deque<int>::iterator::_Map_pointer mp;
+        std::deque<int>::iterator t(tp, mp);
+        ok ^= t==b;
         // iterators should be copy assignable
         std::deque<int>::iterator e = iter_deque_int->end();
         std::deque<int>::iterator* pe = new std::deque<int>::iterator(e);
@@ -182,7 +189,8 @@ void iter_method_tests(int id)
         // iterators should be destructable
         delete pe;
         END_TX;
-        v.check("ctors, dtors, and assignment", id, 10, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+        // use the 'ok' flag to force size errors if ok is false
+        v.check("ctors, dtors, and assignment", id, ok?10:-1, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     }
 
     // iterators should be swappable

@@ -5,108 +5,107 @@
   std::deque interface consists of the following:
 
   Steps:
-    1 - Put TBD traces into all of GCC's deque functions - done
+    1 - Put TBD traces into all of GCC's deque functions
     2 - For one category at a time, replace TBDs and update columns 3 and 4
         of table below
     3 - Write test code for ensuring that every traced function is called,
         and then write DONE in the category
 
-|---------------+-----------------------+-------------------+-------------------|
-| Category      | Functions             |             C++14 |               GCC |
-|               |                       |          Expected |            Actual |
-|---------------+-----------------------+-------------------+-------------------|
-| Member        | (constructor)         | 1a, 1b, 2a, 2b, 3 | 1a, 1b, 2a, 2b, 3 |
-| Functions     |                       | 4a, 4b, 5a, 5b, 6 |         4a, 5a, 6 |
-| (DONE)        | (destructor)          |                 1 |                 1 |
-|               | operator=             |           1, 2, 3 |           1, 2, 3 |
-|---------------+-----------------------+-------------------+-------------------|
-| Iterators     | begin                 |            1a, 1b |            1a, 1b |
-| (DONE)        | end                   |            1a, 1b |            1a, 1b |
-|               | rbegin                |            1a, 1b |            1a, 1b |
-|               | rend                  |            1a, 1b |            1a, 1b |
-|               | cbegin                |                 1 |                 1 |
-|               | cend                  |                 1 |                 1 |
-|               | crbegin               |                 1 |                 1 |
-|               | crend                 |                 1 |                 1 |
-|---------------+-----------------------+-------------------+-------------------|
-| Iterator      | default constructable |                 1 |                 1 |
-| Methods       | copy constructable    |                 1 |             1, 2? |
-|               | copy assignable       |                 1 |                   |
-|               | destructible          |                 1 |                   |
-|               | swappable             |                 1 |                   |
-|---------------+-----------------------+-------------------+-------------------|
-| Iterator      | operator*             |              1, 2 |                 1 |
-| Operators     | operator->            |                 1 |                 1 |
-|               | operator++            |           1, 2, 3 |              1, 2 |
-|               | operator--            |           1, 2, 3 |              1, 2 |
-|               | operator+=            |                 1 |                 1 |
-|               | operator+             |              1, 2 |                 1 |
-|               | operator-=            |                 1 |                 1 |
-|               | operator-             |              1, 2 |                 1 |
-|               | operator[]            |                 1 |                 1 |
-|---------------+-----------------------+-------------------+-------------------|
-| Iterator      | operator==            |                 1 |              1, 2 |
-| Overloads     | operator!=            |                 1 |              1, 2 |
-|               | operator<             |                 1 |              1, 2 |
-|               | operator>             |                 1 |              1, 2 |
-|               | operator<=            |                 1 |              1, 2 |
-|               | operator>=            |                 1 |              1, 2 |
-|               | operator-             |               N/A |              1, 2 |
-|               | operator+             |               N/A |                 1 |
-|---------------+-----------------------+-------------------+-------------------|
-| Iterator      | fill                  |                   |                 1 |
-| Functions     | copy                  |                   |              1, 2 |
-|               | copy_backward         |                   |              1, 2 |
-|               | move                  |                   |              1, 2 |
-|               | move_backward         |                   |              1, 2 |
-|---------------+-----------------------+-------------------+-------------------|
-| Const         | Subsumed by           |                   |                   |
-| Iterator      | basic iterator        |                   |                   |
-| Methods       |                       |                   |                   |
-|---------------+-----------------------+-------------------+-------------------|
-| Reverse       | TODO: in              |                   |                   |
-| Iterator      | bits/stl_iterator.h   |                   |                   |
-| Methods       |                       |                   |                   |
-|---------------+-----------------------+-------------------+-------------------|
-| Const Reverse | Subsumed by           |                   |                   |
-| Iterator      | reverse iterator      |                   |                   |
-| Methods       |                       |                   |                   |
-|---------------+-----------------------+-------------------+-------------------|
-| Capacity      | size                  |                 1 |                 1 |
-| (DONE)        | max_size              |                 1 |                 1 |
-|               | resize                |              1, 2 |              1, 2 |
-|               | empty                 |                 1 |                 1 |
-|               | shrink_to_fit         |                 1 |                 1 |
-|---------------+-----------------------+-------------------+-------------------|
-| Element       | operator[]            |            1a, 1b |            1a, 1b |
-| Access        | at                    |            1a, 1b |            1a, 1b |
-| (DONE)        | front                 |            1a, 1b |            1a, 1b |
-|               | back                  |            1a, 1b |            1a, 1b |
-|---------------+-----------------------+-------------------+-------------------|
-| Modifiers     | assign                |           1, 2, 3 |           1, 2, 3 |
-| (DONE)        | push_back             |            1a, 1b |            1a, 1b |
-|               | push_front            |            1a, 1b |            1a, 1b |
-|               | pop_back              |                 1 |                 1 |
-|               | pop_front             |                 1 |                 1 |
-|               | insert                |     1, 2, 3, 4, 5 |     1, 2, 3, 4, 5 |
-|               | erase                 |            1a, 1b |            1a, 1b |
-|               | swap                  |                 1 |                 1 |
-|               | clear                 |                 1 |                 1 |
-|               | emplace               |                 1 |                 1 |
-|               | emplace_front         |                 1 |                 1 |
-|               | emplace_back          |                 1 |                 1 |
-|---------------+-----------------------+-------------------+-------------------|
-| Allocators    | get_allocator         |                 1 |                 1 |
-| (DONE)        |                       |                   |                   |
-|---------------+-----------------------+-------------------+-------------------|
-| Non-member    | '=='                  |                 1 |                 1 |
-| Function      | '!='                  |                 1 |                 1 |
-| Overloads     | '<'                   |                 1 |                 1 |
-| ("NMFO")      | '<='                  |                 1 |                 1 |
-| (DONE)        | '>'                   |                 1 |                 1 |
-|               | '>='                  |                 1 |                 1 |
-|               | swap                  |                 1 |                 1 |
-|---------------+-----------------------+-------------------+-------------------|
+|---------------+---------------------+-------------------+-------------------|
+| Category      | Functions           |             C++14 |               GCC |
+|               |                     |          Expected |            Actual |
+|---------------+---------------------+-------------------+-------------------|
+| Member        | (constructor)       | 1a, 1b, 2a, 2b, 3 | 1a, 1b, 2a, 2b, 3 |
+| Functions     |                     | 4a, 4b, 5a, 5b, 6 |         4a, 5a, 6 |
+| (DONE)        | (destructor)        |                 1 |                 1 |
+|               | operator=           |           1, 2, 3 |           1, 2, 3 |
+|---------------+---------------------+-------------------+-------------------|
+| Iterators     | begin               |            1a, 1b |            1a, 1b |
+| (DONE)        | end                 |            1a, 1b |            1a, 1b |
+|               | rbegin              |            1a, 1b |            1a, 1b |
+|               | rend                |            1a, 1b |            1a, 1b |
+|               | cbegin              |                 1 |                 1 |
+|               | cend                |                 1 |                 1 |
+|               | crbegin             |                 1 |                 1 |
+|               | crend               |                 1 |                 1 |
+|---------------+---------------------+-------------------+-------------------|
+| Iterator      | (constructor)       |              1, 2 |           1, 2, 3 |
+| Methods       | copy assignable     |                 1 |                 0 |
+| (DONE)        | destructible        |                 1 |                 0 |
+|               | swappable           |                 1 |                 0 |
+|---------------+---------------------+-------------------+-------------------|
+| Iterator      | operator*           |              1, 2 |                 1 |
+| Operators     | operator->          |                 1 |                 1 |
+|               | operator++          |           1, 2, 3 |              1, 2 |
+|               | operator--          |           1, 2, 3 |              1, 2 |
+|               | operator+=          |                 1 |                 1 |
+|               | operator+           |              1, 2 |                 1 |
+|               | operator-=          |                 1 |                 1 |
+|               | operator-           |              1, 2 |                 1 |
+|               | operator[]          |                 1 |                 1 |
+|---------------+---------------------+-------------------+-------------------|
+| Iterator      | operator==          |                 1 |              1, 2 |
+| Overloads     | operator!=          |                 1 |              1, 2 |
+|               | operator<           |                 1 |              1, 2 |
+|               | operator>           |                 1 |              1, 2 |
+|               | operator<=          |                 1 |              1, 2 |
+|               | operator>=          |                 1 |              1, 2 |
+|               | operator-           |               N/A |              1, 2 |
+|               | operator+           |               N/A |                 1 |
+|---------------+---------------------+-------------------+-------------------|
+| Iterator      | fill                |                   |                 1 |
+| Functions     | copy                |                   |              1, 2 |
+|               | copy_backward       |                   |              1, 2 |
+|               | move                |                   |              1, 2 |
+|               | move_backward       |                   |              1, 2 |
+|---------------+---------------------+-------------------+-------------------|
+| Const         | Subsumed by         |                   |                   |
+| Iterator      | basic iterator      |                   |                   |
+| Methods       |                     |                   |                   |
+|---------------+---------------------+-------------------+-------------------|
+| Reverse       | TODO: in            |                   |                   |
+| Iterator      | bits/stl_iterator.h |                   |                   |
+| Methods       |                     |                   |                   |
+|---------------+---------------------+-------------------+-------------------|
+| Const Reverse | Subsumed by         |                   |                   |
+| Iterator      | reverse iterator    |                   |                   |
+| Methods       |                     |                   |                   |
+|---------------+---------------------+-------------------+-------------------|
+| Capacity      | size                |                 1 |                 1 |
+| (DONE)        | max_size            |                 1 |                 1 |
+|               | resize              |              1, 2 |              1, 2 |
+|               | empty               |                 1 |                 1 |
+|               | shrink_to_fit       |                 1 |                 1 |
+|---------------+---------------------+-------------------+-------------------|
+| Element       | operator[]          |            1a, 1b |            1a, 1b |
+| Access        | at                  |            1a, 1b |            1a, 1b |
+| (DONE)        | front               |            1a, 1b |            1a, 1b |
+|               | back                |            1a, 1b |            1a, 1b |
+|---------------+---------------------+-------------------+-------------------|
+| Modifiers     | assign              |           1, 2, 3 |           1, 2, 3 |
+| (DONE)        | push_back           |            1a, 1b |            1a, 1b |
+|               | push_front          |            1a, 1b |            1a, 1b |
+|               | pop_back            |                 1 |                 1 |
+|               | pop_front           |                 1 |                 1 |
+|               | insert              |     1, 2, 3, 4, 5 |     1, 2, 3, 4, 5 |
+|               | erase               |            1a, 1b |            1a, 1b |
+|               | swap                |                 1 |                 1 |
+|               | clear               |                 1 |                 1 |
+|               | emplace             |                 1 |                 1 |
+|               | emplace_front       |                 1 |                 1 |
+|               | emplace_back        |                 1 |                 1 |
+|---------------+---------------------+-------------------+-------------------|
+| Allocators    | get_allocator       |                 1 |                 1 |
+| (DONE)        |                     |                   |                   |
+|---------------+---------------------+-------------------+-------------------|
+| Non-member    | '=='                |                 1 |                 1 |
+| Function      | '!='                |                 1 |                 1 |
+| Overloads     | '<'                 |                 1 |                 1 |
+| ("NMFO")      | '<='                |                 1 |                 1 |
+| (DONE)        | '>'                 |                 1 |                 1 |
+|               | '>='                |                 1 |                 1 |
+|               | swap                |                 1 |                 1 |
+|---------------+---------------------+-------------------+-------------------|
 */
 
 #include <cstdio>
