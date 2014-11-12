@@ -85,6 +85,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     //       GCC, we're fine.  As soon as __builtin_memcmp is safe,
     //       all of this can go away.
   __attribute__((weak)) 
+    // NB: code adapted from
+    // http://www.opensource.apple.com/source/tcl/tcl-3.1/tcl/compat/memcmp.c.
+    // Not GPL, do not include in GCC without reviewing
   int safe_memcmp(const void* s1, const void* s2, size_t n) {
     unsigned char u1, u2;
     for ( ; n-- ; s1++, s2++) {
