@@ -274,7 +274,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	    _M_dfs(__match_mode, __state._M_next);
 	  break;
 	case _S_opcode_word_boundary:
-	  if (_M_word_boundary(__state) == !__state._M_neg)
+	  if (_M_word_boundary() == !__state._M_neg)
 	    _M_dfs(__match_mode, __state._M_next);
 	  break;
 	// Here __state._M_alt offers a single start node for a sub-NFA.
@@ -284,9 +284,11 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	    _M_dfs(__match_mode, __state._M_next);
 	  break;
 	case _S_opcode_match:
+	  if (_M_current == _M_end)
+	    break;
 	  if (__dfs_mode)
 	    {
-	      if (_M_current != _M_end && __state._M_matches(*_M_current))
+	      if (__state._M_matches(*_M_current))
 		{
 		  ++_M_current;
 		  _M_dfs(__match_mode, __state._M_next);
@@ -312,9 +314,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 		 __last != _M_end && __tmp != __submatch.second;
 		 ++__tmp)
 	      ++__last;
-	    if (_M_re._M_traits.transform(__submatch.first,
-						__submatch.second)
-		== _M_re._M_traits.transform(_M_current, __last))
+	    if (_M_re._M_automaton->_M_traits.transform(__submatch.first,
+							__submatch.second)
+		== _M_re._M_automaton->_M_traits.transform(_M_current, __last))
 	      {
 		if (__last != _M_current)
 		  {
@@ -380,8 +382,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	case _S_opcode_alternative:
 	  if (_M_nfa._M_flags & regex_constants::ECMAScript)
 	    {
-	      // TODO: Let DFS support ECMAScript's alternative operation.
-	      _GLIBCXX_DEBUG_ASSERT(!__dfs_mode);
+	      // TODO: Let BFS support ECMAScript's alternative operation.
+	      _GLIBCXX_DEBUG_ASSERT(__dfs_mode);
 	      _M_dfs(__match_mode, __state._M_alt);
 	      // Pick lhs if it matches. Only try rhs if it doesn't.
 	      if (!_M_has_sol)
@@ -407,25 +409,26 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _BiIter, typename _Alloc, typename _TraitsT,
 	   bool __dfs_mode>
     bool _Executor<_BiIter, _Alloc, _TraitsT, __dfs_mode>::
-    _M_word_boundary(_State<_TraitsT> __state) const
+    _M_word_boundary() const
     {
-      // By definition.
-      bool __ans = false;
-      auto __pre = _M_current;
-      --__pre;
-      if (!(_M_at_begin() && _M_at_end()))
+      bool __left_is_word = false;
+      if (_M_current != _M_begin
+	  || (_M_flags & regex_constants::match_prev_avail))
 	{
-	  if (_M_at_begin())
-	    __ans = _M_is_word(*_M_current)
-	      && !(_M_flags & regex_constants::match_not_bow);
-	  else if (_M_at_end())
-	    __ans = _M_is_word(*__pre)
-	      && !(_M_flags & regex_constants::match_not_eow);
-	  else
-	    __ans = _M_is_word(*_M_current)
-	      != _M_is_word(*__pre);
+	  auto __prev = _M_current;
+	  if (_M_is_word(*std::prev(__prev)))
+	    __left_is_word = true;
 	}
-      return __ans;
+      bool __right_is_word =
+        _M_current != _M_end && _M_is_word(*_M_current);
+
+      if (__left_is_word == __right_is_word)
+	return false;
+      if (__left_is_word && !(_M_flags & regex_constants::match_not_eow))
+	return true;
+      if (__right_is_word && !(_M_flags & regex_constants::match_not_bow))
+	return true;
+      return false;
     }
 
 _GLIBCXX_END_NAMESPACE_VERSION

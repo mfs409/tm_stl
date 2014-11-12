@@ -1,4 +1,4 @@
-/* generated for  xgcc (GCC) 4.10.0 20140721 (experimental) */
+/* generated for  xgcc (GCC) 5.0.0 20141111 (experimental) */
 
 #ifndef GCC_GENERATED_STDINT_H
 #define GCC_GENERATED_STDINT_H 1

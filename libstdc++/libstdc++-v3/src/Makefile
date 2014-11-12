@@ -37,9 +37,9 @@ CRTPATH=$(GCC5INSTALL)/lib/gcc/x86_64-unknown-linux-gnu/5.0.0/
 #
 # File names
 #
-NAMESx98 = bitmap_allocator pool_allocator mt_allocator codecvt complex_io ctype globals_io hash_tr1 hashtable_tr1 ios ios_failure ios_init ios_locale list list-aux list-aux-2 list_associated list_associated-2 locale locale_init locale_facets localename math_stubs_float math_stubs_long_double stdexcept tree istream streambuf valarray atomicity codecvt_members collate_members ctype_configure_char ctype_members messages_members monetary_members numeric_members time_members basic_file c++locale allocator-inst ext-inst ios-inst iostream-inst istream-inst locale-inst misc-inst ostream-inst sstream-inst streambuf-inst wlocale-inst
+NAMESx98 = bitmap_allocator pool_allocator mt_allocator codecvt complex_io globals_io hash_tr1 hashtable_tr1 ios_failure ios_init ios_locale list list-aux list-aux-2 list_associated list_associated-2 locale locale_init locale_facets localename math_stubs_float math_stubs_long_double stdexcept tree istream streambuf valarray atomicity codecvt_members collate_members  messages_members monetary_members numeric_members time_members basic_file c++locale allocator-inst ext-inst locale-inst misc-inst wlocale-inst
 NAMESx98custom = strstream concept-inst parallel_settings
-NAMESx11 = chrono condition_variable debug functexcept functional future hash_c++0x limits mutex placeholders random regex shared_ptr snprintf_lite system_error thread fstream-inst string-inst wstring-inst
+NAMESx11 = chrono condition_variable debug functexcept functional future hash_c++0x limits mutex placeholders random regex shared_ptr snprintf_lite system_error thread fstream-inst string-inst wstring-inst ctype ctype_configure_char ios-inst iostream-inst istream-inst ostream-inst sstream-inst streambuf-inst ios ctype_members
 NAMESx11custom = hashtable_c++0x
 NAMESsrc98 = compatibility compatibility-debug_list compatibility-debug_list-2
 NAMESsrc11 = compatibility-c++0x compatibility-atomic-c++0x compatibility-thread-c++0x compatibility-chrono compatibility-condvar

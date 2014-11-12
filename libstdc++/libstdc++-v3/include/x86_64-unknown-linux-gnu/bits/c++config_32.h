@@ -31,7 +31,7 @@
 #define _GLIBCXX_CXX_CONFIG_H 1
 
 // The current version of the C++ library in compressed ISO date format.
-#define __GLIBCXX__ 20140721
+#define __GLIBCXX__ 20141111
 
 // Macros for various attributes.
 //   _GLIBCXX_PURE
@@ -192,6 +192,17 @@ namespace std
   typedef decltype(nullptr)	nullptr_t;
 #endif
 }
+
+// Use abi_tag("cxx11")
+#ifndef _GLIBCXX_USE_CXX11_ABI
+# define _GLIBCXX_USE_CXX11_ABI 1
+#endif
+
+#if _GLIBCXX_USE_CXX11_ABI
+# define _GLIBCXX_DEFAULT_ABI_TAG _GLIBCXX_ABI_TAG_CXX11
+#else
+# define _GLIBCXX_DEFAULT_ABI_TAG
+#endif
 
 
 // Defined if inline namespaces are used for versioning.
@@ -1132,7 +1143,7 @@ namespace std
 /* #undef _GLIBCXX_HAVE__TANL */
 
 /* Define to 1 if you have the `__cxa_thread_atexit_impl' function. */
-/* #undef _GLIBCXX_HAVE___CXA_THREAD_ATEXIT_IMPL */
+#define _GLIBCXX_HAVE___CXA_THREAD_ATEXIT_IMPL 1
 
 /* Define as const if the declaration of iconv() needs const. */
 #define _GLIBCXX_ICONV_CONST 

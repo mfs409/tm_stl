@@ -30,7 +30,7 @@ BFLAGS2=
 #
 # File names
 #
-NAMESx98 = array_type_info  atexit_arm bad_alloc bad_cast bad_typeid class_type_info del_op del_opnt del_opv del_opvnt dyncast eh_alloc eh_arm eh_call eh_catch eh_exception eh_globals eh_personality eh_term_handler eh_tm eh_type eh_unex_handler enum_type_info function_type_info fundamental_type_info guard_error hash_bytes new_opv new_opvnt pbase_type_info pmem_type_info pointer_type_info pure si_class_type_info tinfo tinfo2 vec vmi_class_type_info vterminate
+NAMESx98 = array_type_info  atexit_arm bad_alloc bad_cast bad_typeid class_type_info del_op del_opnt del_opv del_opvnt dyncast eh_alloc eh_arm eh_call eh_catch eh_exception eh_globals eh_personality eh_term_handler eh_tm eh_type eh_unex_handler enum_type_info function_type_info fundamental_type_info guard_error hash_bytes new_opv new_opvnt pbase_type_info pmem_type_info pointer_type_info pure si_class_type_info tinfo tinfo2 vec vmi_class_type_info vterminate vtv_stubs
 NAMESx11 = atexit_thread bad_array_length bad_array_new eh_aux_runtime eh_ptr eh_terminate eh_throw guard nested_exception new_handler new_op new_opnt
 NAMESiberty = cp-demangle
 NAMESLIB = libsupc++convenience libsupc++
